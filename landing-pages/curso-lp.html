@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Construa Seu AI COO — Mini-Curso com Bruno Okamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #09090b;
+    --bg-elevated: #111114;
+    --bg-card: #18181b;
+    --bg-card-hover: #1f1f23;
+    --accent: #a855f7;
+    --accent-bright: #c084fc;
+    --accent-dim: rgba(168, 85, 247, 0.12);
+    --accent-border: rgba(168, 85, 247, 0.25);
+    --cyan: #22d3ee;
+    --cyan-dim: rgba(34, 211, 238, 0.1);
+    --green: #34d399;
+    --green-dim: rgba(52, 211, 153, 0.1);
+    --amber: #fbbf24;
+    --rose: #fb7185;
+    --text: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border: rgba(255,255,255,0.06);
+    --border-hover: rgba(255,255,255,0.12);
+    --glow: 0 0 60px rgba(168, 85, 247, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.6; } }
+  @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+  @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+
+  .fade-up { opacity:0; transform:translateY(20px); transition: all .6s cubic-bezier(.16,1,.3,1); }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+  /* ═══ TOPBAR ═══ */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 12px 0;
+    background: rgba(9,9,11,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner { max-width:1080px; margin:0 auto; padding:0 20px; display:flex; justify-content:space-between; align-items:center; }
+  .topbar-logo { font-size:16px; font-weight:700; color:var(--text); text-decoration:none; display:flex; align-items:center; gap:6px; }
+  .topbar-cta {
+    padding: 8px 20px; background: var(--accent); color: white; border:none; border-radius:8px;
+    font-family:'Outfit',sans-serif; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none;
+    transition: all .3s; letter-spacing: 0.3px;
+  }
+  .topbar-cta:hover { background:#9333ea; transform:translateY(-1px); box-shadow: 0 4px 20px rgba(168,85,247,.4); }
+
+  /* ═══ HERO ═══ */
+  .hero {
+    padding: 100px 0 48px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .hero::before {
+    content:''; position:absolute; top:-200px; left:50%; transform:translateX(-50%);
+    width:800px; height:600px;
+    background: radial-gradient(ellipse, rgba(168,85,247,0.15) 0%, rgba(34,211,238,0.05) 40%, transparent 70%);
+    pointer-events:none;
+  }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:8px;
+    padding:6px 16px; background:var(--accent-dim); border:1px solid var(--accent-border);
+    border-radius:8px; font-size:12px; font-weight:600; color:var(--accent-bright);
+    text-transform:uppercase; letter-spacing:1px; margin-bottom:24px;
+    animation: fadeUp .5s ease both;
+  }
+  .hero-badge-dot { width:6px; height:6px; background:var(--green); border-radius:50%; animation:pulse 2s infinite; }
+  .hero-title {
+    font-family:'Playfair Display',serif; font-size:clamp(36px,5.5vw,60px);
+    font-weight:600; line-height:1.1; letter-spacing:-1px; margin-bottom:20px;
+    animation: fadeUp .5s ease .1s both;
+  }
+  .hero-title em {
+    font-style:italic;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--cyan) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .hero-sub {
+    font-size:17px; font-weight:400; color:var(--text-secondary); line-height:1.7;
+    max-width:580px; margin:0 auto 32px; animation: fadeUp .5s ease .2s both;
+  }
+  .hero-ctas { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; animation: fadeUp .5s ease .3s both; }
+  .btn-main {
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 32px; background:linear-gradient(135deg, var(--accent), #7c3aed);
+    color:white; border:none; border-radius:10px; font-family:'Outfit'; font-size:15px; font-weight:600;
+    cursor:pointer; text-decoration:none; transition:all .3s;
+    box-shadow: 0 4px 24px rgba(168,85,247,.3);
+  }
+  .btn-main:hover { transform:translateY(-2px); box-shadow: 0 8px 32px rgba(168,85,247,.45); }
+  .btn-ghost {
+    padding:14px 28px; background:transparent; color:var(--text-secondary);
+    border:1px solid var(--border-hover); border-radius:10px; font-family:'Outfit';
+    font-size:15px; font-weight:500; cursor:pointer; text-decoration:none; transition:all .3s;
+  }
+  .btn-ghost:hover { border-color:var(--accent-border); color:var(--accent-bright); }
+  .hero-price {
+    display:flex; justify-content:center; align-items:baseline; gap:10px; margin-top:20px;
+    animation: fadeUp .5s ease .4s both;
+  }
+  .price-old { font-size:16px; color:var(--text-muted); text-decoration:line-through; }
+  .price-now { font-family:'JetBrains Mono'; font-size:36px; font-weight:700; color:var(--accent-bright); }
+  .price-tag { font-size:13px; color:var(--text-muted); }
+
+  /* ═══ STATS ═══ */
+  .stats {
+    display:grid; grid-template-columns:repeat(5,1fr); gap:1px;
+    background:var(--border); border:1px solid var(--border); border-radius:12px;
+    overflow:hidden; margin: 48px auto 0; max-width:720px;
+  }
+  .stat { background:var(--bg-elevated); padding:20px 12px; text-align:center; }
+  .stat-val { font-family:'JetBrains Mono'; font-size:24px; font-weight:700; color:var(--text); }
+  .stat-label { font-size:11px; color:var(--text-muted); margin-top:2px; text-transform:uppercase; letter-spacing:.5px; }
+
+  /* ═══ SECTIONS ═══ */
+  section { padding: 64px 0; }
+  .sec-label {
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px;
+    color:var(--accent-bright); margin-bottom:12px;
+  }
+  .sec-label::before { content:''; width:20px; height:1.5px; background:var(--accent); }
+  .sec-title {
+    font-family:'Playfair Display',serif; font-size:clamp(26px,3.5vw,38px);
+    font-weight:600; line-height:1.15; letter-spacing:-.3px; margin-bottom:12px;
+  }
+  .sec-desc { font-size:15px; color:var(--text-secondary); max-width:520px; line-height:1.7; margin-bottom:36px; }
+  .sec-desc.center { margin-left:auto; margin-right:auto; text-align:center; }
+
+  /* ═══ PROBLEM ═══ */
+  .problem-section {
+    background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg) 100%);
+    border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  }
+  .problem-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .problem-card {
+    padding:24px; background:var(--bg-card); border:1px solid var(--border); border-radius:12px;
+    transition:all .3s;
+  }
+  .problem-card:hover { border-color:var(--accent-border); transform:translateY(-2px); }
+  .problem-icon { font-size:24px; margin-bottom:12px; }
+  .problem-card h3 { font-size:15px; font-weight:600; margin-bottom:6px; }
+  .problem-card p { font-size:13px; color:var(--text-muted); line-height:1.6; }
+
+  /* ═══ QUOTE ═══ */
+  .quote-strip {
+    padding:40px 0; text-align:center;
+    background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+    border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  }
+  .quote-text {
+    font-family:'Playfair Display',serif; font-size:clamp(18px,2.5vw,26px);
+    font-weight:500; font-style:italic; line-height:1.5; max-width:640px; margin:0 auto 8px;
+  }
+  .quote-author { font-size:13px; color:var(--text-muted); }
+
+  /* ═══ MODULES ═══ */
+  .modules { display:flex; flex-direction:column; gap:8px; }
+  .mod-item {
+    display:grid; grid-template-columns:48px 1fr auto; gap:16px; align-items:center;
+    padding:16px 20px; background:var(--bg-card); border:1px solid var(--border);
+    border-radius:12px; transition:all .3s;
+  }
+  .mod-item:hover { border-color:var(--border-hover); background:var(--bg-card-hover); }
+  .mod-item.star { border-color:var(--accent-border); background:var(--accent-dim); }
+  .mod-num {
+    width:48px; height:48px; display:flex; align-items:center; justify-content:center;
+    border-radius:10px; background:var(--accent-dim); border:1px solid var(--accent-border);
+    font-family:'JetBrains Mono'; font-size:18px; font-weight:700; color:var(--accent-bright);
+  }
+  .mod-item.star .mod-num { background:var(--accent); color:white; border-color:var(--accent); }
+  .mod-info h3 { font-size:14px; font-weight:600; margin-bottom:2px; }
+  .mod-info p { font-size:12px; color:var(--text-muted); line-height:1.5; }
+  .mod-time {
+    font-family:'JetBrains Mono'; font-size:12px; font-weight:600; color:var(--green);
+    padding:4px 12px; background:var(--green-dim); border-radius:6px; white-space:nowrap;
+  }
+  .mod-total {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 20px; margin-top:8px;
+    background:linear-gradient(135deg, var(--accent-dim), var(--cyan-dim));
+    border:1px solid var(--accent-border); border-radius:12px;
+  }
+  .mod-total-label { font-size:14px; font-weight:600; }
+  .mod-total-val { font-family:'JetBrains Mono'; font-size:28px; font-weight:700; color:var(--accent-bright); }
+
+  /* ═══ USE CASES ═══ */
+  .uc-section { background:var(--bg-elevated); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .uc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .uc-card {
+    padding:20px; background:var(--bg-card); border:1px solid var(--border); border-radius:12px;
+    transition:all .4s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden;
+  }
+  .uc-card::after {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, var(--accent), var(--cyan));
+    transform:scaleX(0); transform-origin:left; transition:transform .4s cubic-bezier(.16,1,.3,1);
+  }
+  .uc-card:hover::after { transform:scaleX(1); }
+  .uc-card:hover { border-color:var(--border-hover); transform:translateY(-3px); box-shadow:var(--glow); }
+  .uc-emoji { font-size:28px; margin-bottom:10px; display:block; }
+  .uc-card h3 { font-size:14px; font-weight:600; margin-bottom:4px; }
+  .uc-card p { font-size:12px; color:var(--text-muted); line-height:1.5; }
+
+  /* ═══ SECURITY ═══ */
+  .sec-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .sec-card {
+    padding:20px; background:var(--bg-card); border:1px solid var(--border); border-radius:12px;
+    display:flex; gap:14px; align-items:flex-start; transition:all .3s;
+  }
+  .sec-card:hover { border-color:rgba(52,211,153,.3); }
+  .sec-icon {
+    width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+    background:var(--green-dim); border:1px solid rgba(52,211,153,.2); border-radius:8px;
+    font-size:16px; flex-shrink:0;
+  }
+  .sec-card h4 { font-size:13px; font-weight:600; margin-bottom:3px; }
+  .sec-card p { font-size:12px; color:var(--text-muted); line-height:1.5; }
+
+  /* ═══ INSTRUCTOR ═══ */
+  .instructor {
+    display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:center;
+    padding:32px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px;
+  }
+  .inst-name { font-family:'Playfair Display',serif; font-size:26px; font-weight:600; margin-bottom:12px; }
+  .inst-bio { font-size:14px; color:var(--text-secondary); line-height:1.7; margin-bottom:20px; }
+  .inst-stats { display:flex; gap:20px; flex-wrap:wrap; }
+  .inst-stat-val { font-family:'JetBrains Mono'; font-size:20px; font-weight:700; color:var(--accent-bright); }
+  .inst-stat-lbl { font-size:11px; color:var(--text-muted); }
+  .inst-badges { display:flex; flex-direction:column; gap:8px; }
+  .inst-badge {
+    display:flex; align-items:center; gap:10px; padding:12px 16px;
+    background:var(--bg-elevated); border:1px solid var(--border); border-radius:10px;
+    font-size:13px; color:var(--text-secondary); transition:all .3s;
+  }
+  .inst-badge:hover { border-color:var(--accent-border); color:var(--accent-bright); }
+  .inst-badge span { font-size:18px; }
+
+  /* ═══ PRICING ═══ */
+  .pricing-section { text-align:center; padding:64px 0; }
+  .pricing-card {
+    max-width:480px; margin:0 auto; padding:40px 36px;
+    background:var(--bg-card); border:1px solid var(--accent-border);
+    border-radius:16px; position:relative; overflow:hidden;
+    box-shadow: 0 0 80px rgba(168,85,247,.1);
+  }
+  .pricing-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--accent), var(--cyan), var(--accent));
+    background-size:200% auto; animation:shimmer 3s linear infinite;
+  }
+  .pricing-tag {
+    display:inline-flex; padding:4px 14px; background:var(--accent-dim);
+    border:1px solid var(--accent-border); border-radius:6px;
+    font-size:11px; font-weight:700; color:var(--accent-bright);
+    text-transform:uppercase; letter-spacing:1px; margin-bottom:20px;
+  }
+  .pricing-old { font-size:18px; color:var(--text-muted); text-decoration:line-through; }
+  .pricing-val { font-family:'Playfair Display',serif; font-size:56px; font-weight:700; line-height:1; margin:4px 0; }
+  .pricing-val small { font-size:22px; vertical-align:top; margin-right:2px; font-weight:600; }
+  .pricing-sub { font-size:13px; color:var(--text-muted); margin-bottom:28px; }
+  .pricing-list { text-align:left; margin-bottom:28px; display:flex; flex-direction:column; gap:10px; }
+  .pricing-feat { display:flex; align-items:center; gap:10px; font-size:14px; color:var(--text-secondary); }
+  .pricing-check {
+    width:20px; height:20px; display:flex; align-items:center; justify-content:center;
+    background:var(--green-dim); border-radius:50%; font-size:11px; color:var(--green); flex-shrink:0;
+  }
+  .btn-buy {
+    display:flex; align-items:center; justify-content:center; gap:8px; width:100%;
+    padding:16px; background:linear-gradient(135deg, var(--accent), #7c3aed);
+    color:white; border:none; border-radius:10px; font-family:'Outfit';
+    font-size:16px; font-weight:600; cursor:pointer; transition:all .3s;
+    box-shadow: 0 4px 24px rgba(168,85,247,.3);
+  }
+  .btn-buy:hover { transform:translateY(-2px); box-shadow: 0 8px 32px rgba(168,85,247,.5); }
+  .pricing-guarantee { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:12px; font-size:12px; color:var(--text-muted); }
+
+  /* ═══ FAQ ═══ */
+  .faq-section { background:var(--bg-elevated); border-top:1px solid var(--border); }
+  .faq-list { max-width:640px; margin:0 auto; display:flex; flex-direction:column; gap:6px; }
+  .faq-item { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .faq-q {
+    padding:16px 20px; display:flex; justify-content:space-between; align-items:center;
+    cursor:pointer; font-size:14px; font-weight:600; user-select:none; transition:color .2s;
+  }
+  .faq-q:hover { color:var(--accent-bright); }
+  .faq-arrow { font-size:18px; color:var(--text-muted); transition:transform .3s; }
+  .faq-item.open .faq-arrow { transform:rotate(45deg); color:var(--accent-bright); }
+  .faq-a { max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.16,1,.3,1); }
+  .faq-item.open .faq-a { max-height:200px; }
+  .faq-a-inner { padding:0 20px 16px; font-size:13px; color:var(--text-secondary); line-height:1.7; }
+
+  /* ═══ FINAL CTA ═══ */
+  .final-cta {
+    padding:64px 0; text-align:center; position:relative; overflow:hidden;
+  }
+  .final-cta::before {
+    content:''; position:absolute; bottom:-100px; left:50%; transform:translateX(-50%);
+    width:600px; height:400px;
+    background:radial-gradient(ellipse, rgba(168,85,247,.12) 0%, transparent 70%);
+  }
+  .final-cta .sec-title { max-width:480px; margin:0 auto 20px; }
+  .final-cta em { color:var(--accent-bright); font-family:'Playfair Display',serif; font-style:italic; }
+
+  /* ═══ FOOTER ═══ */
+  footer { padding:24px 0; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--text-muted); }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media(max-width:768px) {
+    .hero { padding:90px 0 40px; }
+    .stats { grid-template-columns:repeat(3,1fr); }
+    .problem-grid { grid-template-columns:1fr; }
+    .uc-grid { grid-template-columns:repeat(2,1fr); }
+    .sec-grid { grid-template-columns:1fr; }
+    .instructor { grid-template-columns:1fr; }
+    .mod-item { grid-template-columns:40px 1fr; }
+    .mod-time { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="#" class="topbar-logo">🍇 AI COO</a>
+    <a href="#preco" class="topbar-cta">Inscreva-se — R$ 97</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge"><span class="hero-badge-dot"></span> Mini-curso · Vagas limitadas</div>
+    <h1 class="hero-title">Construa seu<br><em>AI COO</em> pessoal<br>em 2 horas</h1>
+    <p class="hero-sub">Aprenda como eu construí uma assistente AI que opera meus negócios 24/7 — agenda, conteúdo, métricas, segurança e 15+ integrações. Do zero, sem saber programar.</p>
+    <div class="hero-ctas">
+      <a href="#preco" class="btn-main">Começar agora por R$ 97 →</a>
+      <a href="#modulos" class="btn-ghost">Ver conteúdo ↓</a>
+    </div>
+    <div class="hero-price">
+      <span class="price-old">R$ 297</span>
+      <span class="price-now">R$ 97</span>
+      <span class="price-tag">preço de lançamento</span>
+    </div>
+  </div>
+
+  <div class="container" style="margin-top:40px">
+    <div class="stats">
+      <div class="stat"><div class="stat-val">13</div><div class="stat-label">Dias reais</div></div>
+      <div class="stat"><div class="stat-val">15+</div><div class="stat-label">Integrações</div></div>
+      <div class="stat"><div class="stat-val">6</div><div class="stat-label">Agentes AI</div></div>
+      <div class="stat"><div class="stat-val">20k+</div><div class="stat-label">Founders</div></div>
+      <div class="stat"><div class="stat-val">2h50</div><div class="stat-label">Conteúdo</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="problem-section">
+  <div class="container">
+    <div class="sec-label">O problema</div>
+    <h2 class="sec-title">Você usa IA como um Google<br>mais esperto. E só.</h2>
+    <p class="sec-desc">Toda conversa começa do zero. Nenhuma integração real. Nenhuma proatividade. E se a IA pudesse <strong style="color:white">trabalhar para você</strong> — mesmo enquanto dorme?</p>
+    <div class="problem-grid">
+      <div class="problem-card fade-up">
+        <div class="problem-icon">🔄</div>
+        <h3>Zero memória</h3>
+        <p>Toda vez você explica de novo quem é, o que faz, o que precisa. Sem continuidade nenhuma.</p>
+      </div>
+      <div class="problem-card fade-up">
+        <div class="problem-icon">🚫</div>
+        <h3>Zero integração</h3>
+        <p>Não acessa calendário, não monitora métricas, não envia emails, não agenda posts. Chat isolado.</p>
+      </div>
+      <div class="problem-card fade-up">
+        <div class="problem-icon">😴</div>
+        <h3>Zero proatividade</h3>
+        <p>Não te lembra de nada, não antecipa problemas, não trabalha sozinha. Só existe quando você abre o chat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="quote-strip">
+  <div class="container">
+    <p class="quote-text">"Eu não queria um chatbot. Queria uma COO — que conhece meus negócios, antecipa problemas e trabalha 24/7."</p>
+    <p class="quote-author">— Bruno Okamoto</p>
+  </div>
+</div>
+
+<section id="modulos">
+  <div class="container">
+    <div class="sec-label">Conteúdo do curso</div>
+    <h2 class="sec-title">9 módulos. 2h50. Tudo prático.</h2>
+    <p class="sec-desc">Cada módulo é uma etapa real da construção. Sem teoria vazia — tudo que eu mostro, eu construí e uso todo dia.</p>
+    <div class="modules">
+      <div class="mod-item fade-up"><div class="mod-num">0</div><div class="mod-info"><h3>Abertura & O que vamos construir</h3><p>Por que agentes AI pessoais. Demo real da Amora no Telegram.</p></div><div class="mod-time">10 min</div></div>
+      <div class="mod-item fade-up"><div class="mod-num">1</div><div class="mod-info"><h3>Setup: Do Zero ao Primeiro "Oi"</h3><p>VPS, instalação OpenClaw, Telegram, primeira mensagem, arquivos base.</p></div><div class="mod-time">25 min</div></div>
+      <div class="mod-item fade-up"><div class="mod-num">2</div><div class="mod-info"><h3>Personalidade: De Chatbot a COO</h3><p>SOUL.md, USER.md, IDENTITY.md — os prompts que transformam tudo.</p></div><div class="mod-time">20 min</div></div>
+      <div class="mod-item star fade-up"><div class="mod-num">3</div><div class="mod-info"><h3>★ Memória: O Segredo que Ninguém Ensina</h3><p>Arquitetura de memória de longo prazo. Decisões, lições, feedback loops. O diferencial.</p></div><div class="mod-time">20 min</div></div>
+      <div class="mod-item fade-up"><div class="mod-num">4</div><div class="mod-info"><h3>Integrações & Automações</h3><p>1Password, Calendar, Drive, YouTube, APIs. Crons que funcionam de verdade.</p></div><div class="mod-time">25 min</div></div>
+      <div class="mod-item fade-up"><div class="mod-num">5</div><div class="mod-info"><h3>Skills: Superpoderes Instantâneos</h3><p>Instale capacidades novas em segundos. PDFs, infográficos, pesquisa, transcrição.</p></div><div class="mod-time">15 min</div></div>
+      <div class="mod-item fade-up"><div class="mod-num">6</div><div class="mod-info"><h3>Multi-Agentes: De Solo a Time</h3><p>Leveling L1→L4. 6 agentes coordenados. Shared context. Split de modelos.</p></div><div class="mod-time">20 min</div></div>
+      <div class="mod-item star fade-up"><div class="mod-num">7</div><div class="mod-info"><h3>★ Blindando o Agente: Sistema Imunológico</h3><p>Fail2ban, UFW, allowlists, 1Password, watchdogs. De brinquedo a produção.</p></div><div class="mod-time">15 min</div></div>
+      <div class="mod-item fade-up"><div class="mod-num">8</div><div class="mod-info"><h3>Mission Control: Seu Painel</h3><p>Dashboard visual — Kanban, memória, crons. Alternativas simples.</p></div><div class="mod-time">10 min</div></div>
+      <div class="mod-item fade-up"><div class="mod-num">9</div><div class="mod-info"><h3>Custos Reais & Próximos Passos</h3><p>Quanto custa. Os erros que cometi. Comunidade. O futuro dos agentes.</p></div><div class="mod-time">10 min</div></div>
+    </div>
+    <div class="mod-total">
+      <div class="mod-total-label">Tempo total do curso</div>
+      <div class="mod-total-val">2h50</div>
+    </div>
+  </div>
+</section>
+
+<section class="uc-section">
+  <div class="container">
+    <div class="sec-label">Use cases</div>
+    <h2 class="sec-title">Um agente AI para cada profissional</h2>
+    <p class="sec-desc">Não importa se você é dev ou nunca abriu um terminal. O curso ensina do zero.</p>
+    <div class="uc-grid">
+      <div class="uc-card fade-up"><span class="uc-emoji">🚀</span><h3>Founders</h3><p>MRR automático, churn, tarefas, relatórios. COO digital 24/7.</p></div>
+      <div class="uc-card fade-up"><span class="uc-emoji">📱</span><h3>Marketing Digital</h3><p>Tendências, drafts, concorrentes, ideias de posts. Tudo automático.</p></div>
+      <div class="uc-card fade-up"><span class="uc-emoji">👔</span><h3>Executivos</h3><p>Briefings, prep de reuniões, métricas, lembretes proativos.</p></div>
+      <div class="uc-card fade-up"><span class="uc-emoji">🎬</span><h3>Creators</h3><p>1 vídeo → 6-8 peças. Calendário editorial, transcrições, analytics.</p></div>
+      <div class="uc-card fade-up"><span class="uc-emoji">🛒</span><h3>E-commerce</h3><p>Preços de concorrentes, leads, CRM, follow-ups automatizados.</p></div>
+      <div class="uc-card fade-up"><span class="uc-emoji">💻</span><h3>Devs & Hackers</h3><p>Code reviews, APIs, deploy, docs, bug tracking assistido.</p></div>
+      <div class="uc-card fade-up"><span class="uc-emoji">📚</span><h3>Consultores</h3><p>Pesquisa, apresentações, organização de clientes, propostas.</p></div>
+      <div class="uc-card fade-up"><span class="uc-emoji">🎯</span><h3>Comunidades</h3><p>Hot topics, FAQ, digests semanais, tendências automáticas.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="sec-label">Segurança</div>
+    <h2 class="sec-title">Blinde seu agente como profissional</h2>
+    <p class="sec-desc">Um agente com acesso às suas contas é poder. E poder precisa de proteção. Módulo inteiro dedicado.</p>
+    <div class="sec-grid">
+      <div class="sec-card fade-up"><div class="sec-icon">🔐</div><div><h4>1Password Obrigatório</h4><p>Zero hardcode. Tudo via CLI. Rotação trimestral automatizada.</p></div></div>
+      <div class="sec-card fade-up"><div class="sec-icon">🛡️</div><div><h4>Fail2ban + UFW</h4><p>Firewall + anti brute-force. Bloqueio automático após 5 tentativas.</p></div></div>
+      <div class="sec-card fade-up"><div class="sec-icon">🚫</div><div><h4>Allowlists Rigorosas</h4><p>Só você comanda. IDs explícitos. Zero acesso público.</p></div></div>
+      <div class="sec-card fade-up"><div class="sec-icon">🔒</div><div><h4>Gateway Localhost</h4><p>API só local. Nada na internet. Cloudflare Tunnel quando precisa.</p></div></div>
+      <div class="sec-card fade-up"><div class="sec-icon">👁️</div><div><h4>Watchdog Auto-Retry</h4><p>Monitoramento contínuo. Retry 3x antes de alertar.</p></div></div>
+      <div class="sec-card fade-up"><div class="sec-icon">🔑</div><div><h4>Exec Allowlist</h4><p>Lista explícita de comandos permitidos. Sem surpresas.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-elevated); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="sec-label">Instrutor</div>
+    <div class="instructor">
+      <div>
+        <h3 class="inst-name">Bruno Okamoto</h3>
+        <p class="inst-bio">Criador do maior ecossistema de Micro-SaaS do Brasil. 12+ anos empreendendo, TEDx Speaker, Top 20 influenciadores globais de SaaS. Pai, marido, e a pessoa que realmente usa um agente AI no dia a dia — não como demo, como ferramenta real.</p>
+        <div class="inst-stats">
+          <div><div class="inst-stat-val">20k+</div><div class="inst-stat-lbl">founders</div></div>
+          <div><div class="inst-stat-val">3k+</div><div class="inst-stat-lbl">SaaS lançados</div></div>
+          <div><div class="inst-stat-val">150k</div><div class="inst-stat-lbl">seguidores</div></div>
+        </div>
+      </div>
+      <div class="inst-badges">
+        <div class="inst-badge"><span>🎤</span> TEDx Speaker</div>
+        <div class="inst-badge"><span>🏆</span> Top 20 SaaS Influencers 2025 (único BR)</div>
+        <div class="inst-badge"><span>🚀</span> 3x SaaS Founder ativo</div>
+        <div class="inst-badge"><span>🤖</span> 6 agentes AI em produção real</div>
+        <div class="inst-badge"><span>🇧🇷</span> Primeiro curso AI Agents em PT-BR</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="preco" class="pricing-section">
+  <div class="container">
+    <div class="sec-label" style="justify-content:center;">Investimento</div>
+    <h2 class="sec-title" style="text-align:center;">Menos que um almoço de negócios</h2>
+    <p class="sec-desc center">Você gasta mais com café essa semana do que com um curso que economiza horas do seu dia, todo dia.</p>
+
+    <div class="pricing-card fade-up">
+      <div class="pricing-tag">🔥 Lançamento</div>
+      <div class="pricing-old">R$ 297</div>
+      <div class="pricing-val"><small>R$</small>97</div>
+      <p class="pricing-sub">Pagamento único · Acesso vitalício</p>
+      <div class="pricing-list">
+        <div class="pricing-feat"><span class="pricing-check">✓</span> 9 módulos — 2h50 de conteúdo prático</div>
+        <div class="pricing-feat"><span class="pricing-check">✓</span> Templates prontos: SOUL.md, USER.md, AGENTS.md, MEMORY.md</div>
+        <div class="pricing-feat"><span class="pricing-check">✓</span> Checklist de setup passo-a-passo</div>
+        <div class="pricing-feat"><span class="pricing-check">✓</span> Lista de integrações com instruções</div>
+        <div class="pricing-feat"><span class="pricing-check">✓</span> Planilha de custos reais</div>
+        <div class="pricing-feat"><span class="pricing-check">✓</span> Módulo de segurança completo</div>
+        <div class="pricing-feat"><span class="pricing-check">✓</span> Acesso vitalício + atualizações</div>
+      </div>
+      <button class="btn-buy">Quero construir meu AI COO →</button>
+      <div class="pricing-guarantee">🔒 Garantia 7 dias · 100% do dinheiro de volta</div>
+    </div>
+  </div>
+</section>
+
+<section class="faq-section">
+  <div class="container">
+    <div class="sec-label" style="justify-content:center;">FAQ</div>
+    <h2 class="sec-title" style="text-align:center;">Perguntas frequentes</h2>
+    <br>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q">Preciso saber programar?<span class="faq-arrow">+</span></div><div class="faq-a"><div class="faq-a-inner">Não. O curso é para empreendedores, não devs. Você copia comandos, edita textos e segue o passo-a-passo. Se edita um Google Docs, faz o curso.</div></div></div>
+      <div class="faq-item"><div class="faq-q">Quanto custa rodar um agente por mês?<span class="faq-arrow">+</span></div><div class="faq-a"><div class="faq-a-inner">VPS: R$ 20-60/mês. Tokens de IA: R$ 50-200/mês dependendo do uso. No curso ensino como usar modelos econômicos e economizar até 90%.</div></div></div>
+      <div class="faq-item"><div class="faq-q">É seguro dar acesso às minhas contas?<span class="faq-arrow">+</span></div><div class="faq-a"><div class="faq-a-inner">Por isso dedicamos um módulo inteiro à segurança: allowlists, firewall, 1Password, rotação de chaves, watchdogs. Múltiplas camadas de proteção.</div></div></div>
+      <div class="faq-item"><div class="faq-q">Funciona no Mac/Windows?<span class="faq-arrow">+</span></div><div class="faq-a"><div class="faq-a-inner">Roda em qualquer sistema. Mas para funcionar 24/7 precisa de VPS. No curso mostro como configurar tudo do zero e por que é melhor que local.</div></div></div>
+      <div class="faq-item"><div class="faq-q">E se eu não gostar?<span class="faq-arrow">+</span></div><div class="faq-a"><div class="faq-a-inner">Garantia incondicional de 7 dias. Devolvemos 100%. Sem perguntas, sem burocracia.</div></div></div>
+      <div class="faq-item"><div class="faq-q">Por que OpenClaw e não outro framework?<span class="faq-arrow">+</span></div><div class="faq-a"><div class="faq-a-inner">Único que combina: agente 24/7, multi-canal (Telegram, WhatsApp, Discord), memória, crons, skills, multi-agentes e sandbox — tudo pronto pra usar.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="container">
+    <h2 class="sec-title" style="text-align:center; max-width:480px; margin:0 auto 20px;">Pare de usar IA como buscador.<br>Comece a ter um <em>time</em>.</h2>
+    <p class="sec-desc center" style="margin-bottom:28px;">Em 2 horas, seu agente AI estará configurado, seguro, conectado e trabalhando para você.</p>
+    <a href="#preco" class="btn-main" style="font-size:17px; padding:16px 44px;">Quero meu AI COO por R$ 97 →</a>
+  </div>
+</section>
+
+<footer><div class="container">© 2026 Bruno Okamoto · Micro-SaaS · Todos os direitos reservados</div></footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold:.1, rootMargin:'0px 0px -30px 0px' });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if(!open) item.classList.add('open');
+  });
+});
+
+window.addEventListener('scroll', () => {
+  document.querySelector('.topbar').style.padding = window.scrollY > 40 ? '8px 0' : '12px 0';
+});
+</script>
+</body>
+</html>

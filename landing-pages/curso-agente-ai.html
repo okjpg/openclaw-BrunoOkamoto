@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Construa Seu AI COO — Mini-Curso</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @page { margin: 0; size: A4; }
+  
+  :root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-card: #1a1a25;
+    --accent-grape: #8b5cf6;
+    --accent-grape-light: #a78bfa;
+    --accent-grape-glow: rgba(139, 92, 246, 0.15);
+    --accent-emerald: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-rose: #f43f5e;
+    --text-primary: #f1f1f6;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --border: rgba(255,255,255,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 11px;
+    line-height: 1.5;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 28mm 24mm;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+    background: var(--bg-primary);
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(ellipse, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .page::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -20%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(ellipse, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ═══ COVER PAGE ═══ */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 297mm;
+    padding: 40mm 28mm;
+  }
+
+  .cover-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--accent-grape-glow);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--accent-grape-light);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .cover-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 52px;
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    max-width: 480px;
+  }
+
+  .cover-title em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--accent-grape) 0%, var(--accent-grape-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cover-subtitle {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 420px;
+    margin-bottom: 48px;
+  }
+
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .cover-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .cover-meta-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .cover-meta-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .cover-decoration {
+    position: absolute;
+    top: 32mm;
+    right: 28mm;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(from 180deg, var(--accent-grape), var(--accent-emerald), var(--accent-grape));
+    opacity: 0.12;
+    filter: blur(40px);
+  }
+
+  .cover-grid {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 40%;
+    background-image: 
+      linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+    -webkit-mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+  }
+
+  /* ═══ SECTION HEADERS ═══ */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent-grape);
+    padding: 4px 10px;
+    background: var(--accent-grape-glow);
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .section-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+  }
+
+  .section-subtitle {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: -16px;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+
+  /* ═══ MÓDULO CARDS ═══ */
+  .modules-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .module-card {
+    display: grid;
+    grid-template-columns: 52px 1fr auto;
+    gap: 14px;
+    align-items: start;
+    padding: 14px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.2s;
+  }
+
+  .module-number-box {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.05));
+    border: 1px solid rgba(139, 92, 246, 0.2);
+  }
+
+  .module-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-grape-light);
+    line-height: 1;
+  }
+
+  .module-label {
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .module-content h3 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+
+  .module-content p {
+    font-size: 10px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .module-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    min-width: 60px;
+  }
+
+  .module-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-emerald);
+    padding: 3px 8px;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 6px;
+  }
+
+  .module-format {
+    font-size: 8px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ═══ STATS BAR ═══ */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 16px 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-grape), var(--accent-emerald));
+  }
+
+  .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ═══ COMPARISON TABLE ═══ */
+  .comparison-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 16px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .comparison-table th {
+    background: var(--bg-card);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-table th:last-child {
+    color: var(--accent-grape-light);
+  }
+
+  .comparison-table td {
+    padding: 9px 14px;
+    font-size: 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+
+  .comparison-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .comparison-table td:last-child {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .comparison-table td:first-child {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 10px;
+  }
+
+  .check { color: var(--accent-emerald); font-weight: 700; }
+  .cross { color: var(--accent-rose); }
+
+  /* ═══ TIMELINE ═══ */
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent-grape), var(--accent-emerald), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 0 0 16px 16px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 5px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent-grape);
+    border: 2px solid var(--bg-primary);
+  }
+
+  .timeline-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--accent-grape-light);
+    margin-bottom: 2px;
+  }
+
+  .timeline-title {
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .timeline-desc {
+    font-size: 9.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ═══ QUOTE ═══ */
+  .quote-block {
+    padding: 20px 24px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(16, 185, 129, 0.05));
+    border-left: 3px solid var(--accent-grape);
+    border-radius: 0 12px 12px 0;
+    margin: 20px 0;
+  }
+
+  .quote-text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .quote-author {
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ═══ FORMAT OPTIONS ═══ */
+  .format-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0;
+  }
+
+  .format-card {
+    padding: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .format-card.recommended {
+    border-color: rgba(139, 92, 246, 0.4);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), var(--bg-card));
+    position: relative;
+  }
+
+  .format-card.recommended::after {
+    content: '⭐ RECOMENDADO';
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent-grape-light);
+    background: var(--bg-primary);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+  }
+
+  .format-name {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+  }
+
+  .format-desc {
+    font-size: 9px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ═══ TAGS ═══ */
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .tag-purple { background: rgba(139, 92, 246, 0.15); color: var(--accent-grape-light); }
+  .tag-green { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
+  .tag-amber { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+
+  /* ═══ WATERFALL ═══ */
+  .waterfall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .waterfall-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 10px;
+    color: var(--text-secondary);
+  }
+
+  .waterfall-icon {
+    font-size: 16px;
+    width: 24px;
+    text-align: center;
+  }
+
+  /* ═══ PAGE FOOTER ═══ */
+  .page-footer {
+    position: absolute;
+    bottom: 12mm;
+    left: 24mm;
+    right: 24mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .page-footer-left {
+    font-size: 8px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  .page-footer-right {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: var(--text-muted);
+  }
+
+  /* ═══ MATERIAL LIST ═══ */
+  .material-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .material-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .material-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-grape-glow);
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .material-text {
+    font-size: 10.5px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .material-desc {
+    font-size: 9px;
+    color: var(--text-muted);
+  }
+
+  /* ═══ TITLES LIST ═══ */
+  .titles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 12px 0;
+  }
+
+  .title-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .title-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent-grape);
+    min-width: 20px;
+  }
+
+  .title-text {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ PAGE 1: COVER ═══════════ -->
+<div class="page cover">
+  <div class="cover-decoration"></div>
+  <div class="cover-grid"></div>
+  
+  <div class="cover-badge">🍇 Proposta de Mini-Curso</div>
+  
+  <div class="cover-title">
+    Construa Seu<br><em>AI COO</em>
+  </div>
+  
+  <div class="cover-subtitle">
+    De zero a agente pessoal em 2 horas com OpenClaw.<br>
+    Como eu construí uma assistente AI que substituiu 3-4 pessoas em 13 dias — e como você pode fazer o mesmo.
+  </div>
+  
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Autor</span>
+      <span class="cover-meta-value">Bruno Okamoto</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Duração</span>
+      <span class="cover-meta-value">~2h50</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Módulos</span>
+      <span class="cover-meta-value">9 módulos</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Data</span>
+      <span class="cover-meta-value">Fev 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 2: POR QUE ESTE CURSO ═══════════ -->
+<div class="page">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <span class="section-title">Por que este curso?</span>
+  </div>
+  
+  <div class="section-subtitle">A oportunidade de ser o primeiro — e o mais autêntico.</div>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value">13</div>
+      <div class="stat-label">Dias documentados</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">15+</div>
+      <div class="stat-label">Integrações ativas</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">6</div>
+      <div class="stat-label">Agentes AI</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">0</div>
+      <div class="stat-label">Cursos em PT-BR</div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <div class="quote-text">"Agents are 30% of the work. The other 70% is the immune system."</div>
+    <div class="quote-author">Eric Siu — 30 OpenClaw Jobs A Day</div>
+  </div>
+
+  <div class="section-header" style="margin-top: 24px;">
+    <span class="section-number">VS</span>
+    <span class="section-title">Diferenciais vs Mercado</span>
+  </div>
+
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Aspecto</th>
+        <th>Outros Cursos</th>
+        <th>Nosso Curso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Perspectiva</td>
+        <td>Dev / engenheiro de AI</td>
+        <td>CEO / Founder</td>
+      </tr>
+      <tr>
+        <td>Experiência</td>
+        <td>"Acabei de instalar"</td>
+        <td>13 dias em produção real</td>
+      </tr>
+      <tr>
+        <td>Memória</td>
+        <td class="cross">Não cobrem</td>
+        <td class="check">Módulo inteiro dedicado</td>
+      </tr>
+      <tr>
+        <td>Multi-agentes</td>
+        <td>Superficial</td>
+        <td class="check">Leveling system real</td>
+      </tr>
+      <tr>
+        <td>Bugs reais</td>
+        <td class="cross">Escondidos</td>
+        <td class="check">Mostrados e resolvidos</td>
+      </tr>
+      <tr>
+        <td>Immune System</td>
+        <td class="cross">Não existe</td>
+        <td class="check">Módulo dedicado</td>
+      </tr>
+      <tr>
+        <td>Idioma</td>
+        <td>Inglês</td>
+        <td class="check">PT-BR (primeiro!)</td>
+      </tr>
+      <tr>
+        <td>Integrações</td>
+        <td>Toy examples</td>
+        <td class="check">Stack real de negócios</td>
+      </tr>
+      <tr>
+        <td>Feedback loops</td>
+        <td class="cross">Não existe</td>
+        <td class="check">4 domínios ativos</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <span class="page-footer-left">CONSTRUA SEU AI COO — PROPOSTA DE CURSO</span>
+    <span class="page-footer-right">02</span>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 3: MÓDULOS (PARTE 1) ═══════════ -->
+<div class="page">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <span class="section-title">Estrutura do Curso</span>
+  </div>
+  <div class="section-subtitle">9 módulos, ~2h50 de conteúdo. Do zero ao agente em produção.</div>
+
+  <div class="modules-grid">
+    <div class="module-card">
+      <div class="module-number-box">
+        <span class="module-num">0</span>
+        <span class="module-label">Intro</span>
+      </div>
+      <div class="module-content">
+        <h3>Abertura & Contexto</h3>
+        <p>Por que agentes AI pessoais são o "next big thing". A analogia do Matrix. Demo rápido da Amora no Telegram. Mapa do curso.</p>
+      </div>
+      <div class="module-meta">
+        <span class="module-time">10 min</span>
+        <span class="module-format">Slides + Face</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-number-box">
+        <span class="module-num">1</span>
+        <span class="module-label">Setup</span>
+      </div>
+      <div class="module-content">
+        <h3>Do Zero ao Primeiro "Oi"</h3>
+        <p>VPS, instalação OpenClaw, Telegram, primeira mensagem. Arquivos base: SOUL.md, AGENTS.md, USER.md. Segurança (allowlist).</p>
+      </div>
+      <div class="module-meta">
+        <span class="module-time">25 min</span>
+        <span class="module-format">Live Coding</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-number-box">
+        <span class="module-num">2</span>
+        <span class="module-label">Core</span>
+      </div>
+      <div class="module-content">
+        <h3>Dando Personalidade ao Agente</h3>
+        <p>SOUL.md: alma do agente (genérico vs personalizado). USER.md: contexto que faz o agente útil. Escolhendo modelo: Opus vs Sonnet vs Haiku.</p>
+      </div>
+      <div class="module-meta">
+        <span class="module-time">20 min</span>
+        <span class="module-format">Demo + Slides</span>
+      </div>
+    </div>
+
+    <div class="module-card" style="border-color: rgba(139, 92, 246, 0.3); background: linear-gradient(135deg, rgba(139, 92, 246, 0.06), var(--bg-card));">
+      <div class="module-number-box" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(139, 92, 246, 0.1));">
+        <span class="module-num">3</span>
+        <span class="module-label">★ Key</span>
+      </div>
+      <div class="module-content">
+        <h3>Memória: O Segredo que Ninguém Ensina</h3>
+        <p>Arquitetura: daily notes → topic files → índice. Decisões permanentes vs lições táticas. Feedback loops: approve/reject → evolução. <strong>O módulo diferenciador.</strong></p>
+      </div>
+      <div class="module-meta">
+        <span class="module-time">20 min</span>
+        <span class="module-format">Demo + Diagramas</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-number-box">
+        <span class="module-num">4</span>
+        <span class="module-label">Infra</span>
+      </div>
+      <div class="module-content">
+        <h3>Integrações & Crons</h3>
+        <p>1Password (segurança), Google Calendar/Drive, YouTube OAuth, RapidAPI como proxy universal. Crons que FUNCIONAM (o bug e a solução).</p>
+      </div>
+      <div class="module-meta">
+        <span class="module-time">25 min</span>
+        <span class="module-format">Live Coding</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">CONSTRUA SEU AI COO — PROPOSTA DE CURSO</span>
+    <span class="page-footer-right">03</span>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 4: MÓDULOS (PARTE 2) ═══════════ -->
+<div class="page">
+  <div class="modules-grid">
+    <div class="module-card">
+      <div class="module-number-box">
+        <span class="module-num">5</span>
+        <span class="module-label">Power</span>
+      </div>
+      <div class="module-content">
+        <h3>Skills: Superpoderes Instantâneos</h3>
+        <p>O que são skills, como instalar. Skills essenciais para empreendedores. Criando sua primeira skill customizada. ClawHub e comunidade.</p>
+      </div>
+      <div class="module-meta">
+        <span class="module-time">15 min</span>
+        <span class="module-format">Demo</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-number-box">
+        <span class="module-num">6</span>
+        <span class="module-label">Scale</span>
+      </div>
+      <div class="module-content">
+        <h3>Multi-Agentes: De Solo a Time</h3>
+        <p>Quando um agente não basta. Leveling System (L1→L4). Squad de 6 agentes coordenados. Shared context. Economia: Sonnet para execução, Opus para análise.</p>
+      </div>
+      <div class="module-meta">
+        <span class="module-time">20 min</span>
+        <span class="module-format">Slides + Demo</span>
+      </div>
+    </div>
+
+    <div class="module-card" style="border-color: rgba(16, 185, 129, 0.3); background: linear-gradient(135deg, rgba(16, 185, 129, 0.06), var(--bg-card));">
+      <div class="module-number-box" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05)); border-color: rgba(16, 185, 129, 0.3);">
+        <span class="module-num" style="color: var(--accent-emerald);">7</span>
+        <span class="module-label">★ Key</span>
+      </div>
+      <div class="module-content">
+        <h3>O Sistema Imunológico</h3>
+        <p>Watchdog com auto-retry. Feedback loops universais. Security hardening: fail2ban, UFW, allowlist. Rotação de credenciais. <strong>O que separa "brinquedo" de "produção".</strong></p>
+      </div>
+      <div class="module-meta">
+        <span class="module-time">15 min</span>
+        <span class="module-format">Slides + Demo</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-number-box">
+        <span class="module-num">8</span>
+        <span class="module-label">UI</span>
+      </div>
+      <div class="module-content">
+        <h3>Mission Control: Painel Operacional</h3>
+        <p>Por que uma UI visual ajuda. Overview do Mission Control (Kanban, Memory, Crons). Alternativas simples: NocoDB, Notion, Sheets.</p>
+      </div>
+      <div class="module-meta">
+        <span class="module-time">10 min</span>
+        <span class="module-format">Demo</span>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-number-box">
+        <span class="module-num">9</span>
+        <span class="module-label">End</span>
+      </div>
+      <div class="module-content">
+        <h3>Wrap-up & Próximos Passos</h3>
+        <p>Recap geral. Os erros que cometi. Quanto custa rodar um agente? Comunidade e recursos. O futuro: agent-to-agent, MCP. CTA final.</p>
+      </div>
+      <div class="module-meta">
+        <span class="module-time">10 min</span>
+        <span class="module-format">Talking Head</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px; padding: 16px 20px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(16, 185, 129, 0.06)); border-radius: 12px; border: 1px solid rgba(139, 92, 246, 0.15); display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <div style="font-size: 13px; font-weight: 600;">Tempo Total Estimado</div>
+      <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">9 módulos + intervalos = ~3h de gravação</div>
+    </div>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--accent-grape-light);">2h50</div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">CONSTRUA SEU AI COO — PROPOSTA DE CURSO</span>
+    <span class="page-footer-right">04</span>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 5: JORNADA REAL ═══════════ -->
+<div class="page">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <span class="section-title">A Jornada Real: 13 Dias</span>
+  </div>
+  <div class="section-subtitle">Timeline documentada — cada dia, cada bug, cada breakthrough.</div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">DIA 01 — 01/FEV</div>
+      <div class="timeline-title">Nascimento da Amora 🍇</div>
+      <div class="timeline-desc">Instalação VPS, configuração inicial, definição do papel como COO. Primeiro contexto: negócios, filosofia, tom de voz.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">DIA 02 — 02/FEV</div>
+      <div class="timeline-title">Primeiras Integrações & Primeiros Bugs</div>
+      <div class="timeline-desc">LinkedIn, Twitter, Reddit, TTS. 🔴 Token overflow (173k+). 🔴 Cloud IPs bloqueados. Fix: compaction + RapidAPI.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">DIA 03 — 03/FEV</div>
+      <div class="timeline-title">Skills & Automação</div>
+      <div class="timeline-desc">7 skills instaladas. Notion, Calendar, YouTube integrados. Heartbeat em Haiku (90% economia).</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">DIA 04 — 04/FEV</div>
+      <div class="timeline-title">Segurança & Circle API</div>
+      <div class="timeline-desc">Regra permanente: todas credenciais no 1Password. Circle API como goldmine de ideias. 11 build ideas.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">DIA 05 — 05/FEV</div>
+      <div class="timeline-title">Mission Control MVP ⚡</div>
+      <div class="timeline-desc">Dashboard completo construído em uma sessão enquanto Bruno dormia. Express + React + Supabase + Cloudflare.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">DIA 07 — 07/FEV</div>
+      <div class="timeline-title">Rewrite de Identidade</div>
+      <div class="timeline-desc">SOUL.md reescrito do zero. De chatbot genérico a COO personalizada. Upgrade Opus 4.6. Thinking medium.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">DIA 08 — 08/FEV</div>
+      <div class="timeline-title">Content Squad & Agent Leveling</div>
+      <div class="timeline-desc">6 agentes ativos. Sistema L1→L4 (Kevin Simback). Shared context. Performance reviews semanais.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">DIA 09 — 09/FEV</div>
+      <div class="timeline-title">O Bug dos Crons 🔴</div>
+      <div class="timeline-desc">Crons disparavam com "ok" mas duração 0ms. Fix definitivo: isolated + agentTurn + announce.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">DIA 12 — 12/FEV</div>
+      <div class="timeline-title">Immune System & Feedback Loops</div>
+      <div class="timeline-desc">Watchdog auto-retry 3x. 4 domínios de feedback. Sonnet/Opus split. Security hardening completo.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">DIA 13 — 13/FEV</div>
+      <div class="timeline-title">Consolidação MC v2</div>
+      <div class="timeline-desc">Todos projetos unificados. 6 módulos, 18 semanas. Prioridade: Content HQ. 15+ integrações, 35+ lições.</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">CONSTRUA SEU AI COO — PROPOSTA DE CURSO</span>
+    <span class="page-footer-right">05</span>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 6: FORMATO & MATERIAL ═══════════ -->
+<div class="page">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <span class="section-title">Formato & Distribuição</span>
+  </div>
+  <div class="section-subtitle">4 opções, uma recomendada.</div>
+
+  <div class="format-grid">
+    <div class="format-card">
+      <div class="format-name">🎬 YouTube Gratuito</div>
+      <div class="format-desc">1 vídeo longo (2h50) com capítulos ou série de 9 episódios. Máximo alcance e SEO. Primeiro em PT-BR. Não monetiza diretamente.</div>
+    </div>
+    <div class="format-card">
+      <div class="format-name">🔒 Comunidade (Pago)</div>
+      <div class="format-desc">Acesso exclusivo Micro-SaaS PRO. Live sessions com Q&A. Valor agregado, monetização indireta. Alcance limitado.</div>
+    </div>
+    <div class="format-card recommended" style="grid-column: span 2;">
+      <div class="format-name">🔄 Híbrido — YouTube + Comunidade</div>
+      <div class="format-desc" style="font-size: 10px; line-height: 1.6;">
+        <strong>Gratuito (YouTube):</strong> Módulos 0-2 (~55 min) — abertura + setup + personalidade = valor imediato.<br>
+        <strong>Pago (Comunidade):</strong> Módulos 3-9 — memória, integrações, multi-agentes, immune system = conteúdo que ninguém mais tem.<br>
+        <strong>Funil natural:</strong> conteúdo gratuito atrai → premium converte → comunidade retém.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top: 20px;">
+    <span class="section-number">05</span>
+    <span class="section-title">Material Complementar</span>
+  </div>
+
+  <div class="material-list">
+    <div class="material-item">
+      <div class="material-icon">📋</div>
+      <div>
+        <div class="material-text">Checklist de Setup</div>
+        <div class="material-desc">Passo-a-passo reproduzível em PDF/Notion</div>
+      </div>
+    </div>
+    <div class="material-item">
+      <div class="material-icon">📝</div>
+      <div>
+        <div class="material-text">Templates: SOUL.md, USER.md, AGENTS.md, MEMORY.md</div>
+        <div class="material-desc">Modelos prontos para copiar e personalizar</div>
+      </div>
+    </div>
+    <div class="material-item">
+      <div class="material-icon">🔗</div>
+      <div>
+        <div class="material-text">Lista de Integrações com Links</div>
+        <div class="material-desc">APIs, CLIs e instruções de cada integração</div>
+      </div>
+    </div>
+    <div class="material-item">
+      <div class="material-icon">💰</div>
+      <div>
+        <div class="material-text">Planilha de Custos</div>
+        <div class="material-desc">Quanto cada modelo custa por mês (real breakdown)</div>
+      </div>
+    </div>
+    <div class="material-item">
+      <div class="material-icon">💻</div>
+      <div>
+        <div class="material-text">Repo GitHub com Configs de Exemplo</div>
+        <div class="material-desc">Sem credenciais — pronto para clonar e usar</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top: 20px;">
+    <span class="section-number">06</span>
+    <span class="section-title">Content Waterfall</span>
+  </div>
+  <div class="section-subtitle">Do mini-curso, extrair 7+ peças de conteúdo.</div>
+
+  <div class="waterfall-list">
+    <div class="waterfall-item"><span class="waterfall-icon">📱</span> 5-7 posts LinkedIn (1 por módulo)</div>
+    <div class="waterfall-item"><span class="waterfall-icon">🎞️</span> 3-5 Reels/Shorts (demos + bugs)</div>
+    <div class="waterfall-item"><span class="waterfall-icon">🐦</span> Thread X completa (13 dias)</div>
+    <div class="waterfall-item"><span class="waterfall-icon">📧</span> Newsletter (behind the scenes)</div>
+    <div class="waterfall-item"><span class="waterfall-icon">🎨</span> Infográfico hand-drawn</div>
+    <div class="waterfall-item"><span class="waterfall-icon">🎙️</span> Podcast (transcrição editada)</div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">CONSTRUA SEU AI COO — PROPOSTA DE CURSO</span>
+    <span class="page-footer-right">06</span>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 7: TÍTULOS & PRÓXIMOS PASSOS ═══════════ -->
+<div class="page">
+  <div class="section-header">
+    <span class="section-number">07</span>
+    <span class="section-title">Títulos para Testar</span>
+  </div>
+
+  <div class="titles-list">
+    <div class="title-option">
+      <span class="title-num">01</span>
+      <span class="title-text">Construa Seu AI COO: De Zero a Agente Pessoal em 2 Horas</span>
+    </div>
+    <div class="title-option">
+      <span class="title-num">02</span>
+      <span class="title-text">Como Criei Uma Assistente AI Que Substituiu 3-4 Pessoas</span>
+    </div>
+    <div class="title-option">
+      <span class="title-num">03</span>
+      <span class="title-text">OpenClaw na Prática: 13 Dias Construindo um Agente AI de Verdade</span>
+    </div>
+    <div class="title-option">
+      <span class="title-num">04</span>
+      <span class="title-text">De Chatbot a COO: O Guia Definitivo do Agente AI Pessoal</span>
+    </div>
+    <div class="title-option">
+      <span class="title-num">05</span>
+      <span class="title-text">Seu Primeiro Agente AI: Setup Completo com OpenClaw (Sem Programar)</span>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top: 28px;">
+    <span class="section-number">08</span>
+    <span class="section-title">Próximos Passos</span>
+  </div>
+
+  <div class="timeline" style="margin-top: 16px;">
+    <div class="timeline-item">
+      <div class="timeline-date">PASSO 1</div>
+      <div class="timeline-title">Revisar & Priorizar Módulos</div>
+      <div class="timeline-desc">Decidir quais módulos ficam no gratuito vs pago. Validar tempo por módulo. Ajustar profundidade.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">PASSO 2</div>
+      <div class="timeline-title">Escolher Formato de Distribuição</div>
+      <div class="timeline-desc">YouTube gratuito, comunidade paga, híbrido ou workshop live. Definir data de lançamento.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">PASSO 3</div>
+      <div class="timeline-title">Preparar Material de Suporte</div>
+      <div class="timeline-desc">Templates, checklist, planilha de custos, repo GitHub. Diagramas Excalidraw da arquitetura.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">PASSO 4</div>
+      <div class="timeline-title">Gravar na Tella.tv</div>
+      <div class="timeline-desc">Tela dividida: terminal + Telegram + face cam. Transcrição automática → waterfall de conteúdo.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">PASSO 5</div>
+      <div class="timeline-title">Lançar & Iterar</div>
+      <div class="timeline-desc">Publicar, coletar feedback, criar conteúdo derivado (posts, reels, threads, newsletter).</div>
+    </div>
+  </div>
+
+  <div class="quote-block" style="margin-top: 28px;">
+    <div class="quote-text">"SOUL.md genérico = agente genérico. Investir tempo na personalidade faz diferença ENORME."</div>
+    <div class="quote-author">Lição do Dia 7 — Rewrite de Identidade da Amora</div>
+  </div>
+
+  <div style="margin-top: 24px; text-align: center; padding: 20px; border-top: 1px solid var(--border);">
+    <div style="font-family: 'Instrument Serif', serif; font-size: 20px; margin-bottom: 6px;">Feito com 🍇 pela Amora</div>
+    <div style="font-size: 9px; color: var(--text-muted); letter-spacing: 1px;">BRUNO OKAMOTO · MICRO-SAAS · FEV 2026</div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">CONSTRUA SEU AI COO — PROPOSTA DE CURSO</span>
+    <span class="page-footer-right">07</span>
+  </div>
+</div>
+
+</body>
+</html>
