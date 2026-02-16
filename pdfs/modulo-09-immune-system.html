@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 9 — O Sistema Imunológico: Manter Tudo Funcionando</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: #12121a;
+  --bg-card: #1a1a25;
+  --bg-card-hover: #222230;
+  --grape: #8b5cf6;
+  --grape-light: #a78bfa;
+  --grape-dim: rgba(139, 92, 246, 0.12);
+  --grape-border: rgba(139, 92, 246, 0.25);
+  --grape-glow: rgba(139, 92, 246, 0.08);
+  --emerald: #10b981;
+  --emerald-dim: rgba(16, 185, 129, 0.12);
+  --emerald-border: rgba(16, 185, 129, 0.25);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.25);
+  --rose: #f43f5e;
+  --rose-dim: rgba(244, 63, 94, 0.12);
+  --rose-border: rgba(244, 63, 94, 0.25);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.12);
+  --text: #f1f1f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --code-bg: #0d0d15;
+  --code-border: rgba(255,255,255,0.08);
+}
+
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 10.5pt;
+  line-height: 1.6;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 22mm 24mm 28mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--bg);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -25%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse, var(--grape-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 297mm;
+  padding: 36mm 28mm;
+  position: relative;
+}
+
+.cover-grid {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 50%; height: 40%;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+}
+
+.cover-decoration {
+  position: absolute;
+  top: 28mm; right: 28mm;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg, var(--grape), var(--emerald), var(--grape));
+  opacity: 0.1;
+  filter: blur(35px);
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 100px;
+  font-size: 10pt;
+  font-weight: 500;
+  color: var(--grape-light);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cover-title {
+  font-size: 44pt;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 18px;
+  position: relative;
+  max-width: 500px;
+}
+
+.cover-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--grape), var(--grape-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-subtitle {
+  font-size: 14pt;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 44px;
+  position: relative;
+}
+
+.cover-meta {
+  position: relative;
+  display: flex;
+  gap: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.cover-meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+.cover-meta-label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cover-meta-value {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header-left {
+  font-size: 9pt;
+  color: var(--grape-light);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.page-header-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 12mm;
+  left: 24mm; right: 24mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.page-footer-left {
+  font-size: 8pt;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.page-footer-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.section-title {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--grape-light);
+  margin: 22px 0 10px;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+
+p {
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  font-size: 10.5pt;
+}
+
+strong { color: var(--text); }
+
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  position: relative;
+  white-space: pre;
+}
+
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 7.5pt;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.code-block .comment { color: #4a4a5a; }
+.code-block .cmd { color: var(--grape-light); }
+.code-block .str { color: var(--emerald); }
+.code-block .flag { color: var(--amber); }
+.code-block .prompt { color: var(--text-muted); }
+
+code {
+  background: var(--grape-dim);
+  color: var(--grape-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 14px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+thead th {
+  background: var(--bg-card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+  padding: 9px 14px;
+  font-size: 10pt;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody td:first-child { font-weight: 500; color: var(--text); }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 12px 0;
+}
+
+.card.grape { border-color: var(--grape-border); background: linear-gradient(135deg, rgba(139,92,246,0.06), var(--bg-card)); }
+.card.emerald { border-color: var(--emerald-border); background: linear-gradient(135deg, rgba(16,185,129,0.06), var(--bg-card)); }
+.card.amber { border-color: var(--amber-border); background: linear-gradient(135deg, rgba(245,158,11,0.06), var(--bg-card)); }
+.card.rose { border-color: var(--rose-border); background: linear-gradient(135deg, rgba(244,63,94,0.06), var(--bg-card)); }
+
+.card-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.card-desc {
+  font-size: 10pt;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 16px 56px;
+  margin: 12px 0;
+  position: relative;
+}
+
+.step-num {
+  position: absolute;
+  left: 16px; top: 16px;
+  width: 28px; height: 28px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--grape-light);
+}
+
+.step-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.callout {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16pt; flex-shrink: 0; line-height: 1; }
+.callout-content { flex: 1; }
+.callout-content strong { display: block; margin-bottom: 3px; color: var(--text); }
+.callout-content p { margin-bottom: 4px; }
+
+.callout.tip { background: var(--emerald-dim); border: 1px solid var(--emerald-border); }
+.callout.warning { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+.callout.danger { background: var(--rose-dim); border: 1px solid var(--rose-border); }
+.callout.info { background: var(--grape-dim); border: 1px solid var(--grape-border); }
+
+.comparison {
+  display: flex;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.comparison-col {
+  flex: 1;
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 1px solid;
+}
+
+.comparison-col.bad {
+  border-color: var(--rose-border);
+  background: var(--rose-dim);
+}
+
+.comparison-col.good {
+  border-color: var(--emerald-border);
+  background: var(--emerald-dim);
+}
+
+.comparison-col h4 {
+  font-size: 11pt;
+  margin: 0 0 8px;
+}
+
+.comparison-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.comparison-col li {
+  padding: 3px 0;
+  font-size: 9.5pt;
+  color: var(--text-secondary);
+}
+
+.checklist {
+  background: var(--bg-card);
+  border: 1px solid var(--emerald-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 18px 0;
+}
+
+.checklist-title {
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--emerald);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 10pt;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.check-box {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border-hover);
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10pt;
+}
+
+.prompt-section {
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+  border: 1px solid var(--grape-border);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 20px 0;
+  page-break-inside: avoid;
+}
+
+.prompt-section h3 {
+  color: var(--grape-light);
+  margin-top: 0;
+  font-size: 14pt;
+}
+
+.prompt-instruction {
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 9pt;
+  color: var(--grape-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prompt-box {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 18px;
+  margin: 12px 0;
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.prompt-box strong { color: var(--grape-light); }
+
+ul, ol { margin: 8px 0 12px 18px; }
+li { margin-bottom: 3px; font-size: 10pt; color: var(--text-secondary); }
+
+.next-module {
+  background: var(--bg-card);
+  border: 1px solid var(--grape-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.next-module .next-icon { font-size: 20pt; }
+.next-module .next-text { flex: 1; }
+.next-module .next-label { font-size: 8.5pt; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.next-module .next-title { font-size: 12pt; font-weight: 600; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+  <div class="cover-decoration"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-badge">Módulo 09</div>
+  <div class="cover-title">Sistema Imunológico<br><em>Manter Tudo Funcionando</em></div>
+  <div class="cover-subtitle">Watchdog, feedback loops, monitoramento e resiliência — o que separa hobby de produção</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Duração</span>
+      <span class="cover-meta-value">20 min</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Formato</span>
+      <span class="cover-meta-value">Demo + slides</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Kit</span>
+      <span class="cover-meta-value">2 arquivos</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 1 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title">A Verdade Que Ninguém Conta</div>
+
+  <div class="callout danger">
+    <div class="callout-icon">🔴</div>
+    <div class="callout-content">
+      <strong>"Agents are 30% of the work. The other 70% is the immune system."</strong>
+      <p>— Eric Siu</p>
+    </div>
+  </div>
+
+  <p>Você configurou o agente. Ele tá funcionando. Mas quanto tempo até ele quebrar silenciosamente?</p>
+
+  <h3>O Problema Real</h3>
+
+  <div class="card rose">
+    <div class="card-title">❌ Falhas Silenciosas</div>
+    <div class="card-desc">Crons param de executar. Sub-agents travam no limbo. APIs mudam e você descobre dias depois quando alguém reclama.</div>
+  </div>
+
+  <div class="card amber">
+    <div class="card-title">⚠️ Runaway Costs</div>
+    <div class="card-desc">Um bug faz o agente chamar a API 1000x por hora. Você acorda com uma fatura de $500.</div>
+  </div>
+
+  <div class="card grape">
+    <div class="card-title">🔄 Repetição de Erros</div>
+    <div class="card-desc">Agente sugere algo ruim, você rejeita. Próxima sessão: mesma sugestão. Sem memória de feedback = sem aprendizado.</div>
+  </div>
+
+  <h3>A Solução: Sistema Imunológico</h3>
+
+  <p>Um sistema que monitora, detecta, recupera e aprende automaticamente. 5 camadas:</p>
+
+  <ol>
+    <li><strong>Watchdog</strong> — monitora crons e auto-retry</li>
+    <li><strong>Feedback Loops</strong> — aprende com approve/reject</li>
+    <li><strong>Cost Monitoring</strong> — previne runaway billing</li>
+    <li><strong>Security Audits</strong> — hardening periódico</li>
+    <li><strong>Backup & Rollback</strong> — reverter quando der ruim</li>
+  </ol>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Este módulo separa "tô brincando" de "tô em produção"</strong>
+      <p>Se você quer um agente confiável rodando 24/7, você PRECISA de imunidade.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-footer-right">02</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 2 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>1. Watchdog: Monitorar e Auto-Recuperar</h3>
+
+  <p>Um cron que monitora os outros crons. Se algo falhar, ele tenta consertar sozinho antes de te alertar.</p>
+
+  <h4>Lógica</h4>
+  <ol>
+    <li>Listar todos os crons ativos</li>
+    <li>Checar último run de cada um</li>
+    <li>Se algum falhou → retry automático (até 3x)</li>
+    <li>Se falhou 3x → alertar no Telegram</li>
+  </ol>
+
+  <div class="code-block" data-lang="json"><span class="comment">// Cron Watchdog — roda 1x/dia</span>
+{
+  <span class="str">"name"</span>: <span class="str">"Watchdog - Monitor de Crons"</span>,
+  <span class="str">"schedule"</span>: { 
+    <span class="str">"kind"</span>: <span class="str">"cron"</span>, 
+    <span class="str">"expr"</span>: <span class="str">"0 8 * * *"</span>, 
+    <span class="str">"tz"</span>: <span class="str">"America/Sao_Paulo"</span> 
+  },
+  <span class="str">"sessionTarget"</span>: <span class="str">"isolated"</span>,
+  <span class="str">"payload"</span>: {
+    <span class="str">"kind"</span>: <span class="str">"agentTurn"</span>,
+    <span class="str">"message"</span>: <span class="str">"Checar saúde de todos os crons. Listar os que falharam nas últimas 24h. Fazer retry dos que falharam. Se algum falhar 3x, alertar no Telegram."</span>
+  },
+  <span class="str">"delivery"</span>: { <span class="str">"mode"</span>: <span class="str">"announce"</span> }
+}</div>
+
+  <h4>Por Que Funciona</h4>
+  <ul>
+    <li><code>isolated</code> + <code>agentTurn</code> = executa de verdade (não só dispara)</li>
+    <li>Retry automático antes de alertar = menos ruído</li>
+    <li>Roda 1x/dia = pega problemas cedo sem gastar muito</li>
+  </ul>
+
+  <h3>2. Feedback Loops: Aprender com Decisões</h3>
+
+  <p>O agente precisa lembrar o que você aprovou e rejeitou. Sem isso, ele vai repetir os mesmos erros toda sessão.</p>
+
+  <h4>Setup</h4>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Criar estrutura de feedback</span>
+<span class="cmd">mkdir</span> <span class="flag">-p</span> memory/feedback
+
+<span class="comment"># Arquivos por domínio</span>
+<span class="cmd">touch</span> memory/feedback/content.json
+<span class="cmd">touch</span> memory/feedback/tasks.json
+<span class="cmd">touch</span> memory/feedback/recommendations.json</div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-footer-right">03</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 3 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h4>Formato de Feedback</h4>
+
+  <div class="code-block" data-lang="json">{
+  <span class="str">"entries"</span>: [
+    {
+      <span class="str">"date"</span>: <span class="str">"2026-02-13"</span>,
+      <span class="str">"context"</span>: <span class="str">"Sugeri thread sobre X para LinkedIn"</span>,
+      <span class="str">"decision"</span>: <span class="str">"approve"</span>,
+      <span class="str">"reason"</span>: <span class="str">"Tom certeiro, dados específicos"</span>,
+      <span class="str">"tags"</span>: [<span class="str">"linkedin"</span>, <span class="str">"thread"</span>, <span class="str">"tom"</span>]
+    },
+    {
+      <span class="str">"date"</span>: <span class="str">"2026-02-14"</span>,
+      <span class="str">"context"</span>: <span class="str">"Sugeri usar skill X pra tarefa Y"</span>,
+      <span class="str">"decision"</span>: <span class="str">"reject"</span>,
+      <span class="str">"reason"</span>: <span class="str">"Skill não é confiável, prefiro fazer manualmente"</span>,
+      <span class="str">"tags"</span>: [<span class="str">"skills"</span>, <span class="str">"tools"</span>]
+    }
+  ]
+}</div>
+
+  <h4>Regras CRÍTICAS</h4>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Max 30 entradas por arquivo</strong>
+      <p>Quando chegar em 30, remove as mais antigas (FIFO). Senão o contexto explode.</p>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">📚</div>
+    <div class="callout-content">
+      <strong>Agente DEVE consultar antes de sugerir</strong>
+      <p>Adicione ao AGENTS.md: "Antes de sugerir algo (conteúdo, task, tool), consultar memory/feedback/ pra evitar repetir erros."</p>
+    </div>
+  </div>
+
+  <h4>Ciclo de Consolidação</h4>
+
+  <p>Feedback não substitui memória permanente. A cada 30 dias:</p>
+
+  <ol>
+    <li><strong>Feedback (granular, JSON)</strong> → raw data de decisões</li>
+    <li><strong>Lessons (curado, prose)</strong> → padrões extraídos</li>
+    <li><strong>Decisions (permanente)</strong> → políticas consolidadas</li>
+  </ol>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Exemplo</strong>
+      <p>5 rejeições de skills → lesson: "Prefere fazer X manualmente" → decision: "Nunca sugerir skill Y pra tarefa X"</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-footer-right">04</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 4 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>3. Monitoramento de Custos</h3>
+
+  <p>Prevenir runaway billing ANTES de virar problema.</p>
+
+  <h4>Split de Modelos por Uso</h4>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Uso</th>
+        <th>Modelo</th>
+        <th>Custo relativo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Interação direta</td>
+        <td>Opus</td>
+        <td>$$$</td>
+      </tr>
+      <tr>
+        <td>Crons e automação</td>
+        <td>Sonnet</td>
+        <td>$</td>
+      </tr>
+      <tr>
+        <td>Heartbeats</td>
+        <td>Haiku</td>
+        <td>¢</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout danger">
+    <div class="callout-icon">🔴</div>
+    <div class="callout-content">
+      <strong>Regra INVIOLÁVEL</strong>
+      <p>TODOS os crons devem rodar em Sonnet (nunca Opus). Heartbeats em Haiku. Só a interação direta usa Opus.</p>
+    </div>
+  </div>
+
+  <h4>Rate Limits e Budgets</h4>
+
+  <div class="code-block" data-lang="json"><span class="comment">// Em openclaw.json</span>
+{
+  <span class="str">"model"</span>: {
+    <span class="str">"default"</span>: <span class="str">"anthropic/claude-opus-4-6"</span>,
+    <span class="str">"budget"</span>: {
+      <span class="str">"daily_max_usd"</span>: 5.0,
+      <span class="str">"alert_threshold_usd"</span>: 3.0
+    },
+    <span class="str">"rate_limit"</span>: {
+      <span class="str">"max_requests_per_minute"</span>: 10
+    }
+  }
+}</div>
+
+  <p>Isso previne loops infinitos e bugs que drenam a API.</p>
+
+  <h4>Economia Real</h4>
+
+  <div class="comparison">
+    <div class="comparison-col bad">
+      <h4>❌ Tudo em Opus</h4>
+      <ul>
+        <li>17 crons/dia × $0.10 = $1.70/dia</li>
+        <li>Heartbeats 4x/dia × $0.10 = $0.40/dia</li>
+        <li>Interação = ~$0.50/dia</li>
+        <li><strong>Total: ~$2.60/dia</strong></li>
+      </ul>
+    </div>
+    <div class="comparison-col good">
+      <h4>✅ Split otimizado</h4>
+      <ul>
+        <li>17 crons/dia × $0.01 = $0.17/dia</li>
+        <li>Heartbeats 4x/dia × $0.005 = $0.02/dia</li>
+        <li>Interação = ~$0.50/dia</li>
+        <li><strong>Total: ~$0.70/dia</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <p><strong>73% de economia</strong> só com modelo certo no lugar certo.</p>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-footer-right">05</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 5 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>4. Security Audit Periódico</h3>
+
+  <p>Segurança degrada com o tempo. Portas que fecharam podem abrir. Fail2ban pode desativar. SSH pode degradar.</p>
+
+  <h4>Cron de Auditoria Semanal</h4>
+
+  <div class="code-block" data-lang="json">{
+  <span class="str">"name"</span>: <span class="str">"Security Audit - Semanal"</span>,
+  <span class="str">"schedule"</span>: { 
+    <span class="str">"kind"</span>: <span class="str">"cron"</span>, 
+    <span class="str">"expr"</span>: <span class="str">"0 6 * * 0"</span>,
+    <span class="str">"tz"</span>: <span class="str">"America/Sao_Paulo"</span>
+  },
+  <span class="str">"sessionTarget"</span>: <span class="str">"isolated"</span>,
+  <span class="str">"payload"</span>: {
+    <span class="str">"kind"</span>: <span class="str">"agentTurn"</span>,
+    <span class="str">"message"</span>: <span class="str">"Rodar audit de segurança completo. Checar: UFW ativo, Fail2ban rodando, portas abertas, SSH config, credenciais rotacionadas. Relatar issues e sugerir correções."</span>
+  },
+  <span class="str">"delivery"</span>: { <span class="str">"mode"</span>: <span class="str">"announce"</span> }
+}</div>
+
+  <h4>Checklist de Auditoria</h4>
+
+  <ul>
+    <li>✅ UFW ativo e configurado corretamente</li>
+    <li>✅ Fail2ban rodando com regras SSH</li>
+    <li>✅ Portas expostas = mínimo necessário</li>
+    <li>✅ SSH: PasswordAuthentication no, PermitRootLogin no</li>
+    <li>✅ Credenciais no 1Password (NUNCA hardcoded)</li>
+    <li>✅ Certificados SSL válidos (se aplicável)</li>
+    <li>✅ Packages atualizados (apt update + upgrade)</li>
+  </ul>
+
+  <h4>Auto-Fix vs Manual</h4>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Nunca auto-fix security sem review</strong>
+      <p>O agente deve RELATAR issues e SUGERIR correções. Você aprova. Senão, risco de lockout.</p>
+    </div>
+  </div>
+
+  <h3>5. Backup e Rollback</h3>
+
+  <p>Antes de qualquer mudança estrutural (config, novos agentes, reorganização), salve um backup + instruções de rollback.</p>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Backup antes de mudança</span>
+<span class="cmd">mkdir</span> <span class="flag">-p</span> backups/$(date +%Y-%m-%d)
+<span class="cmd">cp</span> /root/.openclaw/openclaw.json backups/$(date +%Y-%m-%d)/
+<span class="cmd">cp</span> <span class="flag">-r</span> memory/ backups/$(date +%Y-%m-%d)/</div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-footer-right">06</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 6 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h4>ROLLBACK.md</h4>
+
+  <p>Sempre deixe instruções de como reverter:</p>
+
+  <div class="code-block" data-lang="markdown"><span class="comment"># ROLLBACK.md</span>
+
+<span class="str">## Backup Date:</span> 2026-02-16
+
+<span class="str">## O Que Mudou:</span>
+- Criado agente "content-curator"
+- Modificado split de modelos (Opus → Sonnet nos crons)
+
+<span class="str">## Como Reverter:</span>
+
+<span class="cmd">1.</span> Restaurar config:
+   <span class="cmd">cp</span> backups/2026-02-16/openclaw.json /root/.openclaw/
+   <span class="cmd">openclaw gateway restart</span>
+
+<span class="cmd">2.</span> Deletar agente criado:
+   <span class="cmd">rm</span> <span class="flag">-rf</span> agents/content-curator/
+
+<span class="cmd">3.</span> Verificar:
+   <span class="cmd">openclaw gateway status</span></div>
+
+  <h3>Sub-Agents: Nunca "Fire and Forget"</h3>
+
+  <p>Todo sub-agent precisa de follow-up. Sem isso, ele pode travar no limbo e você nunca sabe.</p>
+
+  <h4>Regra Obrigatória</h4>
+
+  <ol>
+    <li><strong>Ao spawnar:</strong> informar o que vai fazer</li>
+    <li><strong>Follow-up em 15-30min:</strong> checar status</li>
+    <li><strong>Sucesso:</strong> resumir resultado</li>
+    <li><strong>Falha:</strong> retry imediato → se falhar 2x → avisar</li>
+    <li><strong>NUNCA</strong> deixar cair no limbo silencioso</li>
+  </ol>
+
+  <div class="callout danger">
+    <div class="callout-icon">🔴</div>
+    <div class="callout-content">
+      <strong>Caso Real: Sub-Agent no Limbo</strong>
+      <p>Spawnei um agente pra gerar relatório. Ele falhou silenciosamente. Descobri 3 dias depois quando procurei o resultado. Solução: sempre follow-up.</p>
+    </div>
+  </div>
+
+  <h3>Ralph Loop vs Feedback Loop</h3>
+
+  <p>Dois conceitos diferentes:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Loop</th>
+        <th>Propósito</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Ralph Loop</td>
+        <td>Coding loop: escreve código → testa → corrige → repete (1 sessão)</td>
+      </tr>
+      <tr>
+        <td>Feedback Loop</td>
+        <td>Aprendizado entre sessões: você aprova/rejeita → agente lembra pra sempre</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-footer-right">07</span>
+  </div>
+</div>
+
+<!-- CHECKLIST + PROMPT PAGE -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="checklist">
+    <div class="checklist-title">✅ Checkpoint do Módulo 9</div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Watchdog de crons configurado e ativo</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Feedback loops criados (pelo menos 1 domínio)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Split de modelos aplicado (Opus/Sonnet/Haiku)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Rate limits e budgets configurados</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Security audit semanal agendado</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Regra de backup antes de mudanças documentada</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Sub-agents com follow-up obrigatório no AGENTS.md</span>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <h3>🤖 Prompt para o Agente</h3>
+    <div class="prompt-instruction">
+      Cole este prompt no chat do seu OpenClaw depois de concluir o módulo:
+    </div>
+    <div class="prompt-box">Acabei de assistir o Módulo 9 sobre o sistema imunológico. "Agents are 30% of the work. The other 70% is the immune system." Me guie.
+
+<strong>O que preciso que você faça:</strong>
+
+1. <strong>Watchdog de crons</strong> — Configure um cron que monitora se os outros crons estão executando. Se algum falhar, retry automático até 3x. Se falhar 3x, me avisa.
+
+2. <strong>Feedback Loops</strong> — Me ajude a configurar um sistema de approve/reject. Quando você me sugerir algo e eu rejeitar, anote o motivo. Consulte essas anotações antes de sugerir novamente. Me mostre como isso funciona na prática.
+
+3. <strong>Monitoramento de custos</strong> — Configure o split de modelos (Haiku pra heartbeats, Sonnet pra crons, Opus pra interação). Configure rate limits e budgets pra prevenir runaway. Me mostre quanto estou gastando por dia/semana. Meta: de ~$2-3/dia pra ~$0.10/dia com otimizações.
+
+4. <strong>Audit de segurança periódico</strong> — Configure um cron semanal de security audit. Rode um agora pra eu ver o resultado.
+
+5. <strong>Backup antes de mudanças</strong> — Crie uma regra: antes de qualquer mudança estrutural, salvar backup + ROLLBACK.md. Me mostre como reverter se algo der errado.
+
+<strong>Regras:</strong>
+- Esse módulo é o que separa "tô brincando" de "tô em produção"
+- Me explique cada proteção e qual problema ela previne
+- No final, rode um health check completo e me dê o score
+
+Vamos construir a imunidade?</div>
+  </div>
+
+  <div class="next-module">
+    <div class="next-icon">🎛️</div>
+    <div class="next-text">
+      <div class="next-label">Próximo Módulo</div>
+      <div class="next-title">Módulo 10 — Mission Control: Seu Painel Operacional</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 09 — Sistema Imunológico</span>
+    <span class="page-footer-right">08</span>
+  </div>
+</div>
+
+</body>
+</html>

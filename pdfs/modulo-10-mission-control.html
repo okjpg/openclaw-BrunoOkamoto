@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 10 — Mission Control: Seu Painel Operacional</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: #12121a;
+  --bg-card: #1a1a25;
+  --bg-card-hover: #222230;
+  --grape: #8b5cf6;
+  --grape-light: #a78bfa;
+  --grape-dim: rgba(139, 92, 246, 0.12);
+  --grape-border: rgba(139, 92, 246, 0.25);
+  --grape-glow: rgba(139, 92, 246, 0.08);
+  --emerald: #10b981;
+  --emerald-dim: rgba(16, 185, 129, 0.12);
+  --emerald-border: rgba(16, 185, 129, 0.25);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.25);
+  --rose: #f43f5e;
+  --rose-dim: rgba(244, 63, 94, 0.12);
+  --rose-border: rgba(244, 63, 94, 0.25);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.12);
+  --text: #f1f1f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --code-bg: #0d0d15;
+  --code-border: rgba(255,255,255,0.08);
+}
+
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 10.5pt;
+  line-height: 1.6;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 22mm 24mm 28mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--bg);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -25%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse, var(--grape-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 297mm;
+  padding: 36mm 28mm;
+  position: relative;
+}
+
+.cover-grid {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 50%; height: 40%;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+}
+
+.cover-decoration {
+  position: absolute;
+  top: 28mm; right: 28mm;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg, var(--grape), var(--emerald), var(--grape));
+  opacity: 0.1;
+  filter: blur(35px);
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 100px;
+  font-size: 10pt;
+  font-weight: 500;
+  color: var(--grape-light);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cover-title {
+  font-size: 44pt;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 18px;
+  position: relative;
+  max-width: 500px;
+}
+
+.cover-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--grape), var(--grape-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-subtitle {
+  font-size: 14pt;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 44px;
+  position: relative;
+}
+
+.cover-meta {
+  position: relative;
+  display: flex;
+  gap: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.cover-meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+.cover-meta-label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cover-meta-value {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header-left {
+  font-size: 9pt;
+  color: var(--grape-light);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.page-header-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 12mm;
+  left: 24mm; right: 24mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.page-footer-left {
+  font-size: 8pt;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.page-footer-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.section-title {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--grape-light);
+  margin: 22px 0 10px;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+
+p {
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  font-size: 10.5pt;
+}
+
+strong { color: var(--text); }
+
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  position: relative;
+  white-space: pre;
+}
+
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 7.5pt;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.code-block .comment { color: #4a4a5a; }
+.code-block .cmd { color: var(--grape-light); }
+.code-block .str { color: var(--emerald); }
+.code-block .flag { color: var(--amber); }
+.code-block .prompt { color: var(--text-muted); }
+
+code {
+  background: var(--grape-dim);
+  color: var(--grape-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 14px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+thead th {
+  background: var(--bg-card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+  padding: 9px 14px;
+  font-size: 10pt;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody td:first-child { font-weight: 500; color: var(--text); }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 12px 0;
+}
+
+.card.grape { border-color: var(--grape-border); background: linear-gradient(135deg, rgba(139,92,246,0.06), var(--bg-card)); }
+.card.emerald { border-color: var(--emerald-border); background: linear-gradient(135deg, rgba(16,185,129,0.06), var(--bg-card)); }
+.card.amber { border-color: var(--amber-border); background: linear-gradient(135deg, rgba(245,158,11,0.06), var(--bg-card)); }
+.card.rose { border-color: var(--rose-border); background: linear-gradient(135deg, rgba(244,63,94,0.06), var(--bg-card)); }
+
+.card-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.card-desc {
+  font-size: 10pt;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 16px 56px;
+  margin: 12px 0;
+  position: relative;
+}
+
+.step-num {
+  position: absolute;
+  left: 16px; top: 16px;
+  width: 28px; height: 28px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--grape-light);
+}
+
+.step-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.callout {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16pt; flex-shrink: 0; line-height: 1; }
+.callout-content { flex: 1; }
+.callout-content strong { display: block; margin-bottom: 3px; color: var(--text); }
+.callout-content p { margin-bottom: 4px; }
+
+.callout.tip { background: var(--emerald-dim); border: 1px solid var(--emerald-border); }
+.callout.warning { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+.callout.danger { background: var(--rose-dim); border: 1px solid var(--rose-border); }
+.callout.info { background: var(--grape-dim); border: 1px solid var(--grape-border); }
+
+.comparison {
+  display: flex;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.comparison-col {
+  flex: 1;
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 1px solid;
+}
+
+.comparison-col.bad {
+  border-color: var(--rose-border);
+  background: var(--rose-dim);
+}
+
+.comparison-col.good {
+  border-color: var(--emerald-border);
+  background: var(--emerald-dim);
+}
+
+.comparison-col h4 {
+  font-size: 11pt;
+  margin: 0 0 8px;
+}
+
+.comparison-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.comparison-col li {
+  padding: 3px 0;
+  font-size: 9.5pt;
+  color: var(--text-secondary);
+}
+
+.checklist {
+  background: var(--bg-card);
+  border: 1px solid var(--emerald-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 18px 0;
+}
+
+.checklist-title {
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--emerald);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 10pt;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.check-box {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border-hover);
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10pt;
+}
+
+.prompt-section {
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+  border: 1px solid var(--grape-border);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 20px 0;
+  page-break-inside: avoid;
+}
+
+.prompt-section h3 {
+  color: var(--grape-light);
+  margin-top: 0;
+  font-size: 14pt;
+}
+
+.prompt-instruction {
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 9pt;
+  color: var(--grape-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prompt-box {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 18px;
+  margin: 12px 0;
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.prompt-box strong { color: var(--grape-light); }
+
+ul, ol { margin: 8px 0 12px 18px; }
+li { margin-bottom: 3px; font-size: 10pt; color: var(--text-secondary); }
+
+.next-module {
+  background: var(--bg-card);
+  border: 1px solid var(--grape-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.next-module .next-icon { font-size: 20pt; }
+.next-module .next-text { flex: 1; }
+.next-module .next-label { font-size: 8.5pt; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.next-module .next-title { font-size: 12pt; font-weight: 600; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+  <div class="cover-decoration"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-badge">Módulo 10</div>
+  <div class="cover-title">Mission Control<br><em>Seu Painel Operacional</em></div>
+  <div class="cover-subtitle">Interface visual para monitorar e gerenciar seu agente — mesmo usando Telegram</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Duração</span>
+      <span class="cover-meta-value">10 min</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Formato</span>
+      <span class="cover-meta-value">Demo</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Opções</span>
+      <span class="cover-meta-value">4 ferramentas</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 1 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 10 — Mission Control</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title">Por Que Um Painel Visual?</div>
+
+  <p>Você conversa com o agente no Telegram. Então por que precisaria de uma interface visual?</p>
+
+  <div class="callout info">
+    <div class="callout-icon">🎯</div>
+    <div class="callout-content">
+      <strong>Telegram = interação. Dashboard = visão</strong>
+      <p>Chat é ótimo pra conversar. Mas pra ver o estado do sistema num relance? Painel visual ganha.</p>
+    </div>
+  </div>
+
+  <h3>O Que Um Painel Resolve</h3>
+
+  <div class="card grape">
+    <div class="card-title">📊 Visão Geral Rápida</div>
+    <div class="card-desc">Quantos crons rodaram hoje? Quais falharam? Quantas tasks pendentes? Um relance responde tudo.</div>
+  </div>
+
+  <div class="card emerald">
+    <div class="card-title">📈 Tracking de Métricas</div>
+    <div class="card-desc">MRR, usuários ativos, peças de conteúdo produzidas, uptime de serviços — tudo num lugar.</div>
+  </div>
+
+  <div class="card amber">
+    <div class="card-title">🗂️ Organização Visual</div>
+    <div class="card-desc">Kanban de tasks, pipeline de conteúdo, status de projetos — mais fácil de escanear que texto.</div>
+  </div>
+
+  <div class="card rose">
+    <div class="card-title">🚨 Alertas Visuais</div>
+    <div class="card-desc">Serviço down? Custo explodindo? Deadline próximo? Fica óbvio com cores e badges.</div>
+  </div>
+
+  <h3>Exemplo Real: Amora Mission Control</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Seção</th>
+        <th>O Que Mostra</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tasks</td>
+        <td>Kanban: Backlog → In Progress → Done → Blocked</td>
+      </tr>
+      <tr>
+        <td>Memory</td>
+        <td>Insights recentes, decisions, lessons extraídas</td>
+      </tr>
+      <tr>
+        <td>Crons</td>
+        <td>Status de cada cron (última execução, próximo run, erros)</td>
+      </tr>
+      <tr>
+        <td>Content HQ</td>
+        <td>229 packs, 773 peças — pipeline de produção visual</td>
+      </tr>
+      <tr>
+        <td>Health</td>
+        <td>Uptime de gateway, Telegram, skills, APIs</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 10 — Mission Control</span>
+    <span class="page-footer-right">02</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 2 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 10 — Mission Control</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>4 Opções de Ferramentas</h3>
+
+  <p>Da mais simples à mais customizável:</p>
+
+  <h4>Opção A: Google Sheets (Iniciante)</h4>
+
+  <div class="card emerald">
+    <div class="card-title">✅ Prós</div>
+    <div class="card-desc">
+      • Todo mundo sabe usar<br>
+      • Gráficos nativos<br>
+      • Grátis<br>
+      • Integra com GOG skill (Google Calendar/Drive)
+    </div>
+  </div>
+
+  <div class="card rose">
+    <div class="card-title">❌ Contras</div>
+    <div class="card-desc">
+      • Não é um banco de dados de verdade<br>
+      • Limites de linhas (~10 milhões, mas lento antes disso)<br>
+      • Sem real-time<br>
+      • Design básico
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Melhor pra:</strong>
+      <p>Prototipagem rápida, dashboards simples, quem quer resultado em 30 minutos.</p>
+    </div>
+  </div>
+
+  <h4>Opção B: Notion (Intermediário)</h4>
+
+  <div class="card emerald">
+    <div class="card-title">✅ Prós</div>
+    <div class="card-desc">
+      • Interface bonita e familiar<br>
+      • Databases relacionais<br>
+      • Mobile nativo<br>
+      • Compartilhamento fácil<br>
+      • Skill disponível no ClawHub
+    </div>
+  </div>
+
+  <div class="card rose">
+    <div class="card-title">❌ Contras</div>
+    <div class="card-desc">
+      • API com rate limits (3 req/sec)<br>
+      • Dados na nuvem (não self-hosted)<br>
+      • Custo se precisar de features avançadas
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Melhor pra:</strong>
+      <p>Quem já é power user do Notion e quer integrar agente com workspace existente.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 10 — Mission Control</span>
+    <span class="page-footer-right">03</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 3 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 10 — Mission Control</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h4>Opção C: NocoDB (Avançado Iniciante)</h4>
+
+  <div class="card emerald">
+    <div class="card-title">✅ Prós</div>
+    <div class="card-desc">
+      • Self-hosted (seus dados, seu controle)<br>
+      • Interface Notion-like<br>
+      • API REST completa<br>
+      • Grátis e open-source<br>
+      • Relações entre tabelas<br>
+      • Docker Compose = setup rápido
+    </div>
+  </div>
+
+  <div class="card rose">
+    <div class="card-title">❌ Contras</div>
+    <div class="card-desc">
+      • Requer conhecimento básico de Docker<br>
+      • Menos customizável que código próprio<br>
+      • Comunidade menor que Notion
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Melhor pra:</strong>
+      <p>Quem quer resultado rápido com controle total dos dados. Recomendado para a maioria.</p>
+    </div>
+  </div>
+
+  <h4>Opção D: Custom (Next.js + Supabase)</h4>
+
+  <div class="card emerald">
+    <div class="card-title">✅ Prós</div>
+    <div class="card-desc">
+      • Controle total da UI/UX<br>
+      • Real-time com WebSockets<br>
+      • Grátis pra hospedar (Vercel + Supabase)<br>
+      • Escalável e profissional<br>
+      • Aprende tech stack moderno
+    </div>
+  </div>
+
+  <div class="card rose">
+    <div class="card-title">❌ Contras</div>
+    <div class="card-desc">
+      • Requer conhecimento de dev full-stack<br>
+      • Tempo de setup: horas/dias<br>
+      • Manutenção contínua
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Melhor pra:</strong>
+      <p>Devs que querem algo sob medida e estão dispostos a investir tempo.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 10 — Mission Control</span>
+    <span class="page-footer-right">04</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 4 -->
+<div class="page">">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 10 — Mission Control</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Estrutura de Dados (Universal)</h3>
+
+  <p>Independente da ferramenta escolhida, essas são as "tabelas" essenciais:</p>
+
+  <h4>1. Tasks</h4>
+  <ul>
+    <li><code>id</code> — identificador único</li>
+    <li><code>title</code> — descrição da task</li>
+    <li><code>status</code> — pending | in_progress | done | blocked</li>
+    <li><code>priority</code> — low | medium | high | urgent</li>
+    <li><code>created_at</code> — timestamp</li>
+    <li><code>due_date</code> — deadline (opcional)</li>
+    <li><code>assigned_to</code> — agente ou humano</li>
+  </ul>
+
+  <h4>2. Memory Events</h4>
+  <ul>
+    <li><code>id</code> — identificador único</li>
+    <li><code>date</code> — quando aconteceu</li>
+    <li><code>category</code> — decision | lesson | insight | observation</li>
+    <li><code>content</code> — o que foi aprendido/decidido</li>
+    <li><code>source</code> — main | heartbeat | cron | sub-agent</li>
+  </ul>
+
+  <h4>3. Cron Jobs</h4>
+  <ul>
+    <li><code>id</code> — identificador único</li>
+    <li><code>name</code> — nome do cron</li>
+    <li><code>schedule</code> — expressão cron ou intervalo</li>
+    <li><code>last_run</code> — última execução</li>
+    <li><code>next_run</code> — próxima execução</li>
+    <li><code>status</code> — active | paused | failed</li>
+    <li><code>last_result</code> — success | error (+ mensagem)</li>
+  </ul>
+
+  <h4>4. Health Checks</h4>
+  <ul>
+    <li><code>id</code> — identificador único</li>
+    <li><code>service</code> — gateway | telegram | skill_X | api_Y</li>
+    <li><code>status</code> — healthy | degraded | down</li>
+    <li><code>last_check</code> — timestamp</li>
+    <li><code>uptime_%</code> — disponibilidade (últimos 7 dias)</li>
+  </ul>
+
+  <h4>5. Agent Stats (Métricas)</h4>
+  <ul>
+    <li><code>id</code> — identificador único</li>
+    <li><code>date</code> — dia</li>
+    <li><code>messages_sent</code> — contagem</li>
+    <li><code>skills_used</code> — lista de skills acionadas</li>
+    <li><code>errors</code> — contagem de erros</li>
+    <li><code>model_tokens_used</code> — total de tokens</li>
+    <li><code>uptime_hours</code> — horas ativas</li>
+  </ul>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 10 — Mission Control</span>
+    <span class="page-footer-right">05</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 5 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 10 — Mission Control</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Conectar o Agente ao Painel</h3>
+
+  <p>Depois de escolher a ferramenta e criar as tabelas, o agente precisa de funções pra escrever dados.</p>
+
+  <h4>Funções Essenciais</h4>
+
+  <div class="code-block" data-lang="javascript"><span class="comment">// Exemplo: funções helper pro agente</span>
+
+<span class="cmd">dashboard_log_task</span>(<span class="str">title</span>, <span class="str">priority</span>)
+  <span class="comment">// Cria tarefa no painel</span>
+
+<span class="cmd">dashboard_update_task</span>(<span class="str">id</span>, <span class="str">status</span>)
+  <span class="comment">// Marca como done/blocked</span>
+
+<span class="cmd">dashboard_log_memory</span>(<span class="str">content</span>, <span class="str">category</span>)
+  <span class="comment">// Salva insight importante</span>
+
+<span class="cmd">dashboard_update_health</span>(<span class="str">service</span>, <span class="str">status</span>)
+  <span class="comment">// Atualiza status de serviço</span>
+
+<span class="cmd">dashboard_get_stats</span>()
+  <span class="comment">// Retorna resumo do dia</span></div>
+
+  <h4>Crons Necessários</h4>
+
+  <p>Crons isolados que atualizam o painel automaticamente:</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">stats-collector (a cada 1h)</div>
+    <p>Coleta métricas (uptime, erros, skills usadas) e escreve no painel</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">health-monitor (a cada 15min)</div>
+    <p>Testa se gateway/telegram/skills estão respondendo e atualiza health table</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">task-reminder (a cada 4h)</div>
+    <p>Verifica tarefas com due_date próximo e avisa no Telegram</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>IMPORTANTE: Use sessionTarget: isolated</strong>
+      <p>Crons no main session (systemEvent) NÃO executam. Use <code>isolated</code> + <code>agentTurn</code> + <code>announce</code>.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 10 — Mission Control</span>
+    <span class="page-footer-right">06</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 6 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 10 — Mission Control</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Personalizar por Perfil</h3>
+
+  <p>O que você mostra no painel depende do seu trabalho:</p>
+
+  <h4>👔 Founder</h4>
+  <ul>
+    <li>MRR, ARR, churn, CAC, LTV</li>
+    <li>Pipeline de vendas (leads → prospects → clientes)</li>
+    <li>OKRs da semana/mês</li>
+    <li>Runway (meses de caixa restante)</li>
+  </ul>
+
+  <h4>👨‍💻 Dev</h4>
+  <ul>
+    <li>Deploys recentes (sucesso/falha)</li>
+    <li>Erros críticos (via Sentry/Logtail)</li>
+    <li>PRs pendentes de review</li>
+    <li>Uptime dos serviços (99.9% SLA?)</li>
+    <li>Cobertura de testes</li>
+  </ul>
+
+  <h4>🎥 Criador</h4>
+  <ul>
+    <li>Conteúdos publicados essa semana</li>
+    <li>Performance (views, engajamento, CTR)</li>
+    <li>Pipeline de produção (ideias → roteiro → gravação → edição → publicado)</li>
+    <li>Estoque de conteúdo pronto (buffer)</li>
+  </ul>
+
+  <h4>📊 Produtividade</h4>
+  <ul>
+    <li>Reuniões de hoje</li>
+    <li>Tasks completadas vs pendentes (burn-down chart)</li>
+    <li>Hábitos rastreados (meditação, exercício, deep work)</li>
+    <li>Tempo em deep work vs shallow work</li>
+  </ul>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Dica</strong>
+      <p>Não tente rastrear TUDO. Escolha 5-10 métricas que realmente importam. Menos é mais.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 10 — Mission Control</span>
+    <span class="page-footer-right">07</span>
+  </div>
+</div>
+
+<!-- CHECKLIST + PROMPT PAGE -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 10 — Mission Control</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="checklist">
+    <div class="checklist-title">✅ Checkpoint do Módulo 10</div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Ferramenta escolhida (Sheets/Notion/NocoDB/Custom)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Estrutura de dados criada (Tasks, Memory, Crons, Health, Stats)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Funções helper pro agente configuradas</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Crons de atualização agendados (stats, health, reminders)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Widgets personalizados pro seu perfil</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Primeiro teste: agente logou task e apareceu no painel</span>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <h3>🤖 Prompt para o Agente</h3>
+    <div class="prompt-instruction">
+      Cole este prompt no chat do seu OpenClaw depois de concluir o módulo:
+    </div>
+    <div class="prompt-box">Acabei de assistir o Módulo 10 sobre Mission Control. Preciso de um painel visual pra gerenciar você e ver o estado do sistema num relance.
+
+<strong>Me ajude a escolher e configurar a ferramenta certa:</strong>
+
+<strong>1. Perguntas pra me conhecer:</strong>
+- Qual meu nível técnico? (iniciante/intermediário/avançado)
+- Já uso alguma ferramenta? (Notion, Sheets, etc.)
+- Prefiro algo rápido ou algo perfeito?
+- Vou gerenciar só você ou uma equipe de agentes?
+
+<strong>2. Baseado nas minhas respostas, recomende:</strong>
+- Qual ferramenta (Sheets/Notion/NocoDB/Custom)
+- Por que essa escolha faz sentido pra mim
+- Prós e contras específicos pro meu caso
+
+<strong>3. Setup completo:</strong>
+- Me guie passo a passo na configuração
+- Crie as tabelas necessárias (Tasks, Memory, Crons, Health, Stats)
+- Configure as funções helper
+- Crie os crons de atualização
+- Personalize os widgets pro meu perfil (founder/dev/creator/produtividade)
+
+<strong>4. Primeiro teste:</strong>
+- Logue uma tarefa de teste
+- Mostre ela aparecendo no painel
+- Marque como "done" via você
+- Confirme a atualização
+
+<strong>5. Documente:</strong>
+- Crie <code>docs/mission-control-setup.md</code> com tudo que configuramos
+- Credenciais no 1Password (nunca hardcoded)
+- Como acessar o painel
+
+Vamos construir meu Mission Control?</div>
+  </div>
+
+  <div class="next-module">
+    <div class="next-icon">🎓</div>
+    <div class="next-text">
+      <div class="next-label">Próximo Módulo</div>
+      <div class="next-title">Módulo 11 — Wrap-up & Próximos Passos</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 10 — Mission Control</span>
+    <span class="page-footer-right">08</span>
+  </div>
+</div>
+
+</body>
+</html>

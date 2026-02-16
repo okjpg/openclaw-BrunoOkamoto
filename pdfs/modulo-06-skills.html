@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 6 — Skills: Superpoderes Instantâneos</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: #12121a;
+  --bg-card: #1a1a25;
+  --bg-card-hover: #222230;
+  --grape: #8b5cf6;
+  --grape-light: #a78bfa;
+  --grape-dim: rgba(139, 92, 246, 0.12);
+  --grape-border: rgba(139, 92, 246, 0.25);
+  --grape-glow: rgba(139, 92, 246, 0.08);
+  --emerald: #10b981;
+  --emerald-dim: rgba(16, 185, 129, 0.12);
+  --emerald-border: rgba(16, 185, 129, 0.25);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.25);
+  --rose: #f43f5e;
+  --rose-dim: rgba(244, 63, 94, 0.12);
+  --rose-border: rgba(244, 63, 94, 0.25);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.12);
+  --text: #f1f1f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --code-bg: #0d0d15;
+  --code-border: rgba(255,255,255,0.08);
+}
+
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 10.5pt;
+  line-height: 1.6;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 22mm 24mm 28mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--bg);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -25%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse, var(--grape-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 297mm;
+  padding: 36mm 28mm;
+  position: relative;
+}
+
+.cover-grid {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 50%; height: 40%;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+}
+
+.cover-decoration {
+  position: absolute;
+  top: 28mm; right: 28mm;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg, var(--amber), var(--grape), var(--amber));
+  opacity: 0.1;
+  filter: blur(35px);
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: var(--amber-dim);
+  border: 1px solid var(--amber-border);
+  border-radius: 100px;
+  font-size: 10pt;
+  font-weight: 500;
+  color: var(--amber);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cover-title {
+  font-size: 44pt;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 18px;
+  position: relative;
+  max-width: 500px;
+}
+
+.cover-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--amber), #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-subtitle {
+  font-size: 14pt;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 44px;
+  position: relative;
+}
+
+.cover-meta {
+  position: relative;
+  display: flex;
+  gap: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.cover-meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+.cover-meta-label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cover-meta-value {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header-left {
+  font-size: 9pt;
+  color: var(--amber);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.page-header-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 12mm;
+  left: 24mm; right: 24mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.page-footer-left {
+  font-size: 8pt;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.page-footer-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.section-title {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--grape-light);
+  margin: 22px 0 10px;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+
+p {
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  font-size: 10.5pt;
+}
+
+strong { color: var(--text); }
+
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  position: relative;
+  white-space: pre;
+}
+
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 7.5pt;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.code-block .comment { color: #4a4a5a; }
+.code-block .cmd { color: var(--grape-light); }
+.code-block .str { color: var(--emerald); }
+.code-block .flag { color: var(--amber); }
+.code-block .prompt { color: var(--text-muted); }
+
+code {
+  background: var(--grape-dim);
+  color: var(--grape-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 12px 0;
+}
+
+.card.grape { border-color: var(--grape-border); background: linear-gradient(135deg, rgba(139,92,246,0.06), var(--bg-card)); }
+.card.emerald { border-color: var(--emerald-border); background: linear-gradient(135deg, rgba(16,185,129,0.06), var(--bg-card)); }
+.card.amber { border-color: var(--amber-border); background: linear-gradient(135deg, rgba(245,158,11,0.06), var(--bg-card)); }
+.card.rose { border-color: var(--rose-border); background: linear-gradient(135deg, rgba(244,63,94,0.06), var(--bg-card)); }
+
+.card-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.card-desc {
+  font-size: 10pt;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.callout {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16pt; flex-shrink: 0; line-height: 1; }
+.callout-content { flex: 1; }
+.callout-content strong { display: block; margin-bottom: 3px; color: var(--text); }
+.callout-content p { margin-bottom: 4px; }
+
+.callout.tip { background: var(--emerald-dim); border: 1px solid var(--emerald-border); }
+.callout.warning { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+.callout.danger { background: var(--rose-dim); border: 1px solid var(--rose-border); }
+.callout.info { background: var(--grape-dim); border: 1px solid var(--grape-border); }
+
+.checklist {
+  background: var(--bg-card);
+  border: 1px solid var(--emerald-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 18px 0;
+}
+
+.checklist-title {
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--emerald);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 10pt;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.check-box {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border-hover);
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10pt;
+}
+
+.prompt-section {
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+  border: 1px solid var(--grape-border);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 20px 0;
+  page-break-inside: avoid;
+}
+
+.prompt-section h3 {
+  color: var(--grape-light);
+  margin-top: 0;
+  font-size: 14pt;
+}
+
+.prompt-instruction {
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 9pt;
+  color: var(--grape-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prompt-box {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 18px;
+  margin: 12px 0;
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.prompt-box strong { color: var(--grape-light); }
+
+ul, ol { margin: 8px 0 12px 18px; }
+li { margin-bottom: 3px; font-size: 10pt; color: var(--text-secondary); }
+
+.next-module {
+  background: var(--bg-card);
+  border: 1px solid var(--grape-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.next-module .next-icon { font-size: 20pt; }
+.next-module .next-text { flex: 1; }
+.next-module .next-label { font-size: 8.5pt; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.next-module .next-title { font-size: 12pt; font-weight: 600; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+  <div class="cover-decoration"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-badge">Módulo 06</div>
+  <div class="cover-title">Skills<br><em>Superpoderes Instantâneos</em></div>
+  <div class="cover-subtitle">"Tank, I need a pilot program" — ClawHub, GitHub e skills essenciais por perfil</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Duração</span>
+      <span class="cover-meta-value">15 min</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Formato</span>
+      <span class="cover-meta-value">Demo</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Kit</span>
+      <span class="cover-meta-value">2 arquivos</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 1 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 06 — Skills</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title">O Que São Skills?</div>
+
+  <p>Skills são ferramentas que você "plugga" no agente. É como no Matrix: <em>"Tank, I need a pilot program."</em></p>
+
+  <div class="callout info">
+    <div class="callout-icon">⚡</div>
+    <div class="callout-content">
+      <strong>Analogia Matrix</strong>
+      <p>Trinity aprende kung-fu em 10 segundos. Seu agente aprende a gerar PDFs, desenhar diagramas, ou fazer deploy com 1 comando.</p>
+    </div>
+  </div>
+
+  <h3>Como Instalar Skills</h3>
+
+  <h4>Opção 1: ClawHub (Marketplace Oficial)</h4>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Buscar skills disponíveis</span>
+<span class="cmd">openclaw skills search</span> pdf
+
+<span class="comment"># Instalar do ClawHub</span>
+<span class="cmd">openclaw skills install</span> nano-pdf
+
+<span class="comment"># Listar skills instaladas</span>
+<span class="cmd">openclaw skills list</span></div>
+
+  <h4>Opção 2: GitHub (Skills Customizadas)</h4>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Instalar direto do repositório</span>
+<span class="cmd">openclaw skills install</span> github:usuario/repo-skill
+
+<span class="comment"># Exemplo real</span>
+<span class="cmd">openclaw skills install</span> github:brunocgc/skill-excalidraw</div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Segurança First</strong>
+      <p>Sempre revise o código de skills de terceiros antes de instalar. Elas rodam com permissões do agente.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 06 — Skills</span>
+    <span class="page-footer-right">02</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 2 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 06 — Skills</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Skills Essenciais por Perfil</h3>
+
+  <h4>👔 Empreendedor / Founder</h4>
+
+  <div class="card grape">
+    <div class="card-title">📄 nano-pdf</div>
+    <div class="card-desc">Gerar PDFs formatados (reports, pitches, one-pagers). HTML → PDF limpo.</div>
+  </div>
+
+  <div class="card grape">
+    <div class="card-title">✏️ excalidraw</div>
+    <div class="card-desc">Desenhar diagramas, wireframes, fluxogramas. Ideal pra visualizar ideias rapidamente.</div>
+  </div>
+
+  <div class="card grape">
+    <div class="card-title">🔍 perplexity</div>
+    <div class="card-desc">Pesquisa avançada com fontes. Ótimo pra research de mercado, competitors, trends.</div>
+  </div>
+
+  <h4>🎨 Creator / Produtor de Conteúdo</h4>
+
+  <div class="card emerald">
+    <div class="card-title">🖼️ hand-draw-graphics</div>
+    <div class="card-desc">Gerar gráficos desenhados à mão (estilo handwriting). Perfeito pra thumbnails/posts.</div>
+  </div>
+
+  <div class="card emerald">
+    <div class="card-title">🎬 video-frames</div>
+    <div class="card-desc">Extrair frames de vídeos pra análise. Útil pra edição, QA de conteúdo.</div>
+  </div>
+
+  <div class="card emerald">
+    <div class="card-title">🖼️ openai-image-gen</div>
+    <div class="card-desc">DALL-E integration. Gerar imagens customizadas direto do agente.</div>
+  </div>
+
+  <h4>💻 Dev / Técnico</h4>
+
+  <div class="card amber">
+    <div class="card-title">🐙 github</div>
+    <div class="card-desc">Gerenciar repos, PRs, issues. Deploy, commits, reviews via agente.</div>
+  </div>
+
+  <div class="card amber">
+    <div class="card-title">🤖 coding-agent</div>
+    <div class="card-desc">Sub-agent especializado em codar. Delega tasks de programação.</div>
+  </div>
+
+  <div class="card amber">
+    <div class="card-title">📟 tmux</div>
+    <div class="card-desc">Gerenciar sessões tmux. Rodar comandos em background, monitorar servers.</div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 06 — Skills</span>
+    <span class="page-footer-right">03</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 3 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 06 — Skills</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Criando Sua Primeira Skill Customizada</h3>
+
+  <p>Skills são apenas diretórios com um <code>SKILL.md</code> descrevendo o que fazem e arquivos executáveis.</p>
+
+  <h4>Estrutura Básica</h4>
+
+  <div class="code-block" data-lang="text">my-skill/
+├── SKILL.md          # Descrição da skill (o agente lê isso)
+├── index.js          # Script principal
+└── package.json      # Dependências (se necessário)</div>
+
+  <h4>Exemplo: Skill de Clima</h4>
+
+  <p><strong>SKILL.md:</strong></p>
+
+  <div class="code-block" data-lang="markdown"># Weather Skill
+
+Fetch current weather for any city using OpenWeatherMap API.
+
+## Usage
+
+```bash
+weather &lt;city&gt;
+```
+
+## Example
+
+```bash
+weather "São Paulo"
+# → Temperature: 22°C, Condition: Partly Cloudy
+```</div>
+
+  <p><strong>index.js:</strong></p>
+
+  <div class="code-block" data-lang="javascript">#!/usr/bin/env node
+const axios = require('axios');
+const city = process.argv[2];
+const apiKey = process.env.OPENWEATHER_API_KEY;
+
+axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
+  .then(res => {
+    console.log(`Temperature: ${res.data.main.temp}°C`);
+    console.log(`Condition: ${res.data.weather[0].description}`);
+  })
+  .catch(err => console.error('Error:', err.message));</div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Dica</strong>
+      <p>Coloque em <code>~/.openclaw/skills/my-skill/</code> e o agente já detecta automaticamente.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 06 — Skills</span>
+    <span class="page-footer-right">04</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 4 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 06 — Skills</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Quando NÃO Instalar Uma Skill</h3>
+
+  <h4>1. Skills Redundantes</h4>
+
+  <p>Exemplo: <code>remind-me</code> skill quando cron nativo já resolve.</p>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Regra</strong>
+      <p>Se o OpenClaw já tem a funcionalidade nativamente, não instale skill duplicada. Audite periodicamente.</p>
+    </div>
+  </div>
+
+  <h4>2. Skills com Vulnerabilidades</h4>
+
+  <p>Research de Simon Willison: 900+ servidores OpenClaw expostos por skills inseguras.</p>
+
+  <ul>
+    <li>Sempre revisar código antes de instalar</li>
+    <li>Evitar skills que pedem permissões excessivas</li>
+    <li>Preferir skills com muitos stars/forks no GitHub</li>
+  </ul>
+
+  <h4>3. Creators Como Skills, Não Agentes</h4>
+
+  <p><strong>Melhor abordagem:</strong> 1 agente com 8 skills > 8 agentes especializados.</p>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Por Quê?</strong>
+      <p>Skills são mais leves, compartilham contexto, e não precisam de memória própria. Reserve agentes pra tarefas que REALMENTE precisam de autonomia.</p>
+    </div>
+  </div>
+
+  <h3>Comandos Úteis</h3>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Ver skills instaladas</span>
+<span class="cmd">openclaw skills list</span>
+
+<span class="comment"># Desinstalar skill</span>
+<span class="cmd">openclaw skills uninstall</span> nome-da-skill
+
+<span class="comment"># Atualizar skill</span>
+<span class="cmd">openclaw skills update</span> nome-da-skill
+
+<span class="comment"># Ver documentação de skill</span>
+<span class="cmd">cat</span> ~/.openclaw/skills/nome-da-skill/SKILL.md</div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 06 — Skills</span>
+    <span class="page-footer-right">05</span>
+  </div>
+</div>
+
+<!-- CHECKLIST + PROMPT PAGE -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 06 — Skills</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="checklist">
+    <div class="checklist-title">✅ Checkpoint do Módulo 6</div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>2-3 skills essenciais instaladas e testadas</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Entendo a diferença entre skill e agente</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Sei como revisar código de skills de terceiros</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Auditei skills redundantes (remind-me, etc)</span>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <h3>🤖 Prompt para o Agente</h3>
+    <div class="prompt-instruction">
+      Cole este prompt no chat do seu OpenClaw depois de assistir o Módulo 6:
+    </div>
+    <div class="prompt-box">Acabei de assistir o Módulo 6 do curso sobre skills. Me ajude a instalar os superpoderes certos pro meu perfil.
+
+<strong>O que preciso que você faça:</strong>
+
+1. <strong>Analise meu perfil</strong> — baseado no USER.md, me recomende as skills mais úteis da lista por perfil que anexei
+
+2. <strong>Me ensine a instalar skills:</strong>
+   - Como instalar do ClawHub
+   - Como instalar de um repositório GitHub
+   - Como verificar se a skill é segura antes de instalar
+
+3. <strong>Instale 2-3 skills essenciais</strong> que façam sentido pro meu uso:
+   - Me explique o que cada uma faz
+   - Teste se funcionou com um exemplo prático
+
+4. <strong>Me explique quando NÃO instalar uma skill:</strong>
+   - Skills redundantes (ex: remind-me quando cron nativo já resolve)
+   - Skills com vulnerabilidades de segurança
+   - Skills que são agentes disfarçados (quando usar skill vs criar agente)
+
+<strong>Regras:</strong>
+- Qualidade > quantidade — poucas skills bem configuradas > muitas jogadas
+- Me avise sobre skills que precisam de API key antes de instalar
+- No final, me liste tudo que está instalado e funcionando
+
+Vamos ganhar superpoderes?</div>
+  </div>
+
+  <div class="next-module">
+    <div class="next-icon">💓</div>
+    <div class="next-text">
+      <div class="next-label">Próximo Módulo</div>
+      <div class="next-title">Módulo 7 — Proatividade: Heartbeats & Automações</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 06 — Skills</span>
+    <span class="page-footer-right">06</span>
+  </div>
+</div>
+
+</body>
+</html>

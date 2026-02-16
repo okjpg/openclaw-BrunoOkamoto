@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 7 — Proatividade: Heartbeats & Automações</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: #12121a;
+  --bg-card: #1a1a25;
+  --bg-card-hover: #222230;
+  --grape: #8b5cf6;
+  --grape-light: #a78bfa;
+  --grape-dim: rgba(139, 92, 246, 0.12);
+  --grape-border: rgba(139, 92, 246, 0.25);
+  --grape-glow: rgba(139, 92, 246, 0.08);
+  --emerald: #10b981;
+  --emerald-dim: rgba(16, 185, 129, 0.12);
+  --emerald-border: rgba(16, 185, 129, 0.25);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.25);
+  --rose: #f43f5e;
+  --rose-dim: rgba(244, 63, 94, 0.12);
+  --rose-border: rgba(244, 63, 94, 0.25);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.12);
+  --text: #f1f1f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --code-bg: #0d0d15;
+  --code-border: rgba(255,255,255,0.08);
+}
+
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 10.5pt;
+  line-height: 1.6;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 22mm 24mm 28mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--bg);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -25%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse, var(--grape-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 297mm;
+  padding: 36mm 28mm;
+  position: relative;
+}
+
+.cover-grid {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 50%; height: 40%;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+}
+
+.cover-decoration {
+  position: absolute;
+  top: 28mm; right: 28mm;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg, var(--emerald), var(--grape), var(--emerald));
+  opacity: 0.1;
+  filter: blur(35px);
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: var(--emerald-dim);
+  border: 1px solid var(--emerald-border);
+  border-radius: 100px;
+  font-size: 10pt;
+  font-weight: 500;
+  color: var(--emerald);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cover-title {
+  font-size: 44pt;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 18px;
+  position: relative;
+  max-width: 500px;
+}
+
+.cover-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--emerald), #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-subtitle {
+  font-size: 14pt;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 44px;
+  position: relative;
+}
+
+.cover-meta {
+  position: relative;
+  display: flex;
+  gap: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.cover-meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+.cover-meta-label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cover-meta-value {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header-left {
+  font-size: 9pt;
+  color: var(--emerald);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.page-header-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 12mm;
+  left: 24mm; right: 24mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.page-footer-left {
+  font-size: 8pt;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.page-footer-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.section-title {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--grape-light);
+  margin: 22px 0 10px;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+
+p {
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  font-size: 10.5pt;
+}
+
+strong { color: var(--text); }
+
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  position: relative;
+  white-space: pre;
+}
+
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 7.5pt;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.code-block .comment { color: #4a4a5a; }
+.code-block .cmd { color: var(--grape-light); }
+.code-block .str { color: var(--emerald); }
+.code-block .flag { color: var(--amber); }
+.code-block .prompt { color: var(--text-muted); }
+
+code {
+  background: var(--grape-dim);
+  color: var(--grape-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+}
+
+.step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 16px 56px;
+  margin: 12px 0;
+  position: relative;
+}
+
+.step-num {
+  position: absolute;
+  left: 16px; top: 16px;
+  width: 28px; height: 28px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--grape-light);
+}
+
+.step-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.callout {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16pt; flex-shrink: 0; line-height: 1; }
+.callout-content { flex: 1; }
+.callout-content strong { display: block; margin-bottom: 3px; color: var(--text); }
+.callout-content p { margin-bottom: 4px; }
+
+.callout.tip { background: var(--emerald-dim); border: 1px solid var(--emerald-border); }
+.callout.warning { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+.callout.danger { background: var(--rose-dim); border: 1px solid var(--rose-border); }
+.callout.info { background: var(--grape-dim); border: 1px solid var(--grape-border); }
+
+.checklist {
+  background: var(--bg-card);
+  border: 1px solid var(--emerald-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 18px 0;
+}
+
+.checklist-title {
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--emerald);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 10pt;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.check-box {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border-hover);
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10pt;
+}
+
+.prompt-section {
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+  border: 1px solid var(--grape-border);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 20px 0;
+  page-break-inside: avoid;
+}
+
+.prompt-section h3 {
+  color: var(--grape-light);
+  margin-top: 0;
+  font-size: 14pt;
+}
+
+.prompt-instruction {
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 9pt;
+  color: var(--grape-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prompt-box {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 18px;
+  margin: 12px 0;
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.prompt-box strong { color: var(--grape-light); }
+
+ul, ol { margin: 8px 0 12px 18px; }
+li { margin-bottom: 3px; font-size: 10pt; color: var(--text-secondary); }
+
+.next-module {
+  background: var(--bg-card);
+  border: 1px solid var(--grape-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.next-module .next-icon { font-size: 20pt; }
+.next-module .next-text { flex: 1; }
+.next-module .next-label { font-size: 8.5pt; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.next-module .next-title { font-size: 12pt; font-weight: 600; color: var(--text); }
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 14px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+thead th {
+  background: var(--bg-card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+  padding: 9px 14px;
+  font-size: 10pt;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody td:first-child { font-weight: 500; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+  <div class="cover-decoration"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-badge">Módulo 07</div>
+  <div class="cover-title">Proatividade<br><em>Heartbeats & Automações</em></div>
+  <div class="cover-subtitle">HEARTBEAT.md, Haiku pra economia, e trabalho proativo sem pedir</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Duração</span>
+      <span class="cover-meta-value">15 min</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Formato</span>
+      <span class="cover-meta-value">Demo + slides</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Kit</span>
+      <span class="cover-meta-value">2 arquivos</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 1 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 07 — Proatividade</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title">Heartbeats: O Pulso do Agente</div>
+
+  <p>Heartbeats são "checagens periódicas" que o agente faz automaticamente. É como um pulso — verificar se está tudo bem sem você pedir.</p>
+
+  <h3>O Que É HEARTBEAT.md?</h3>
+
+  <p>HEARTBEAT.md é um checklist que o agente segue a cada heartbeat. Ele lê esse arquivo e executa as tarefas listadas.</p>
+
+  <div class="code-block" data-lang="markdown"># HEARTBEAT.md
+
+Checklist periódico (a cada 4h durante o dia):
+
+- [ ] Checar emails urgentes (inbox zero?)
+- [ ] Eventos nas próximas 24-48h
+- [ ] Projetos parados há >5 dias
+- [ ] Métricas principais do negócio
+
+**Quando falar:**
+- Algo urgente encontrado → me avisa
+- Evento <2h → notifica
+- Nada novo → HEARTBEAT_OK (silêncio)
+
+**Quando calar:**
+- 23h-8h (horário silencioso)
+- Nada mudou desde última check
+- Trabalho de fundo (organizar memória) → faz sozinho</div>
+
+  <h3>Modelo Econômico: Haiku Pro Heartbeats</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Modelo</th>
+        <th>Custo/heartbeat</th>
+        <th>10x/dia</th>
+        <th>30 dias</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Opus</strong></td>
+        <td>~$0.10</td>
+        <td>$1.00</td>
+        <td>$30.00</td>
+      </tr>
+      <tr>
+        <td><strong>Sonnet</strong></td>
+        <td>~$0.03</td>
+        <td>$0.30</td>
+        <td>$9.00</td>
+      </tr>
+      <tr>
+        <td><strong>Haiku</strong></td>
+        <td>~$0.005</td>
+        <td>$0.05</td>
+        <td>$1.50</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Economia Real</strong>
+      <p>Usar Haiku pra heartbeats economiza 90% do custo. De ~$30/mês pra ~$1.50/mês.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 07 — Proatividade</span>
+    <span class="page-footer-right">02</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 2 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 07 — Proatividade</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>O Que Checar Automaticamente?</h3>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">Emails Urgentes</div>
+    <p>Checar inbox, filtrar por remetentes importantes ou palavras-chave críticas.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">Agenda nas Próximas 24-48h</div>
+    <p>Avisar sobre reuniões próximas, deadlines, compromissos importantes.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">Projetos Parados</div>
+    <p>Se um projeto não teve atividade há >5 dias, avisar (possível travamento).</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-title">Métricas de Negócio</div>
+    <p>MRR, churn, CAC, usuários ativos — dependendo do seu perfil.</p>
+  </div>
+
+  <h3>Quando Falar vs Ficar Quieto</h3>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Regra de Ouro</strong>
+      <p>Nada novo = HEARTBEAT_OK (zero mensagens). O agente só fala quando há MOTIVO.</p>
+    </div>
+  </div>
+
+  <h4>✅ Quando Falar</h4>
+
+  <ul>
+    <li>Email urgente chegou</li>
+    <li>Evento nas próximas 2h</li>
+    <li>Projeto crítico parado há >7 dias</li>
+    <li>Métrica fora do normal (queda >20%)</li>
+    <li>Algo interessante encontrado (oportunidade)</li>
+  </ul>
+
+  <h4>❌ Quando Calar</h4>
+
+  <ul>
+    <li>Horário silencioso (23h-8h)</li>
+    <li>Nada mudou desde última checagem</li>
+    <li>Você está claramente ocupado (reunião, deep work)</li>
+    <li>Última mensagem há <30min</li>
+  </ul>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 07 — Proatividade</span>
+    <span class="page-footer-right">03</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 3 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 07 — Proatividade</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Trabalho Proativo Sem Pedir</h3>
+
+  <p>O agente pode fazer trabalho útil em background SEM te incomodar:</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">Organizar Memória</div>
+    <p>Compactar notas antigas, extrair lições, atualizar topic files.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">Git Status de Projetos</div>
+    <p>Ver quais repos têm uncommitted changes, pendências.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">Atualizar Documentação</div>
+    <p>Se você mudou algo, o agente pode atualizar README, docs, etc.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-title">Revisão Semanal</div>
+    <p>Todo domingo, revisar o que aconteceu na semana e planejar a próxima.</p>
+  </div>
+
+  <h3>Exemplos Reais da Amora</h3>
+
+  <h4>Daily Briefing de Redes Sociais</h4>
+
+  <p>Toda manhã (9h), a Amora envia:</p>
+
+  <div class="code-block" data-lang="text">📊 Daily Briefing — 16/02
+
+Instagram:
+- 3 posts ontem (total: 1.2k likes, 45 comments)
+- Post "AI COO" performou melhor (+320 likes)
+- 12 DMs novos (3 parecem oportunidades)
+
+YouTube:
+- 2 vídeos publicados na semana (total: 5.3k views)
+- Engagement médio: 8.2% (acima da média)
+
+X/Twitter:
+- 8 tweets ontem (240 impressions média)
+- Thread sobre OpenClaw: 1.8k views, 42 RTs</div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 07 — Proatividade</span>
+    <span class="page-footer-right">04</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 4 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 07 — Proatividade</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Configurando Heartbeats</h3>
+
+  <p>Heartbeats já vêm configurados no OpenClaw. Você só precisa personalizar o HEARTBEAT.md.</p>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Criar HEARTBEAT.md</span>
+<span class="cmd">nano</span> ~/.openclaw/workspace-seu-agente/HEARTBEAT.md
+
+<span class="comment"># Testar heartbeat manualmente</span>
+<span class="cmd">openclaw heartbeat</span></div>
+
+  <h3>Opção Avançada: Ollama Local (Custo ZERO)</h3>
+
+  <p>Se você quer heartbeats SEM custo de API, rode um modelo local com Ollama:</p>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Instalar Ollama</span>
+<span class="cmd">curl</span> <span class="flag">-fsSL</span> https://ollama.com/install.sh | <span class="cmd">sh</span>
+
+<span class="comment"># Baixar modelo leve (Llama 3.2)</span>
+<span class="cmd">ollama pull</span> llama3.2:1b
+
+<span class="comment"># Configurar OpenClaw pra usar Ollama nos heartbeats</span>
+<span class="cmd">openclaw config set</span> heartbeat.model ollama:llama3.2:1b</div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Economia MÁXIMA</strong>
+      <p>Ollama local = $0/mês. Perfeito pra heartbeats simples (emails, agenda, status check).</p>
+    </div>
+  </div>
+
+  <h3>Rate Limits e Budgets</h3>
+
+  <p>Configure limites pra prevenir runaway de automações:</p>
+
+  <div class="code-block" data-lang="json">{
+  "heartbeat": {
+    "maxPerDay": 10,
+    "maxCostPerDay": 1.00,
+    "pauseIfBudgetExceeded": true
+  }
+}</div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 07 — Proatividade</span>
+    <span class="page-footer-right">05</span>
+  </div>
+</div>
+
+<!-- CHECKLIST + PROMPT PAGE -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 07 — Proatividade</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="checklist">
+    <div class="checklist-title">✅ Checkpoint do Módulo 7</div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>HEARTBEAT.md criado (checklist periódico)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Haiku configurado pra heartbeats (economia 90%)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>2 automações proativas configuradas</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Horário silencioso definido (23h-8h)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Rate limits configurados (prevenir runaway)</span>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <h3>🤖 Prompt para o Agente</h3>
+    <div class="prompt-instruction">
+      Cole este prompt no chat do seu OpenClaw depois de assistir o Módulo 7:
+    </div>
+    <div class="prompt-box">Acabei de assistir o Módulo 7 do curso sobre proatividade. Quero que você se torne proativo — não fique só esperando eu falar.
+
+<strong>O que preciso que você faça:</strong>
+
+1. <strong>Configure o HEARTBEAT.md</strong> — Me ajude a definir o que você deve checar periodicamente:
+   - Emails urgentes?
+   - Eventos na agenda nas próximas 24-48h?
+   - Projetos parados?
+   - Métricas de negócio?
+
+2. <strong>Defina os horários de silêncio</strong> — quando NÃO me incomodar (madrugada, fins de semana, etc.)
+
+3. <strong>Configure o modelo econômico:</strong>
+   - Use Haiku pra heartbeats (custa ~$0.005 vs ~$0.10 em Opus)
+   - Opção avançada: Ollama local para heartbeats (custo ZERO!)
+   - Configure rate limits e budgets pra prevenir runaway de automações
+
+4. <strong>Crie 2 automações proativas:</strong>
+   - Uma de checagem (ex: emails/agenda a cada 4h)
+   - Uma de organização (ex: revisar memória, atualizar docs)
+
+5. <strong>Defina regras de quando falar vs calar:</strong>
+   - Algo urgente encontrado → me avisa
+   - Nada novo → HEARTBEAT_OK (não me manda nada)
+   - Trabalho de fundo (organizar memória) → faz sozinho sem avisar
+
+<strong>Regras:</strong>
+- Menos é mais — não quero 10 notificações por dia
+- Me explique o custo de cada heartbeat/cron antes de criar
+- No final, me mostre o schedule completo de automações
+
+Vamos te deixar proativo?</div>
+  </div>
+
+  <div class="next-module">
+    <div class="next-icon">🤝</div>
+    <div class="next-text">
+      <div class="next-label">Próximo Módulo</div>
+      <div class="next-title">Módulo 8 — Multi-Agentes: De Solo a Time</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 07 — Proatividade</span>
+    <span class="page-footer-right">06</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 11 — Wrap-up & Próximos Passos</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: #12121a;
+  --bg-card: #1a1a25;
+  --bg-card-hover: #222230;
+  --grape: #8b5cf6;
+  --grape-light: #a78bfa;
+  --grape-dim: rgba(139, 92, 246, 0.12);
+  --grape-border: rgba(139, 92, 246, 0.25);
+  --grape-glow: rgba(139, 92, 246, 0.08);
+  --emerald: #10b981;
+  --emerald-dim: rgba(16, 185, 129, 0.12);
+  --emerald-border: rgba(16, 185, 129, 0.25);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.25);
+  --rose: #f43f5e;
+  --rose-dim: rgba(244, 63, 94, 0.12);
+  --rose-border: rgba(244, 63, 94, 0.25);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.12);
+  --text: #f1f1f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --code-bg: #0d0d15;
+  --code-border: rgba(255,255,255,0.08);
+}
+
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 10.5pt;
+  line-height: 1.6;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 22mm 24mm 28mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--bg);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -25%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse, var(--grape-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 297mm;
+  padding: 36mm 28mm;
+  position: relative;
+}
+
+.cover-grid {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 50%; height: 40%;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+}
+
+.cover-decoration {
+  position: absolute;
+  top: 28mm; right: 28mm;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg, var(--grape), var(--emerald), var(--grape));
+  opacity: 0.1;
+  filter: blur(35px);
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 100px;
+  font-size: 10pt;
+  font-weight: 500;
+  color: var(--grape-light);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cover-title {
+  font-size: 44pt;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 18px;
+  position: relative;
+  max-width: 500px;
+}
+
+.cover-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--grape), var(--grape-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-subtitle {
+  font-size: 14pt;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 44px;
+  position: relative;
+}
+
+.cover-meta {
+  position: relative;
+  display: flex;
+  gap: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.cover-meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+.cover-meta-label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cover-meta-value {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header-left {
+  font-size: 9pt;
+  color: var(--grape-light);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.page-header-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 12mm;
+  left: 24mm; right: 24mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.page-footer-left {
+  font-size: 8pt;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.page-footer-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.section-title {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--grape-light);
+  margin: 22px 0 10px;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+
+p {
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  font-size: 10.5pt;
+}
+
+strong { color: var(--text); }
+
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  position: relative;
+  white-space: pre;
+}
+
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 7.5pt;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.code-block .comment { color: #4a4a5a; }
+.code-block .cmd { color: var(--grape-light); }
+.code-block .str { color: var(--emerald); }
+.code-block .flag { color: var(--amber); }
+.code-block .prompt { color: var(--text-muted); }
+
+code {
+  background: var(--grape-dim);
+  color: var(--grape-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 14px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+thead th {
+  background: var(--bg-card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+  padding: 9px 14px;
+  font-size: 10pt;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody td:first-child { font-weight: 500; color: var(--text); }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 12px 0;
+}
+
+.card.grape { border-color: var(--grape-border); background: linear-gradient(135deg, rgba(139,92,246,0.06), var(--bg-card)); }
+.card.emerald { border-color: var(--emerald-border); background: linear-gradient(135deg, rgba(16,185,129,0.06), var(--bg-card)); }
+.card.amber { border-color: var(--amber-border); background: linear-gradient(135deg, rgba(245,158,11,0.06), var(--bg-card)); }
+.card.rose { border-color: var(--rose-border); background: linear-gradient(135deg, rgba(244,63,94,0.06), var(--bg-card)); }
+
+.card-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.card-desc {
+  font-size: 10pt;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 16px 56px;
+  margin: 12px 0;
+  position: relative;
+}
+
+.step-num {
+  position: absolute;
+  left: 16px; top: 16px;
+  width: 28px; height: 28px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--grape-light);
+}
+
+.step-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.callout {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16pt; flex-shrink: 0; line-height: 1; }
+.callout-content { flex: 1; }
+.callout-content strong { display: block; margin-bottom: 3px; color: var(--text); }
+.callout-content p { margin-bottom: 4px; }
+
+.callout.tip { background: var(--emerald-dim); border: 1px solid var(--emerald-border); }
+.callout.warning { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+.callout.danger { background: var(--rose-dim); border: 1px solid var(--rose-border); }
+.callout.info { background: var(--grape-dim); border: 1px solid var(--grape-border); }
+
+.comparison {
+  display: flex;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.comparison-col {
+  flex: 1;
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 1px solid;
+}
+
+.comparison-col.bad {
+  border-color: var(--rose-border);
+  background: var(--rose-dim);
+}
+
+.comparison-col.good {
+  border-color: var(--emerald-border);
+  background: var(--emerald-dim);
+}
+
+.comparison-col h4 {
+  font-size: 11pt;
+  margin: 0 0 8px;
+}
+
+.comparison-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.comparison-col li {
+  padding: 3px 0;
+  font-size: 9.5pt;
+  color: var(--text-secondary);
+}
+
+.checklist {
+  background: var(--bg-card);
+  border: 1px solid var(--emerald-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 18px 0;
+}
+
+.checklist-title {
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--emerald);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 10pt;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.check-box {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border-hover);
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10pt;
+}
+
+.prompt-section {
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+  border: 1px solid var(--grape-border);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 20px 0;
+  page-break-inside: avoid;
+}
+
+.prompt-section h3 {
+  color: var(--grape-light);
+  margin-top: 0;
+  font-size: 14pt;
+}
+
+.prompt-instruction {
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 9pt;
+  color: var(--grape-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prompt-box {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 18px;
+  margin: 12px 0;
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.prompt-box strong { color: var(--grape-light); }
+
+ul, ol { margin: 8px 0 12px 18px; }
+li { margin-bottom: 3px; font-size: 10pt; color: var(--text-secondary); }
+
+.next-module {
+  background: var(--bg-card);
+  border: 1px solid var(--grape-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.next-module .next-icon { font-size: 20pt; }
+.next-module .next-text { flex: 1; }
+.next-module .next-label { font-size: 8.5pt; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.next-module .next-title { font-size: 12pt; font-weight: 600; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+  <div class="cover-decoration"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-badge">Módulo 11</div>
+  <div class="cover-title">Wrap-up<br><em>& Próximos Passos</em></div>
+  <div class="cover-subtitle">O que construímos, erros que cometi, custos reais e onde ir daqui</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Duração</span>
+      <span class="cover-meta-value">10 min</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Formato</span>
+      <span class="cover-meta-value">Talking head</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Total</span>
+      <span class="cover-meta-value">~3h35 curso</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 1 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 11 — Wrap-up</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title">O Que Construímos Juntos</div>
+
+  <div class="checklist">
+    <div class="checklist-title">✅ Jornada Completa</div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <span><strong>Módulo 1:</strong> VPS rodando + OpenClaw instalado + primeiro "oi"</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <span><strong>Módulo 2:</strong> Servidor blindado (UFW, Fail2ban, allowlist)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <span><strong>Módulo 3:</strong> Agente com personalidade (SOUL, USER, IDENTITY)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <span><strong>Módulo 4:</strong> Sistema de memória em camadas (daily → topic → MEMORY.md)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <span><strong>Módulo 5:</strong> Integrações (1Password, Google, YouTube, RapidAPI) + crons</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <span><strong>Módulo 6:</strong> Skills instaladas (superpoderes instantâneos)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <span><strong>Módulo 7:</strong> Heartbeats + automações proativas</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <span><strong>Módulo 8:</strong> Multi-agentes com leveling system</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <span><strong>Módulo 9:</strong> Sistema imunológico (watchdog, feedback loops, monitoring)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box">✓</div>
+      <span><strong>Módulo 10:</strong> Mission Control (painel visual)</span>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">🎉</div>
+    <div class="callout-content">
+      <strong>Parabéns!</strong>
+      <p>Você não tem mais um chatbot. Você tem um COO rodando 24/7.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 11 — Wrap-up</span>
+    <span class="page-footer-right">02</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 2 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 11 — Wrap-up</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Os Erros Que Eu Cometi (Pra Você Não Cometer)</h3>
+
+  <div class="card rose">
+    <div class="card-title">❌ Token Overflow no Dia 2</div>
+    <div class="card-desc">
+      Contexto explodiu pra 173k+ tokens. Agente ficou lento e caro. <strong>Solução:</strong> compactação diária + topic files + max 30 entradas.
+    </div>
+  </div>
+
+  <div class="card rose">
+    <div class="card-title">❌ Crons Que Não Executavam (3 dias)</div>
+    <div class="card-desc">
+      <code>systemEvent</code> + <code>main</code> = dispara mas NÃO executa (durationMs ~0ms). <strong>Solução:</strong> <code>isolated</code> + <code>agentTurn</code> + <code>announce</code>.
+    </div>
+  </div>
+
+  <div class="card rose">
+    <div class="card-title">❌ Sub-Agent Travado no Limbo</div>
+    <div class="card-desc">
+      Spawnei um agente pra gerar relatório. Ele falhou silenciosamente. Descobri 3 dias depois. <strong>Solução:</strong> sempre follow-up em 15-30min.
+    </div>
+  </div>
+
+  <div class="card rose">
+    <div class="card-title">❌ Security "Open" nos Primeiros Dias</div>
+    <div class="card-desc">
+      <code>dmPolicy: open</code> por 2 dias. Qualquer pessoa que achasse o bot poderia comandar. <strong>Solução:</strong> <code>allowlist</code> IMEDIATAMENTE após setup.
+    </div>
+  </div>
+
+  <div class="card rose">
+    <div class="card-title">❌ Consolidação Sem Extrair Lessons</div>
+    <div class="card-desc">
+      Compactei memória antes de extrair lições. Perdi 80% do valor. <strong>Solução:</strong> SEMPRE extrair decisões/lessons ANTES de compactar.
+    </div>
+  </div>
+
+  <div class="card rose">
+    <div class="card-title">❌ Systemd Override Sobrescreveu .env</div>
+    <div class="card-desc">
+      Mudei .env mas systemd tinha override com env antigo. Perdi tempo debugando. <strong>Solução:</strong> atualizar AMBOS (.env + systemd override).
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Lição Universal</strong>
+      <p>Todo erro aqui é evitável. Siga o curso, leia os PRDs, teste aos poucos.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 11 — Wrap-up</span>
+    <span class="page-footer-right">03</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 3 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 11 — Wrap-up</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Quanto Custa Rodar Um Agente AI? (Breakdown REAL)</h3>
+
+  <h4>Infraestrutura</h4>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Custo/mês</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>VPS Hostinger (KVM 1)</td>
+        <td>$5-10</td>
+      </tr>
+      <tr>
+        <td>Domínio (opcional)</td>
+        <td>$1-2/ano</td>
+      </tr>
+      <tr>
+        <td>Cloudflare Tunnel (opcional)</td>
+        <td>Grátis</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>APIs e Modelos</h4>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Uso</th>
+        <th>Modelo</th>
+        <th>Custo/mês</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Interação direta (~10-15 msgs/dia)</td>
+        <td>Opus</td>
+        <td>$15-25</td>
+      </tr>
+      <tr>
+        <td>Crons (17/dia)</td>
+        <td>Sonnet</td>
+        <td>$5-10</td>
+      </tr>
+      <tr>
+        <td>Heartbeats (4x/dia)</td>
+        <td>Haiku</td>
+        <td>$0.50-1</td>
+      </tr>
+      <tr>
+        <td>RapidAPI (YouTube, Instagram, X)</td>
+        <td>—</td>
+        <td>$0-20</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Ferramentas Externas (Opcionais)</h4>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Ferramenta</th>
+        <th>Custo/mês</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1Password (credenciais seguras)</td>
+        <td>$3-5</td>
+      </tr>
+      <tr>
+        <td>Supabase (database grátis)</td>
+        <td>Grátis</td>
+      </tr>
+      <tr>
+        <td>NocoDB (self-hosted)</td>
+        <td>Grátis</td>
+      </tr>
+      <tr>
+        <td>Notion (se escolher essa opção)</td>
+        <td>$0-10</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Total Mensal</h4>
+
+  <div class="comparison">
+    <div class="comparison-col bad">
+      <h4>❌ Sem Otimizar</h4>
+      <ul>
+        <li>Tudo em Opus</li>
+        <li>APIs pagas sem necessidade</li>
+        <li><strong>Total: $60-100/mês</strong></li>
+      </ul>
+    </div>
+    <div class="comparison-col good">
+      <h4>✅ Otimizado</h4>
+      <ul>
+        <li>Split Opus/Sonnet/Haiku</li>
+        <li>Tools grátis quando possível</li>
+        <li><strong>Total: $25-45/mês</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Perspectiva</strong>
+      <p>Menos que Netflix + Spotify. Mais barato que contratar um estagiário.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 11 — Wrap-up</span>
+    <span class="page-footer-right">04</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 4 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 11 — Wrap-up</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>10 Regras Invioláveis</h3>
+
+  <p>Aprenda com os erros de quem veio antes:</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">dmPolicy = allowlist SEMPRE</div>
+    <p>Nunca deixe "open" em produção. Qualquer pessoa pode comandar seu agente.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">Extrair lessons ANTES de compactar</div>
+    <p>Se não extrai antes de compactar, perde 80% do valor da memória.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">Crons = isolated + agentTurn + announce</div>
+    <p>systemEvent no main não executa. Só dispara e morre (durationMs ~0ms).</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-title">Split de modelos: Opus/Sonnet/Haiku</div>
+    <p>Interação = Opus, Crons = Sonnet, Heartbeats = Haiku. Economiza 70%+.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-title">Sub-agents SEMPRE com follow-up</div>
+    <p>Nunca "fire and forget". Checar em 15-30min ou vai pro limbo silencioso.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-title">Credenciais no 1Password, NUNCA hardcoded</div>
+    <p>Nem em .env exposto. Use 1Password CLI ou variáveis de ambiente.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">7</div>
+    <div class="step-title">Backup antes de mudanças estruturais</div>
+    <p>Config + memória + ROLLBACK.md. Se der ruim, você volta.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">8</div>
+    <div class="step-title">Security audit semanal automatizado</div>
+    <div class="step-title">Rate limits e budgets configurados</div>
+    <p>Previne runaway costs. Um bug não pode drenar $500 de API.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">10</div>
+    <div class="step-title">Feedback loops pra aprendizado contínuo</div>
+    <p>Agente que não lembra de approve/reject vai repetir erros pra sempre.</p>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 11 — Wrap-up</span>
+    <span class="page-footer-right">05</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 5 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 11 — Wrap-up</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Comunidade e Recursos</h3>
+
+  <div class="card grape">
+    <div class="card-title">🌐 OpenClaw Official</div>
+    <div class="card-desc">
+      <strong>Docs:</strong> docs.openclaw.ai<br>
+      <strong>GitHub:</strong> github.com/openclaw/openclaw<br>
+      <strong>Discord:</strong> discord.com/invite/clawd
+    </div>
+  </div>
+
+  <div class="card emerald">
+    <div class="card-title">🛠️ ClawHub</div>
+    <div class="card-desc">
+      <strong>Skills marketplace:</strong> clawhub.com<br>
+      Centenas de skills prontas pra instalar. Contribua com as suas!
+    </div>
+  </div>
+
+  <div class="card amber">
+    <div class="card-title">📚 Referências</div>
+    <div class="card-desc">
+      • <strong>Kevin Simback:</strong> Leveling system L1-L4<br>
+      • <strong>Bhanu Teja:</strong> Blueprint de 10 agentes (3.7M views)<br>
+      • <strong>Eric Siu:</strong> "30 OpenClaw Jobs A Day" — immune system<br>
+      • <strong>Reddit Ultimate Guide:</strong> r/ThinkingDeeplyAI<br>
+      • <strong>Simon Willison:</strong> Security research
+    </div>
+  </div>
+
+  <h3>O Futuro dos Agentes AI</h3>
+
+  <div class="card rose">
+    <div class="card-title">🔮 O Que Vem Por Aí</div>
+    <div class="card-desc">
+      • <strong>Agent-to-Agent Communication:</strong> agentes de diferentes pessoas conversando<br>
+      • <strong>MCP (Model Context Protocol):</strong> padrão universal de skills<br>
+      • <strong>Claude Code Integration:</strong> agentes que codam de verdade<br>
+      • <strong>Multi-Modal:</strong> visão, áudio, vídeo nativos<br>
+      • <strong>Edge Deployment:</strong> agentes rodando localmente (privacidade total)
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">🚀</div>
+    <div class="callout-content">
+      <strong>Você está na vanguarda</strong>
+      <p>A maioria das pessoas ainda usa ChatGPT como buscador glorificado. Você construiu um COO.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 11 — Wrap-up</span>
+    <span class="page-footer-right">06</span>
+  </div>
+</div>
+
+<!-- FINAL PAGE -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 11 — Wrap-up</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Próximos Passos</h3>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">Use Seu Agente Por 30 Dias</div>
+    <p>Teoria é importante. Prática é tudo. Converse, delegue, teste limites.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">Contribua com a Comunidade</div>
+    <p>Criou uma skill útil? Publique no ClawHub. Achou um bug? Reporte no GitHub. Aprendeu algo? Compartilhe no Discord.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">Expanda Gradualmente</div>
+    <p>Multi-agentes, mais integrações, Mission Control customizado. Mas devagar — não quebre o que já funciona.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-title">Documente Sua Jornada</div>
+    <p>Blog, Twitter, YouTube — conte sua história. Outros vão aprender com você.</p>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💬</div>
+    <div class="callout-content">
+      <strong>Feedback Pro Curso</strong>
+      <p>O que funcionou? O que faltou? Me manda no Discord ou Twitter. Esse curso evolui com feedback real.</p>
+    </div>
+  </div>
+
+  <h3>Última Mensagem</h3>
+
+  <div class="card grape">
+    <div class="card-desc">
+      Você não construiu só um agente AI. Você construiu uma <strong>extensão de você mesmo</strong>.<br><br>
+      
+      Use com sabedoria. Respeite a privacidade. Contribua com a comunidade.<br><br>
+      
+      E lembre: o agente é a ferramenta. <strong>Você é o mestre.</strong><br><br>
+      
+      Bem-vindo ao futuro. 🍇
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 40px; font-size: 14pt; color: var(--grape-light);">
+    <strong>Fim do Curso</strong><br>
+    <span style="font-size: 10pt; color: var(--text-muted);">Construa Seu AI COO: De Zero a Agente Pessoal com OpenClaw</span>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 11 — Wrap-up</span>
+    <span class="page-footer-right">07</span>
+  </div>
+</div>
+
+</body>
+</html>
