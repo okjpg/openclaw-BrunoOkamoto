@@ -1,0 +1,1228 @@
+Eu venho usando o Open Cla fazem duas
+semanas mais ou menos. E dá uma olhada
+aqui na minha tela no que eu construí
+até então, né? Então esse aqui é uma
+foto que eu fiz aqui no dia 6 de
+fevereiro, né? Já fazem três dias atrás
+que eu fiz aqui uma foto de como
+funciona o meu sistema de multiagentes,
+né? Então hoje eu tenho vários agentes
+no controle de missão que exercem um
+papel específico. Esses agentes têm uma
+hierarquia, esses agentes têm níveis de
+acesso, inclusive eles têm a opção de
+ser promovido ou ser rebaixados. Eu
+tenho como funciona toda a tarefa, né?
+como todos agentes se comunicam, fazem o
+trabalho e fazem revisão. Então, como
+que funciona, né, e a comunicação dos
+meus agentes, como que eles aprendem
+compartilhado, como funciona os Heart
+Beats, né, a questão de contextos e tudo
+mais. Então eu quero nesse vídeo de hoje
+trazer para vocês uma visão geral do que
+eu aprendi nessas duas semanas indo do
+absoluto zero e abrindo parênteses, não
+sou programador, não sou dev, então como
+uma pessoa leiga que nem eu, conseguiu
+ir do absoluto zero para uma versão
+avançada de multiagente. Eu quero passar
+por todas as etapas que eu recomendo que
+uma pessoa que esteja instalando o
+OpenCla passe, porque de fato é tantas
+possibilidades que às vezes eu mesmo me
+sinto sobrecarregado, porque eu fico:
+&quot;Não, deixa eu ir para cá, deixa eu ir
+para cá, deixa eu fazer isso, isso.&quot; Mas
+eu sinto que ao longo dessas duas
+semanas eu consegui seguir um padrão que
+me deu ali uma visão de blocos e me
+ajudou muito na construção do OpenCop.
+Então, se você tá nessa jornada de e de
+testar as coisas, de descobrir coisas
+novas, de criar coisas novas, esse vídeo
+aqui vai te dar vários insightes para
+você fazer com a sua ferramenta, beleza?
+Então, parte o vídeo de hoje.
+Então, se você chegou aqui no meu canal
+e você não me conhece ainda, deixa eu me
+apresentar. Eu sou o Bruno Camoto, que
+bom te ter aqui. E eu sou um
+empreendedor há mais de 12 anos, já
+passei por uma jornada de construir
+startups. Já tenho hoje dois microsas
+rodando, né? My Group Matrix e um
+Métricas. E agora eu tô nessa jornada de
+me tornar esse super empreendedor,
+porque eu sinto que o openla, né, o
+ex-cloud Bot, ele, cara, me trouxe
+ferramentas poderosíssimas. Então, para
+fins de contexto aqui, antes de eu
+começar o vídeo e fica tranquilo que eu
+já vou chegar lá, eu quero te explicar o
+meu nível de experiência técnica, né,
+para você entender da onde eu estou
+partindo. Então assim, eu uso muito o
+Cloud Code. Então, desde que eu conheci
+o Cloud Code, que foi, sei lá, em
+outubro do ano passado, então, de certa
+forma, ainda sou meio noob nesse
+aspecto, cara, revolucionou a minha
+vida, assim, desde que eu fui explorando
+o Cloud, é, cara, assim, aprendi muito,
+fiz vários sistemas, fiz vários
+planejamentos, implementei várias skills
+e quase levei um divórcio da minha
+esposa porque ela diz que eu não largo
+mais a IA, mas a real é que eu fiquei
+viciado nesse negócio e aposto também
+que você também ficou em algum momento
+dessa sua jornada de descoberta. E cara,
+assim, desde então eu vim explorando
+muita coisa, mas com o Clou, assim, eu
+sinto que eu virei um superempreendedor
+com o Clou, então eu conseguia criar
+muitas coisas, conseguia fazer muitas
+coisas interessantes, mas eu sinto que o
+Cloue tinha vários defeitos, né? Então
+ele sempre iniciava uma conversa do
+zero, eu sempre tinha que ficar
+resgatando os projetos, salvando as
+coisas, eu tinha que ficar trocando de e
+eh de AI o tempo inteiro, né? Então, às
+vezes eu queria gerar uma foto, eu
+queria usar o Gemini, às vezes eu tinha
+que usar o chat GPT. Então assim, eu
+tinha vários problemas que eu sentia que
+o cloud ele só funcionava bem na minha
+máquina assim. Então eu precisava ligar
+o computador e trabalhar para construir
+as coisas. Mas com o lançamento da
+OpenCall, eu fiquei assim, tá, será que
+é um hype mesmo? E aí eu comecei a
+testar a ferramenta, né? Então o que que
+eu fiz? Primeiro passo, eu eu vou até
+documentar isso aqui pra gente fazer um
+desenho junto aqui, tá? Então deixa eu
+abrir aqui meus frameworks e aí a gente
+vai fazer juntos aqui. Então assim, o
+que que eu fiz num primeiro passo, né?
+Então, eu comecei a estudar bastante
+sobre a OpenCla e aí eu cheguei à
+conclusão, eu falei assim: &quot;Tá, isso
+aqui realmente parece ser um assistente
+interessante, parece ser uma coisa
+bacana&quot;. Mas eu fiquei com muita dúvida
+se eu devia instalar ele localmente, se
+eu devia instalar ele localmente, se eu
+devia instalar ele numa VPS. Eu fiquei
+em dúvida se eu deveria comprar um
+computador velho, né, ou um Mac Mini, ou
+se eu deveria colocar numa VPS. Eu
+fiquei com dúvidas sobre, cara, como que
+eu cuido de segurança da minha
+ferramenta se eu não sou uma pessoa
+técnica? Eu fiquei com dúvidas sobre
+como eu configuro essa ferramenta,
+porque eu não sou uma pessoa técnica.
+Então, assim, eu fiquei com muitas
+dúvidas. E aí o que que eu fiz foi que
+ao lado dessas dúvidas e todas e todas
+essas pesquisas que eu fui fazendo, eu
+usei também o Cloud Code. Então eu
+peguei vários vários conteúdos que eu
+fui achando na internet, né, sobre
+seguros, sobre configurações,
+sobre conteúdos de criar agentes e
+multiiagentes, né, eu comecei a ler
+muito conteúdo sobre eh questão de
+segurança, né? Então começou a sair
+muitos papers de segurança e tal. E aí
+eu fui jogando tudo isso no Cloud Code e
+falei: &quot;Cloud, ó, monta aí um documento,
+né, um um um markdown pra gente ir
+documentando toda essa estrutura de como
+funciona o openaw&quot;. Então, o primeiro
+passo que eu fui fazendo foi criando uma
+base de conhecimento enquanto eu
+aprendia, né? E aí eu fui amadurecendo
+essa essa minha estrutura. Então, a
+configuração que eu decidi seguir foi a
+seguinte. O primeiro passo é que eu
+decidi que eu não ia gastar dinheiro com
+o computador, eu não ia fazer nada para
+ver se era na Hype, eu ia criar a minha
+estrutura numa VPS, né? Então uma VPS
+significa que, basicamente, eu ia criar
+minha estrutura num servidor online.
+Esse servidor online ele roda Linux e
+ele não tem interface, tá? Então assim,
+para você que é Lego em tec também é só
+importante você entender isso, tá?
+Porque eu não sabia disso e aí foi um
+trabalhão aprender tudo isso, né?
+Segundo ponto é de que ao instalar uma
+VPS você tem um desafio com as skills.
+Então assim, as skills, por exemplo, de
+você instalar numa máquina local, é que
+você sai instalando as skills e ela roda
+localmente na sua máquina, né? Então ela
+acessa seu Apple Notes, seu Calendar,
+ela acessa tudo. Agora, no AVPS as
+skills funcionam de forma diferente,
+então tem uma curva de aprendizado de
+como você implementar as skills e como
+liberar os acessos e tudo mais, né?
+Terceiro ponto aqui que eu quebrei a
+cabeça bastante aqui também foi a
+questão de browser, porque, cara, e eu
+tinha muita dificuldade de fazer eh o
+meu Cla se conectar num navegador e
+poder fazer as coisas, né? Outro ponto
+aqui que eu openei bastante é que eu não
+sabia acessar um terminal e fazer o
+conexão via SSH, que depois eu descobri
+que é ridicularmente fácil. Então, toda
+essa jornada, o que me ajudou muito
+nesse início foi de fato ter pego aqui o
+meu grande amigo Cloud Code e
+literalmente ter aberto ele numa janela
+do lado, meu navegador em outra. E eu
+fui, eu fiz o deploy na minha VPS. Então
+eu eu não vou fazer propaganda da VPS
+aqui, tanto faz a VPS, pode usar
+qualquer uma, mas assim, o que para mim
+me ajudou muito foi usado um Docker, tá?
+Então, e vou até colocar esse ponto
+aqui, porque eu testei instalar com
+Docker, né? E eu achei muito técnico o
+uso de Docker. Então, como eu não sou
+desenvolvedor, fiquei pelo menos um dia
+tentando configurar ali o meu open no
+Docker. E como ele tem muita isolação,
+ele ficava isolando meu sand box, ficava
+isolando minhas coisas, ficava isolando
+tudo. Eu tive muita dificuldade de fazer
+com Docker, então eu decidi seguir com
+Docker, né? Então eu instalei direto na
+VPS, tá? Então agora, dado esse contexto
+aqui, essa fotografia então de como
+fazer, inclusive se você tá nessa etapa
+aqui de eh instalar o seu OpenCla e você
+tá tipo: &quot;Putz, Bruno, mas eu não sei se
+eu vou pra esquerda ou pra direita. Eu
+até consegui instalar, mas não sei
+acessar o terminal, não sei instalar
+skills e tal&quot;. Cara, comenta aí, comenta
+aí que se você eh se tiver muitos
+comentários da dificuldade, eu faço um
+passo a passo para mostrar tudo isso.
+Mas, sinceramente, eu não decidi
+investir tanto tempo nesse sentido, mas
+inicial da coisa, porque tem tanto vídeo
+na internet que você pode seguir que
+você provavelmente consegue fazer isso.
+E não só tem muito vídeo, como você
+também consegue pegar o seu cloud, a sua
+open e literalmente pedir para ele te
+instruir passo a passo de como está no
+VPS, que foi literalmente o que eu fiz.
+Então ele basicamente me iguou nesse
+processo. Agora que a gente entendeu
+esse contexto aqui, vamos falar agora
+então sobre o que que é importante no
+OpenCl. Então eu decidi fazer uma
+análise no meu OpenC e eu vou mostrar
+para vocês primeiro como funciona a
+minha operação aqui, tá? Então essa aqui
+é a minha operação hoje, né? Então eu
+uso essa operação no Telegram, tá? Por
+que no Telegram? Então primeiro ponto,
+né? Depois que eu instalei aqui, a
+primeira coisa que eu fiz foi instalar
+no Telegram. Vamos colocar aqui instalar
+no Telegram. E esse aqui foi uma dica
+muito legal que eu vi na internet, né?
+Por que não WhatsApp? A diferença do
+Telegram e do WhatsApp é que o problema
+é que assim, hoje o Telegram você
+consegue criar grupos e você consegue é
+ter vários tópicos e cada tópico ele é
+uma
+nova sessão. Então, se você tem vários
+tópicos, você consegue abrir várias
+sessões diferentes e iniciar conversas
+diferentes. Isso ponto positivo, né? Já
+o WhatsApp ele tem uma única conversa.
+OSAP ele é uma única conversa, então ele
+tem uma única
+sessão. Então quando você vai
+conversando com o WhatsApp, você vai
+sobrecarregando aquele contexto com
+várias informações e pedidos diferentes,
+né? Então você fala ali com aquele
+agente, fala: &quot;Cria uma land page, coda
+isso, faz isso aqui, faz scrapping de
+lá, puxa conteúdo aqui, faz brainstorm
+comigo&quot;. E aí você vai sobrecarregando
+aquele contexto com muitas informações e
+ele vai empilhando as coisas, virando
+uma zona. Então, instalar no Telegram
+faz muito mais sentido, porque você
+consegue ter múltiplas conversas. Eu
+sei, galera, eu sei o que você tá
+pensando. Pô, o cara pausou o vídeo para
+falar sobre o patrocinador vídeo de hoje
+e é exatamente por isso que você tá
+vendo esse rápido anúncio aqui. O Crispy
+é o grande patrocinador do vídeo de hoje
+e é uma empresa sensacional. Eu uso há
+mais de um ano para cuidar de todas as
+minhas redes sociais, todos os meus
+suportes, todos os meus micros. Se você
+tem essa dor aqui que eu vou te mostrar
+o crisper para você. O que acontece aqui
+dentro da plataforma é que eu tenho
+muitas e muitas mensagens todos os dias
+de todos os canais, de todas as redes
+sociais e é muita gente mandando
+mensagem. E uma coisa que me ajudou
+demais no Crispy é que eu consegui
+plugar todas as minhas redes sociais
+numa única plataforma e hoje eu uso o
+Magic Reply deles e eu consigo hoje
+criar com inteligência artificial plugar
+uma base de conhecimento com todos os
+meus conteúdos do YouTube, da minha
+newsletter de tudo para responder as
+pessoas aqui automaticamente aqui dentro
+e me economizar um tempo danado. Então
+se você lida com um volume muito grande
+de leads ou mensagens em múltiplas redes
+sociais, eu te convido para conhecer o
+Crisp, beleza? De volta pro vídeo de
+hoje, galera. Então, o meu HQ ele
+consiste basicamente em ter um canal de
+geral, aonde eu converso com o meu
+agente e aí toda vez que eu termino uma
+conversa, eu falo para ele eh esse new,
+então ele compacta a sessão e ele começa
+a sessão de novo, né? Então só para dar
+um contexto, eu até e tava até
+conversando com o meu agente hoje, né?
+Com quantos tokens tá definido a nossa
+compactação. Então ele compacta a minha
+conversa com 160.000 tokens e ele deixa
+reservado 30.000 tokens. Ou seja, quando
+o sistema ele encher com 160.000 tokens,
+vocês tem uma compacta com 30.000 tokens
+livres. Então, só para explicar o que
+que significa isso. Significa que se eu
+tô codando ou eu tô fazendo um
+planejamento, tô montando algum
+documento e ele precisa compactar a
+conversa, antes dele começar essa
+compactação, ele tem essa reserva de
+30.000 tokens para ele concluir aquele
+raciocínio ou que a gente tava fazendo.
+Então, é super legal isso, ajuda
+bastante, tá? E aí o que acontece, né?
+Quando o ele compacta as conversas, né?
+O que que ele faz? Ele cria a memória
+com a nota do dia, ele tira dessa
+conversa compactada as lições aprendidas
+e ele tira as decisões, né? Então, toda
+vez que ele compactar uma conversa, ele
+eh obrigatoriamente cria esses três
+arquivos, tá? Então, eu até dei aqui um
+um reenforço aqui nisso aqui. Eu falei
+assim, ó, quero criar uma nova regra,
+quero que você obrigatoriamente sempre
+tire as lessons e decisions antes de
+compactar. Nunca esqueça disso, é muito
+importante. E aí ele falou: &quot;Bruna, essa
+regra já existe como uma regra
+inviolável&quot;. Ou seja, antes de cada
+compactação de sessão, executar a
+checklist de extração, lessons,
+decisions, people, projects e pending,
+né? E aí ele faz isso, tá? Então, aí eu
+fui lá e aí dei um novo start aqui para
+reiniciar a mod. Então, eu tenho um
+canal de produção de conteúdo, de
+skills, métricas e tal e assim por
+diante. Então, vou dar para vocês aqui
+uma explicação. Então, você instalou
+agora a sua ferramenta, você criou a sua
+conta no Telegram. Então, antes de você
+sair criando seus vários grupos com seu
+agente e você começar a pirar nas suas
+questões, vamos pensar em camadas, tá? E
+aqui eu fiz aqui um documento usando a
+própria Amora para falar da jornada, do
+que que eu acho que é importante vocês
+seguirem, tá bom? Então vamos etapa por
+etapa. O primeiro passo é que você fez
+isso que eu sugeri para você. Então você
+instalou, você conectou ele no tag, no
+WhatsApp, você mandou um oi, ele
+funciona, mas ele é genérico, então ele
+não sabe nada sobre você. Então
+basicamente você fez o npm install, né?
+você seguiu o setup dele, colocou num
+numa rede social, né, num canal e assim,
+beleza? Então, a primeira coisa que eu
+recomendo para vocês é vocês criarem os
+arquivos que tem dentro do seu agente.
+Então, basicamente você vai pegar a sua
+ferramenta e você vai falar assim, ó,
+abra seus arquivos soul.
+Agents.m,
+tools.
+Qual que é o outro? user.md.
+me explique o que tem dentro de cada
+arquivo dash. Então, a primeira coisa
+que vocês têm que fazer nesse e nesse
+primeiro momento é vocês configurarem a
+identidade da do seu assistente. Então,
+ele precisa te conhecer, você precisa
+conhecer ele, então vocês precisam eh
+trocar experiências. Então, nesse
+contexto, o que que eu fiz, né? Nesse
+caso, eu pedi para esse agente, né, pra
+Mora aqui, ó, aqui tem um exemplo, tá?
+Então, aqui é um exemplo de sou, né? Eu
+não sei se eu consigo fazer mais um
+aqui, mas esse aqui é, acho que dá para
+ler, né? Então assim, eu fiz um uma
+personalidade para ela, né? Então eu sou
+a Amora, eu defino, né, minha
+personalidade de valores. Então eu sou
+amora, tenho 37 anos, sou a CEO do
+Bruno, tenho um tom, minhas
+responsabilidades e tudo mais. Então,
+como eu funciono? Então, aqui é um
+manual de como ela funciona, né? Então,
+toda vez quando você for iniciar uma
+sessão, você lê o sou, você o user, lê o
+user, lê a memória recente, você entende
+como funciona a memória, você revisa as
+notas diárias. Então eu sempre peço para
+ela revisitar as notas diárias de dois
+dias antes para ela entender tudo que
+aconteceu uns dois dias antes. Então ela
+tem as regras de segurança, o que eu
+posso fazer sozinha, o que eu preciso
+perguntar. Então você define isso com
+ela. Aí você fala para mim: &quot;Tá, mas
+Bruno, como eu defino qual que é a
+melhor configuração de agents? Qual que
+é a melhor configuração de Soul?&quot; Cara,
+pergunta para ela mesmo. Fala assim: &quot;É,
+no caso da minha assistente se chama
+Mora. Fala: &quot;Mora, eu preciso configurar
+o Sou. O que que você me recomenda? Me
+faça perguntas pra gente construir o Sou
+juntos.&quot; Então o segredo é você sempre
+falar para ela te fazer perguntas e ela
+vai te perguntando as coisas, você vai
+respondendo e ela vai construindo as
+coisas, tá? Então vocês podem fazer esse
+primeiro passo aqui, que é preencher
+esses dados aqui e dar personalidade
+para ela. Uma coisa que eu fiz também,
+que foi muito legal foi que no caso,
+como eu uso Cloud, eu peguei o arquivo
+do cloud.m ele já tinha já toda uma
+interpretação de quem era o Bruno, das
+minhas regras, de como eu gosto de
+trabalhar, das coisas. Então eu já
+joguei o cloud.m aqui dentro e ela já
+tem uma ideia de quem sou eu, né? Então
+ela já tem uma ideia aqui de quem é o
+Bruno, minha comunidade, meus filhos,
+minhas finanças e tudo mais, né? Então o
+que que eu fiz, né? Além de pegar o
+cloud. MD, eu peguei eh e dei para ela
+várias informações, né? Então eu subi
+meu repositório do GitHub eh eu subi
+várias informações e falei: &quot;Ó, tá aqui
+minhas finanças, tá aqui minhas coisas&quot;.
+Então eu fui dando dados porque no final
+do dia eu trato a Mora como se fosse uma
+funcionária. Então eu contratei a Mora e
+eu comecei a treinar a Mora e falar:
+olha isso aqui sou eu, eu gosto disso,
+eu não gosto disso, isso aqui é o que eu
+faço, isso aqui é blá blá. Então eu
+literalmente eu trato ela como uma
+pessoa, não como um robô. Então eu tomei
+tempo para ensinar as coisas para ela
+com o contexto, né? Ensinar as coisas
+para ela sobre a minha empresa, minha
+operação e tudo mais. Às vezes, cara, eu
+tava no Uber e eu ficava mandando áudio
+no Uber aqui de 20 minutos assim,
+falando: &quot;Ah, bá&quot;. E minha operação
+funciona assim, meus produtos funcionam
+assim e tal. Então, lembre-se, né, eu
+não sei se você é da era do Tamagosh,
+né? Eu sou, eu já sou um semivelho, era
+do Tamagos. Então, trata essa mora como
+seu tamagos, entendeu? Vai lá, dá uma
+comidinha, alimenta, conversa, trata
+carinho, porque no final do dia ela vai
+ficando cada vez mais inteligente. Uma
+vez que você deu esse contexto e essa
+identidade pra sua gente, você entra na
+terceira etapa, que é onde você dá
+memória. Então, a memória é onde você
+configura como vai funcionar a memória
+dela, né? Então vamos perguntar aqui me
+explique em detalhes como funciona sua
+memória. Se possível me dê um mocapar
+em um vídeo do YouTube e aí a amora vai
+gerar um mockup de memória. Aqui
+enquanto a gente espera a Mora gerar o
+mocap da memória para vocês entenderem,
+vamos voltar aqui a atualizar nosso
+quadrinho, né? Então o primeiro passo
+foi você criar essa jornada aqui de
+instalar ela no Telegram, tá? O segundo
+passo que vocês têm que fazer aqui é
+vocês
+criarem a identidade da sua assistente,
+mas treinar com quem é você e seu dia a
+dia. Então, quanto mais contexto, quanto
+mais informações você der pra pessoa,
+melhor, né? Então, aqui é o que a gente
+falou de você criar os docs, né, do
+Soul, do agents, Tools, é, do users,
+etc. Então você cria esses agentes e se
+você não souber como criar esses
+agentes, você fala assim: &quot;Me faça
+perguntas para me ajudar a criar esses
+arquivos, né?&quot; Então você faz perguntas
+e aí ela você vai você vai respondendo
+ela e ela vai construindo esses
+documentos. Ah, Bruno, mas como que eu
+vou saber quais tools eu preciso pôr ou
+quais agents users? Cara, usa o padrão
+no início, não tem problema. Então, o
+que ela recomendar de início, bota lá,
+porque depois você vai atualizando, não
+tem problema nenhum, tá? Então, agora
+que a gente preencheu isso aqui, vamos
+ver aqui agora. Amora gerou aqui o
+mocap. Gere o mocap em HTML. Tá, vamos
+lá. Aqui então sobre a memória, né?
+Então, deixa eu ver se ela colocou aqui
+em Mocapia. Ah, ele tá no root, né? Me
+manda por aqui. Eu vou pedir para mandar
+aqui o documento, tá? Aí a gente abre
+ele aqui e faz uma visualização
+completinha. Isso é muito legal, né?
+Fala sério. Então, como funciona a
+memória da Amora?
+Olha, cara, ela fez um designzinho maió
+bonitinho, né? Isso é muito Então,
+como a Amora lembra de tudo, né? Então,
+o problema é que a modelos como IA,
+Cloud, já não tem memória entre sessões,
+então cada conversa começa com
+absolutamente zero. Eu não sei quem é o
+Bruno, conhece outros projetos e tal.
+Então, sem o sistema externo de memória,
+a sessão ela é um Alzheimer Reset, a
+solução memória em camadas. Então, como
+que eu fiz? É a memória é o seguinte,
+né? Então, cada sessão eu gero uma nova
+memória, né? Então, eu pedi para esse
+esse essa sessão toda vez que ela
+compactar que ele extraia essas
+informações. Então, antes de compactar
+você vai extrair aqui as decisões, as
+ideias foram resolvidas as lições.
+Depois, eu também tenho memórias baseado
+em notas diárias. Então, todos os dias a
+meia-noite ele vai compactar aquela
+memória, né? Ele vai salvar aquele MD
+sobre tudo que aconteceu aquele dia sem
+uma curadoria, né? A cada 15 dias, ele
+vai analisar as notas diárias. Então,
+ele vai rever todas as notas diárias
+salvas e ele vai, de novo, extrair os
+projetos, as decisões, as lições, as
+pessoas, pendências que não foram
+extraídas quando compactou a sessão.
+Porque às vezes acontece, às vezes a
+própria IA já me falou que ela esqueceu
+de de extrair as coisas. Então, às vezes
+a IA esquece, mesmo sendo uma ordem
+irrevogável, ela ainda esquece às vezes.
+É incrível isso. E aí eu tenho o
+memory.md, que é onde faz o sumário
+executivo de tudo, estado dos projetos,
+links e tal. Lembrando que o arquivo de
+memória ele não pode ser muito grande,
+então eu sempre tento quebrar ela em
+várias categorias para não ficar grande
+o arquivo, né? Então aqui, por exemplo,
+a gente tem aqui, né, e o a memória de
+projetos, a memória de decisions, a
+memória de lesions, a memória de
+diárias, projetos pendentes e a pessoas,
+né? Então, quem faz o que da minha
+equipe, né? E aí, cara, como que eu
+faço, né? Eu tenho aqui a Amora, que ela
+é a minha assistente, então ela tem a
+sua identidade, o seu usuário, né, que é
+meus dados aqui no caso, a sua memória e
+as suas ferramentas, né? E aí quando ela
+precisa, ou seja, quando eu pergunto
+para ela, amora, o que que a gente tem
+de projetos? Ou eu rodo um Chrome ou eu
+rodo um Hertbit para saber o que que
+está em aberto? Ela me fala: &quot;Você tem
+esses projetos em aberto? Essas lições
+foram que você aprendeu, essas pessoas e
+tudo mais, tá? Então aqui é uma ideia&quot;.
+Então o que que isso significa, né?
+Então o o negócio da compactação, vamos
+falar um pouco de compactação. Então
+significa o seguinte, quando a ela
+começa a criar aquele espaço dos 200.000
+tokens por mês, quando ela bate 60.000
+Tox na sessão ele faz esse capability
+evolver, né? Então ele analisa essa
+sessão, cria padrões e destrincha essa
+memória, né? Ele também faz essa
+extração manual, né, que ela faz. Não
+sei porque ela colocou manual, porque
+não é manual, tem a nota diária e ela
+nunca pula, né? Então, se ela compactar
+sem extrair, a gente perde grande parte
+do conteúdo. Por isso que eu deixo, eh,
+rodando essa visão aqui de a cada 15
+dias, né, que é periodicamente, para ela
+rever as anotações, para ver se a gente
+não deixou nada, porque às vezes ela
+compacta e perde, tá? Então aqui é um
+exemplo da minha memória de hoje. Então
+assim, parece complexo, ah, um pouco
+assim, mas no final do dia, se você
+apresentar pr pra sua personal, né, essa
+minha estrutura, você pegar a
+transcrição desse meu vídeo aqui e jogar
+para ela, ela consegue criar essa mesma
+estrutura de memória lá dentro. Mas no
+final é isso aqui, né? Então você tem
+uma memória para jogar todas as coisas,
+uma memória de notas diárias, é uma
+compactação de uma consolidação, eh, a
+cada 15 dias, no caso que eu deixo, você
+pode deixar semanal, tanto faz. E a
+memória onde se a gente vai olhar tudo,
+né? Então, depois que você criou a sua
+identidade e tudo, você, o terceiro
+passo que você vai fazer aqui é você vai
+criar o sistema de memória, tá? Então, o
+sistema de memória é muito importante
+nesse momento aqui. Então, o sistema de
+memória, né? Então, o sistema de
+memória. E aqui eu tenho uma versão que
+ela me deu em texto aqui também que ele
+não está deixando eu abrir por algum
+motivo. Então, também tem a versão de
+texto, né? Então, ela diz aqui, né?
+Sessão um, sessão dois, sessão três,
+sessão 4 do memory, né? Então, conversa,
+nota diária, consolidação, topic file
+curado, atualização, memory, né? Então,
+na prática, hoje eu fiz audit workspace,
+reorganizei passa, aprendi que delete
+documentos do craft é perigoso, tudo
+isso tá em lições aprendidas e tal.
+Então, ela literalmente ela acessou uma
+ferramenta minha, deletou um documento
+que não podia, eu dei uma bronca nela,
+ela aprendeu essa lição, salvou essa
+lição.
+Ai, ai. Depois vamos voltar aqui para o
+nosso conteúdo aqui da jornada aqui, né?
+Então, depois que a gente seguiu aqui, a
+gente deu a memória, a gente começa a
+instalar as ferramentas, né? Então, um
+próximo passo aqui, depois que você
+criou o sistema de memória, é a gente
+começar a instalar as ferramentas,
+ferramentas, APS e etc. Então assim, eh,
+por que, né, ferramentas? Porque a
+ferramentas ela é aquele tools, né, que
+a gente usa. Então, antes de você sair
+falando assim: &quot;Não, deixa eu já plugar
+aqui a minha assistente no YouTube para
+puxar métricas e tal&quot;. Calma, jovem
+Padawan. Calma, vamos por etapas, né?
+Primeiro arruma a fundação da sua
+assistente, né? Cria a identidade dela,
+cria a dinâmica de memória, porque senão
+você vai começar a plugar um monte de
+coisa nela e ela, cara, vai se perder
+inteira, vai esquecer das paradas e tal.
+Então, faz o feijãozinho com arroz bem
+feito, tá bom? Então, jovem padauan,
+depois que você instalou, depois que
+você configurou a memória, você começa a
+instalar as ferramentas, tá? Então, o
+que que eu fiz aqui? Eu criei aqui um
+canal aqui dentro da do meu Telegram,
+né, onde está chamado skills. E aqui
+dentro do Skills, eu comecei a instalar
+todas as minhas ferramentas, né? Então
+eu comecei a instalar várias coisas, tá?
+Abra para mim uma lista de todas skills
+e APIs instaladas. Então eu cheguei aqui
+para esse skills e falei assim: &quot;Olha,
+eu tenho uma comunidade aqui de
+Microsas, que é essa comunidade aqui e
+aqui dentro tem 20.000 pessoas. Eu quero
+instalar a PI do Circle aqui dentro pra
+gente puxar dados automatizados da PI do
+Circle. E aí ela chegou e falou assim:
+&quot;Ah, já encontrei a P do Circle, preciso
+que você faça isso aqui para pegar esses
+dados&quot;. Então ela pegou ali, colocou
+todas essas informações e passou para
+mim, né? Então aqui, ó, vamos colocar
+aqui, ó. Então ela pegou aqui, né?
+Skills, então one password. Então, por
+exemplo, toda API e toda senha que eu
+pego, ela não faz em hard nos seus
+arquivos, ela salva no unpassword.
+Então, inclusive, uma coisa que eu até
+deixei passar aqui nessa apresentação é
+que na hora que vocês estão criando uma
+identidade, uma coisa que eu fiz aqui
+paraa Mora foi que ela tem um e-mail
+próprio, ela tem um login senha próprio
+nas suas coisas, né? Então aqui no meu
+caso é assistente
+assist.
+Eu não consigo escrever e falar ao mesmo
+tempo, cara.
+assistente.camoto@gmail.com.
+Então, no caso, esse aqui é o e-mail da
+minha assistente. Aí, depois eu criei um
+cofre compartilhado no One Password.
+Depois eu coloquei para ela tipo acesso
+como visualização,
+edição de itens na agenda. Depois eu fiz
+forward em e-mails. Então eu fui fazendo
+as coisas aos poucos aqui. Mas o mais
+importante de novo é que eu tratei ela
+como uma pessoa. Então ela tem um e-mail
+próprio, ela tem um cofre de senhas, ela
+tem tudo próprio, tá? Então depois que
+você começa a instalar as ferramentas e
+APIs, né? Então aqui no caso eu coloquei
+a open AI para mandar áudio, coloquei
+aqui tipo e uma skill chamado auto
+updator, que daí eu também posso fazer
+um vídeo se vocês quiserem sobre como
+ela se autoatualiza, como que ela
+desenvolve ela mesma, né? Então eu
+coloquei ali várias coisas para ela
+fazer nela mesmo, né? Então aqui só para
+dar um um contexto rápido, né? Então,
+por exemplo, ó, eh, aqui no self
+updates, né? Então, eu coloquei aqui
+para além dela gerar relatórios, ela
+sincroniza todos os dados dela com
+GitHub, né? Ela faz um auto update para
+ela fazer uma atualização diária, ela
+faz um daily config review, né? Então
+ela olha se dentro de tudo que ela
+criou, o que que tá parado, o que que
+não tá parado, o que que a gente pode
+excluir e tal, ela audita os arquivos
+dela dos Soul, Tools, agents, né? Então
+ela fica sempre auditando. Eu coloquei
+uma revisão de segurança diária, então
+ela fica testando as minhas portas, ela
+vê se tem alguma coisa vazando, se tem
+alguma coisa em aberto. Então eu criei
+várias eh vários e formas de
+autoatualizações e auto updates aqui
+dentro, né? Então eh de novo, voltando
+pro tema de skills, então você vai
+criando essas skills, né? Então eu fui
+plugando todas as coisas aos poucos, né?
+Pluguei a API, criei e skill de excol
+draw para desenhar as coisas, skill de
+front end e tal. E aí você fala assim:
+&quot;Mas Bruno, como eu implemento uma
+skill?&quot; Cara, é muito simples. Você
+copia o link do diretório do GitHub e
+fala para ela: &quot;Aprenda essa habilidade&quot;
+e ela vai aprender. Cara, parece mágica
+assim. E aí você vai instalando as
+coisas aqui. E aí o que eu fiz foi
+colocando várias chaves de APIs. Então
+eu coloquei API do Gemini, coloquei API
+do chat GPT, coloquei várias APIs aqui
+para quando eu quiser mudar, né? Outra
+coisa é que eu também, né, criei essa
+minha e meu cofre no One Password, então
+ela salva todas as APIs direto aqui
+nesse meu One Password, né? Então ela
+deixa tudo aqui salvo aqui. Então a
+primeira coisa que vocês têm que fazer é
+ir colocando e configurando tudo aqui
+dentro, né? Então você vai colocando as
+ferramentas e tal. Então, no final do
+dia, o que você tá dando aqui para ela é
+que você tá dando para ela a chave das
+suas coisas, né? Então, você tá dando
+para ela a chave e, cara, dá para fazer
+muita coisa legal aqui dentro. É
+surreal, né? Por exemplo, eu tenho uma
+comunidade com 20.000 pessoas aqui, ó.
+Achei o tópico que eu tinha falado que
+tinha deletado, mas tá aqui. Então, eu
+cheguei para ela e falei assim: &quot;Tá
+rolando spam na comunidade, tem muitos
+posts duplicados, me dá um overview&quot;. Aí
+ela respondeu assim: &quot;Analisei 345 posts
+dos últimos 60 dias, todos espaços
+principais. Resumo, spam puro não, mas
+tem uns padrões de atenções, cross
+posting, repetição, números de cara,
+olha que Hoje eu pago uma pessoa
+para fazer isso, isso ela me entregou
+isso no Telegram, né? Aí outras coisas
+que dá para fazer aqui, né? Então eu
+pluguei aqui, por exemplo, é outra coisa
+aqui de métricas, né? Então ela puxa
+métricas dos meus SAS, ela puxa análises
+das minhas ferramentas, né? Então aqui
+eu pluguei o relatório do meu MR, do meu
+SAS, mas isso aqui é uma ferramenta,
+você pode plugar no seu Google
+Analytics, você pode plugar ela
+literalmente qualquer lugar, inclusive
+eu pluguei ela na minha ferramenta de
+customer success, né, de suporte. Então
+eu consigo fazer identificar padrões nos
+tickets, né, quais tipos de suporte mais
+aparecem, quais as principais
+reclamações, tal. Cara, dá para pirar em
+muita coisa aqui. Sério, dá para vocês
+plugarem muitas métricas aqui. Outra
+coisas de métricas que eu pluguei, super
+legal, eu pedi para, eu pluguei ela na
+API do meu YouTube, pluguei ela na API,
+eh, e, eu dei para ela, criei um login
+para ela no meu LinkedIn e pluguei uma
+API do Instagram, plugin API do Ex.
+Então, todos os dias ela roda um daily
+report das minhas redes sociais, dos
+conteúdos que estão performando bem, do
+que que não tá. dentro da p do YouTube,
+ela faz um Chrom para ver concorrentes,
+o que a galera tá postando, trazer
+ideias de conteúdo. Sim, cara, infinitas
+possibilidades, infinitas assim. Então,
+aqui dentro, por exemplo, é só um
+exemplo aqui, né, de APS que eu
+conectei. Então, é literalmente a chave
+das coisas. Então, esse processo aqui
+inteiro de dar ferramentas é um processo
+demorado, entendeu? Aqui eu só aqui eu
+já fiquei uma semana pensando e e
+plugando as coisas e tal, porque, cara,
+é muita coisa, muita coisa. Então você
+tem que pensar em tudo isso, ah, One
+Password aqui e tal, muito trabalho,
+entendeu? Aí depois que eu terminei essa
+saga de ferramentas e comecei a montar
+os canais, né, e tal, é, eu comecei a
+testar mais as coisas. Então, eu criei
+um canal pro Circle, criei criei um
+canal para ela ver meus e-mails, criei a
+um canal de Deep Research, então ela
+pluga aqui no Brave Browser, ela pluga
+no Perplexity, então ela faz uma
+pesquisa profunda sobre qualquer tópico
+que eu perguntar para ela. Então eu fiz
+aqui, né, uma pergunta aqui para ela
+sobre uma viagem, né, que a gente queria
+saber quanto custa, né? Então eu mandei
+aqui para ela aqui, né, inclusive aqui
+eu falei assim, ó, quero saber quanto
+custa um orçamento para Naná e Muro
+Alto, quatro pessoas, quatro, cinco
+noites, né? E aí ela fez aqui uma
+pesquisa, só que no caso ela só
+pesquisou no site oficial do Nanai, né?
+Então não valeu muito a pena. Mas assim,
+vamos pegar uma pesquisa mais profunda
+aqui para vocês verem. Aqui ó, pesquisa
+profunda sobre thinking mode rodando.
+Então o legal é que ela faz um spaw de
+subagentes e esses suagentes fazem uma
+pesquisa, né? Então ela fez aqui uma
+pesquisa, né? Como podemos melhorar o
+nosso thinking quando devemos aplicar?
+Porque no caso do OpenClow ele não tem
+esse thinking igual o do Opus 4.6 que
+ele decide quando fazer ou não. Você tem
+que definir aqui para ela, né? Então ela
+faz esse Deep Research, né? E ela
+analisa tudo, faz uma de uma
+pesquisa. Então muito legal aqui ter um
+canal aqui de pesquisa profunda também
+de Deep Research, né? Então você vai
+criando as essas chaves, esses acessos e
+você vai criando as ferramentas e aí
+você vai testando. Então nessa etapa
+aqui, eu diria que você já demorou uma
+semana aqui, 10 dias para você ir
+plugando tudo, você testando as coisas,
+você vendo quais ferramentas ela entra
+ou não, você vai limitando os acessos,
+né? Então lembre-se que é um trabalho de
+construção, né? Então, primeiro você vai
+integrar com Google Drive, com Google
+Sheets, com Gmail. Aí você vai falar:
+&quot;Putz, mas não tô conseguindo&quot;. Daí você
+vai demorar um tempinho para aprender.
+Aí você vai indo aos poucos, né? É uma
+jornadinha aqui. Depois que você fez
+essa jornada de ferramentas, você começa
+a criar a estrutura de proatividade
+dela. Então, onde você começa a
+configurar o Heart Beats e o Chromes,
+né? Então, Heart Beat são automações,
+que é tipo se acontecer isso, então
+fazer isso, né? Então, se acontecer uma
+ação, você faz essa ação. Já o Chrons,
+eles são agendamentos, né? Então, todo
+dia às 9 horas da manhã me enviar um
+reporte. Então, é aqui onde você começa
+a criar coisas, né? Então, aqui é onde
+você começa a criar lembretes, reportes,
+né? Então vamos pedir aqui pra Mora aqui
+de novo, né? Amora, me liste todos os
+crones e hearts
+que temos ligados. Então, ela vai pegar
+aqui enquanto ela pega, né? Mas
+basicamente é isso aqui. Então, selfie
+update, né? Ata atualização é um Chrom,
+eh, fazer backup no GitHub, verificar
+Supas, calendário, fazer scrapping de
+conteúdo, eh, lembretes, ã, agenda, tudo
+isso é baseado nesse Heartbeat, nesse
+Chrome. Cara, é muito legal isso porque
+de certa forma eu sinto que é como se
+fosse uma estrutura inteira de N8N
+rodando de automações e tal por comandos
+de voz. Então eu literalmente eu pego o
+meu celular e falo: &quot;Amora, faz isso,
+agenda isso, faz isso&quot;. E aí funciona
+maravilhosamente assim, parece mágica.
+Então aqui, por exemplo, alguns exemplos
+de heart bits, né? Então aqui ele muda,
+né? Eh, o meu modelo, então para
+economizar tokens, né? Eu ligo o Haiko
+aqui. Eh, e ele também tem uma checklist
+que ele dá uma olhada se eu tenho
+compromissos, pendências e tal. Então,
+se eu tenho um compromisso na agenda, se
+eu peço para ela me lembrar alguma
+coisa, tem esse heart bit, né? Agora,
+esses crons diários é o que ele faz, né?
+Então eu faço um diejust de conteúdo
+aqui, né? Então ele analisa Reddit,
+YouTube, newsletter para trazer para mim
+é conteúdo de vários tópicos e
+seguidores que eu faço. Ele faz uma
+própria atualização dele mesmo para
+fazer a última versão do GitHub e
+atualiza as skills. Ele roda também esse
+config review, né? Então ele olha a
+configuração e o safety, né, dele. Eu
+também tenho os Chromes daí semanais,
+onde ele traz métricas do meu SAS, ele
+traz e eh vídeos de concorrentes,
+vídeos, revisão de projetos. Então eu
+pedi para ele criar um Chrome para ele
+semanalmente analisar todos os projetos
+que durante cinco dias a gente não fez
+nada. E aí ele fala: &quot;Ó, esses projetos
+estão sem trabalhar, vamos limpar eles,
+vamos pôr eles no no loop. E aí que você
+vai fazer?&quot; Eu rodo um audit de
+segurança mais completo, então além do
+diário, eu rodo um semanal mais profundo
+também. E você vai falar assim para mim:
+&quot;Mas Bruno, como que você sabe que tipo
+de audit de segurança rodar?&quot; Cara, é
+muito simples. Eu usei meu canal do Deep
+Research, falei assim: &quot;Pesquisa na
+internet papers e conteúdos longos e
+profundos sobre segurança do OpenCla. E
+aí eu quero que você crie para mim um
+processo de revisão de segurança, tá?
+Uma outra coisa que é muito importante
+também, que eu pedi para ela fazer
+sozinho, é que ela roda aqui no meu é
+terminal de SSH, né? Então ele abre aqui
+o meu a minha VPS, né? eu conecto nela
+aqui embaixo e aí eu rodo também esse
+comando aqui chamado Open Claw Security
+Audit. E aí ele também pode fazer isso,
+você pode pedir pra Mora fazer isso, né?
+Então ela faz esse audit de segurança e
+ela olha o que que tem aqui nas coisas
+aqui dentro e depois eu rodo esse open
+claw Doctor Fix e ele também conserta as
+coisas automaticamente. Então você pode
+rodar isso aqui, ele identifica, olha,
+plugins estão dando erros, o que que tá
+tá segurança, blá blá. Então você pode
+rodar isso aqui também. Eu pedi pra Mora
+rodar esse audit e essa questão, né?
+Então isso aqui é só umas sugestões de
+coisas que vocês podem fazer para dar
+autonomia pro seu agente. E aí a gente
+entra na próxima etapa, na minha visão,
+na etapa seis, que é você começar a
+criar a sua equipe. Então o que que eu
+fiz aqui para eu começar a criar minha
+equipe? E de vez eu chegar pra Amora e
+falar: &quot;Amora, crie um agente de
+brainstorm, cria um agente de métricas,
+cria um agente de auto update.&quot; Eu criei
+um agente criador de agente. Então eu
+criei aqui esse agente aqui que está
+aonde? Meu agente criador de agente
+aqui. É, não, esse aqui é o master
+planner aqui. Orchestrator, né? Então eu
+criei o orchestrator, né? O orchestrator
+o que que ele faz, né? Então ochestrator
+ele cria o sou dos agentes, o o agents,
+o usuário, ele cria toda a estrutura de
+memória, né? Então ele faz tudo, né?
+Então ele define. Então basicamente eu
+falei para ele assim, ó, eu quero criar
+uma ferramenta que crie agentes, pause
+agentes, delete agentes, onde você tem
+que me fazer uma série de perguntas, né?
+E eu vou te responder e a partir dessas
+perguntas você vai criar a personalidade
+desse agente, vai definir o nível dele e
+tudo mais, né? Então, só para dar um
+contexto aqui, é, aqui no meus agentes,
+né? Eu tenho aqui, é, quatro níveis de
+agentes, né? O observador, o advice, o
+operador e o autônomo, né? Mas para além
+disso, eu criei essa dinâmica aqui de
+contexto compartilhado, né? Então, todo
+a gente tem esse, todos agentes tem esse
+arquivo chamado team. Então, para ele
+entender o que cada agente faz, qual que
+é o nível, modelo, canal. Aí todos os
+agentes, né, t os seus outputs, todos os
+agentes têm suas lições aprendidas. E
+aí, o que que a Mora faz, que ela é
+minha CEO, né? Ela pega todos esses
+dados de lições aprendidas e blá blá blá
+e ela guarda esses arquivos para ela,
+né? Então, esses agentes eles só entram
+nesses arquivos shared, né, nas lições e
+tal se eu peço para eles entrarem ou se
+a Mora pede para eles entrarem, porque
+senão eles não precisam, não tem
+necessidade de ficar vendo lições
+aprendidas. Porque no final do dia você
+pega e pensa aqui, né, pai, eu tenho um
+agente aqui focado em executar tesque,
+tipo, cara, o que que esse cara precisa
+saber, entendeu? O papel dele é ir lá
+fazer scrapping. Eu tenho esse cara aqui
+que é para me trazer ideias de conteúdo
+ou um operador blá blá. Então esses
+caras não precisam ter as lições
+aprendidas, entendeu? Então eu deixo
+sempre aqui com a amora, mas é claro que
+eu guardo as lições deles também no
+Supas, tá? Então eu criei esse agente de
+agente aqui e aí eu crio esses agentes,
+né? Um outro agente bacana que eu criei
+é esse Master Planner aqui, né? Então eu
+criei um agente que cria um planejamento
+de qualquer coisa. Então ele me ajudou a
+entregar o PRD do próprio Strator, né?
+Então eu cheguei e falei assim: &quot;Quero
+criar um PRD eh de um agente
+orquestrador e tal e ele me ajudou a
+fazer tudo, né? Eh definir como
+construir e tudo mais, né? Então ficou
+bem legal&quot;, tá? Então dito isso, que
+esse vídeo tá ficando super longo, né?
+Quase uma masterclass aqui e aí eu
+cheguei na etapa de projetos de
+multiagentes. Então na minha visão, se
+você seguir essas seis etapas aqui,
+vocês vão ter uma boa clareza de vocês
+montarem essa estrutura da assistente de
+vocês. Então meu projeto de multiagente
+ainda é esse aqui. É, eu ainda acho que
+ele tá numa fase inicial, né? né? Então
+eu criei ele dia 6 de fevereiro, né?
+Hoje dia 9, fazem três dias. Eu ainda tô
+refinando, tô testando muita coisa, né?
+Então eu criei esse controle de missão
+aqui, que é esse domínio aqui, né? Então
+eu tenho esse domain aqui no num túnel
+do Cloud Flir aqui e tal, né? Só para
+você saber também aqui. Então aqui eu
+tenho esse controle de missão, né? Onde
+a gente tem todos os cards aqui dentro e
+tal, né? Ainda preciso melhorar esse
+layout definitivamente aqui, mas aqui
+dentro, né? você tem os cards aqui, os
+títulos e tal, mas ele tá claramente
+bugado. Mas a real é que eu não tenho
+usado muito também ainda o meu mission
+control, porque eu tenho usado muito o
+Telegram. Para mim, o Telegram tem sido
+esse meu controle de missão. Então ainda
+não cheguei nesse mission control do
+dashboard, né? Então assim, você tem
+aqui esse controle de missão onde você
+tem esse camban. Um agente menciona um
+ag um outro e eles têm um active feed
+para saber tudo que foi feito no dia,
+todas as tarefas. Eles têm atualizações
+em tempo reais, um notifica o outro, né?
+Então eu também tenho uma API com vários
+end points. Então ele joga isso aqui
+sempre no Supase. Ele tá sempre
+atualizando o Supas cards, tarefas,
+comentários e tal. E aqui eu tenho o meu
+time rodando hoje, né? Então amora, um
+scraper, um criador de conteúdo, um
+planejador, um dev e um K, né? Então de
+novo, meus níveis de acesso para cada
+um, né? É aqui é um exemplo do que que é
+o working, né? Do que que cada gente tá
+fazendo. Então, ó, seu trabalho é esse,
+você tem que fazer isso, esse é os
+próximos passos. Se você tem algum
+bloqueio, você levanta a mão e avisa
+aqui, né? Aí eu tenho aqui o Heartbeat,
+né, para mostrar então que eles acordam
+a cada 15 minutos. Então o trabalho dele
+é lerworking. Checar os nossos agentes e
+trabalhar ou voltar a dormir, né? Então
+a gente tem esse contexto compartilhado
+de memória que eu citei por vocês. Então
+sete arquivos sagrados por agente, né?
+Então a gente tem o agente de
+identidade, a gente tem o soul, o agent
+user, tools, memory, heartbeat e o
+working, né? A gente tem um performance
+review. Então a gente tem, eu tenho a
+Mora, né? que ela avalia o trabalho de
+todos os agentes semanalmente, como um
+Chrom, e ela olha o quality score,
+velocidade, proatividade, aderência,
+custob benefício e ela decide se ela vai
+promover, manter ou rebaixar os agentes
+e ela vai salvando essas atualizações
+aqui. Então, os agentes trabalham, a
+Maora absorve todos esses aprendizados e
+ela guarda eles, decide o que fazer com
+tudo isso, né? Tem muita empresa aqui
+que eu vejo, né, na internet que a
+galera tá tipo deixando um agente
+conversar com o outro e eles executarem
+sem nenhuma interação humana. Eu
+pessoalmente gosto que eh as coisas
+cheguem para mim, gosto de aprovar,
+então eu pessoalmente não deixo, tá? Aí
+a gente tem o custo estimado mensal, né?
+Então que é a mora aqui dos meus $45.
+Eh, eu recebo muito essa pergunta, né?
+De como eh economizar tokens e tal.
+Então, eu tenho aqui um documento de
+economizar tokens aqui, que eu pretendo
+gravar mais um vídeo para explicar para
+vocês. Então, se você quer esse vídeo,
+comenta embaixo e eu faço aí, só para eu
+ter uma noção se vocês querem ou não.
+Mas hoje o que eu tô fazendo é que eu tô
+usando a minha assinatura do cloud code,
+né? Então, eu plugo a minha assinatura
+aqui, eu assino o plano de $ e até hoje
+eu nunca estouri o meu plano, né? Se a
+gente olhar aqui o meu meu usage, né? a
+gente olhar aqui o uso. Hoje eu tô aqui
+na minha sessão que vai reiniciar daqui
+1 hora em 60% e eu tô aqui no meu limite
+semanal em 62% reinicia na quinta-feira.
+É isso aí já me assustou um pouco, né?
+Já já passou da metade, mas até agora eu
+nunca tive nenhum problema, né? Então a
+princípio é isso. E aí as 10 regras
+invioláveis, tá? Caramba, gente, que
+vídeo longo. Mas eu espero ter dado uma
+baita de uma luz aqui para vocês sobre a
+estrutura que vocês tm que seguir, o que
+vocês têm que fazer. Cara, eu realmente
+sinto que a gente tá entrando numa era
+violenta de produtividade, de
+crescimento. E eu sinto aqui com o meu
+HQ, com a Mora que eu tenho feito muitas
+coisas simultaneamente. Então eu faço
+muito brainstorm com ela. É, eu faço
+muita produção de conteúdo. Eu tenho
+muito scrapping de muitas fontes de
+conteúdos diferentes. Eu trago dados de
+todas as minhas ferramentas. Eu sei o
+que tá acontecendo no suporte da minha
+empresa. Eu sei o que acontece no meu
+canal do YouTube. Eu sei o que acontece
+no meu roadmap desenvolvimento. Eu sei o
+que meus dev estão fazendo. Eu sei o que
+tá no notion da minha empresa. Então eu
+trago tudo isso dentro do Telegram,
+converso com todas as minhas
+ferramentas, tenho uma IA interpretando
+todos esses dados e falando assim: &quot;Isso
+aqui tá bom, isso aqui tá ruim. Presta
+atenção nisso, olha para lá e para cá&quot;.
+Eu eu tenho aqui autoatu atualizações,
+então ela vai evoluindo, vai ficando
+inteligente. É, eu tenho essa questão de
+construir múltiplas skills, então ela
+pega skills do Cloue, pega skill de
+qualquer lugar, tem centenas de milhares
+de skills na internet. É, ela, cara,
+pode fazer muita coisa e o céu é o
+limite assim. Então, eu sinto que eu
+ainda sou um jovem aprendiz nesse
+momento da jornada, mas cara, dá para
+fazer muita coisa. De novo, não sou dev,
+não sou uma pessoa técnica, só sou um
+mero curioso e sei fazer as perguntas
+certas pro cloud Code. Se você gostou
+dessa, quanto tempo deu? Quase 50
+minutos dessa Masterclass aqui de Open
+Claw, não esquece então de deixar o seu
+like, comentar aqui no vídeo para dar
+aquela fortalecida no canal e eu vejo
+vocês no próximo vídeo. Estamos junto
+demais. Yeah.
