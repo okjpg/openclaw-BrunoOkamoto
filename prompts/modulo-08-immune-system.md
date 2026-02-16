@@ -18,7 +18,9 @@ Acabei de assistir o Módulo 8 do curso sobre o sistema imunológico. "Agents ar
 
 3. **Monitoramento de custos:**
    - Configure o split de modelos (Haiku pra heartbeats, Sonnet pra crons, Opus pra interação)
+   - Configure rate limits e budgets pra prevenir runaway
    - Me mostre quanto estou gastando por dia/semana
+   - Meta: de ~$2-3/dia pra ~$0.10/dia com otimizações
 
 4. **Audit de segurança periódico:**
    - Configure um cron semanal de security audit

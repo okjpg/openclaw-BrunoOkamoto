@@ -17,11 +17,15 @@ Acabei de assistir o Módulo 7 do curso sobre proatividade. Quero que você se t
 
 2. **Defina os horários de silêncio** — quando NÃO me incomodar (madrugada, fins de semana, etc.)
 
-3. **Configure o modelo econômico** — use Haiku pra heartbeats (custa ~$0.005 vs ~$0.10 em Opus)
+3. **Configure o modelo econômico:**
+   - Use Haiku pra heartbeats (custa ~$0.005 vs ~$0.10 em Opus)
+   - Opção avançada: Ollama local para heartbeats (custo ZERO!)
+   - Configure rate limits e budgets pra prevenir runaway de automações
 
 4. **Crie 2 automações proativas:**
    - Uma de checagem (ex: emails/agenda a cada 4h)
    - Uma de organização (ex: revisar memória, atualizar docs)
+   - Dica: self-updates automáticos — sync com GitHub, auto-update diário, daily config review, audit de segurança
 
 5. **Defina regras de quando falar vs calar:**
    - Algo urgente encontrado → me avisa
