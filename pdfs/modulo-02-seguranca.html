@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 2 — Segurança: Blindando Seu Agente</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: #12121a;
+  --bg-card: #1a1a25;
+  --bg-card-hover: #222230;
+  --grape: #8b5cf6;
+  --grape-light: #a78bfa;
+  --grape-dim: rgba(139, 92, 246, 0.12);
+  --grape-border: rgba(139, 92, 246, 0.25);
+  --grape-glow: rgba(139, 92, 246, 0.08);
+  --emerald: #10b981;
+  --emerald-dim: rgba(16, 185, 129, 0.12);
+  --emerald-border: rgba(16, 185, 129, 0.25);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.25);
+  --rose: #f43f5e;
+  --rose-dim: rgba(244, 63, 94, 0.12);
+  --rose-border: rgba(244, 63, 94, 0.25);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.12);
+  --text: #f1f1f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --code-bg: #0d0d15;
+  --code-border: rgba(255,255,255,0.08);
+}
+
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 10.5pt;
+  line-height: 1.6;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 22mm 24mm 28mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--bg);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -25%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse, var(--grape-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 297mm;
+  padding: 36mm 28mm;
+  position: relative;
+}
+
+.cover-grid {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 50%; height: 40%;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+}
+
+.cover-decoration {
+  position: absolute;
+  top: 28mm; right: 28mm;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg, var(--grape), var(--emerald), var(--grape));
+  opacity: 0.1;
+  filter: blur(35px);
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: var(--rose-dim);
+  border: 1px solid var(--rose-border);
+  border-radius: 100px;
+  font-size: 10pt;
+  font-weight: 500;
+  color: var(--rose);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cover-title {
+  font-size: 44pt;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 18px;
+  position: relative;
+  max-width: 500px;
+}
+
+.cover-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--rose), #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-subtitle {
+  font-size: 14pt;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 44px;
+  position: relative;
+}
+
+.cover-meta {
+  position: relative;
+  display: flex;
+  gap: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.cover-meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+.cover-meta-label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cover-meta-value {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header-left {
+  font-size: 9pt;
+  color: var(--rose);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.page-header-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 12mm;
+  left: 24mm; right: 24mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.page-footer-left {
+  font-size: 8pt;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.page-footer-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.section-title {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--grape-light);
+  margin: 22px 0 10px;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+
+p {
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  font-size: 10.5pt;
+}
+
+strong { color: var(--text); }
+
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  position: relative;
+  white-space: pre;
+}
+
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 7.5pt;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.code-block .comment { color: #4a4a5a; }
+.code-block .cmd { color: var(--grape-light); }
+.code-block .str { color: var(--emerald); }
+.code-block .flag { color: var(--amber); }
+.code-block .prompt { color: var(--text-muted); }
+
+code {
+  background: var(--grape-dim);
+  color: var(--grape-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+}
+
+.step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 16px 56px;
+  margin: 12px 0;
+  position: relative;
+}
+
+.step-num {
+  position: absolute;
+  left: 16px; top: 16px;
+  width: 28px; height: 28px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--grape-light);
+}
+
+.step-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.callout {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16pt; flex-shrink: 0; line-height: 1; }
+.callout-content { flex: 1; }
+.callout-content strong { display: block; margin-bottom: 3px; color: var(--text); }
+.callout-content p { margin-bottom: 4px; }
+
+.callout.tip { background: var(--emerald-dim); border: 1px solid var(--emerald-border); }
+.callout.warning { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+.callout.danger { background: var(--rose-dim); border: 1px solid var(--rose-border); }
+.callout.info { background: var(--grape-dim); border: 1px solid var(--grape-border); }
+
+.checklist {
+  background: var(--bg-card);
+  border: 1px solid var(--emerald-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 18px 0;
+}
+
+.checklist-title {
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--emerald);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 10pt;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.check-box {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border-hover);
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10pt;
+}
+
+.prompt-section {
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+  border: 1px solid var(--grape-border);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 20px 0;
+  page-break-inside: avoid;
+}
+
+.prompt-section h3 {
+  color: var(--grape-light);
+  margin-top: 0;
+  font-size: 14pt;
+}
+
+.prompt-instruction {
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 9pt;
+  color: var(--grape-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prompt-box {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 18px;
+  margin: 12px 0;
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.prompt-box strong { color: var(--grape-light); }
+
+ul, ol { margin: 8px 0 12px 18px; }
+li { margin-bottom: 3px; font-size: 10pt; color: var(--text-secondary); }
+
+.next-module {
+  background: var(--bg-card);
+  border: 1px solid var(--grape-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.next-module .next-icon { font-size: 20pt; }
+.next-module .next-text { flex: 1; }
+.next-module .next-label { font-size: 8.5pt; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.next-module .next-title { font-size: 12pt; font-weight: 600; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+  <div class="cover-decoration"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-badge">Módulo 02</div>
+  <div class="cover-title">Segurança<br><em>Blindando Seu Agente</em></div>
+  <div class="cover-subtitle">Telegram allowlist, firewall UFW, fail2ban e credenciais seguras</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Duração</span>
+      <span class="cover-meta-value">15 min</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Formato</span>
+      <span class="cover-meta-value">Live coding</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Kit</span>
+      <span class="cover-meta-value">2 arquivos</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 1 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 02 — Segurança</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title">Por Que Agora?</div>
+
+  <div class="callout danger">
+    <div class="callout-icon">🚨</div>
+    <div class="callout-content">
+      <strong>Real: 1.015+ Tentativas de Brute Force em 24h</strong>
+      <p>Servidores expostos na internet recebem MILHARES de tentativas de invasão por dia. Se você não blindar AGORA, alguém vai entrar.</p>
+    </div>
+  </div>
+
+  <p>Segurança não é opcional. É literalmente a diferença entre "meu agente funciona" e "hackearam meu servidor e roubaram minhas API keys".</p>
+
+  <h3>O Que Vamos Blindar</h3>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">Telegram Allowlist (dmPolicy)</div>
+    <p>Garantir que APENAS VOCÊ pode comandar o bot. Se estiver "open", qualquer um pode usar.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">Firewall UFW</div>
+    <p>Bloquear TODAS as portas exceto SSH. Zero exposição desnecessária.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">Fail2ban</div>
+    <p>Detectar e banir IPs que tentam brute force no SSH (5 tentativas → ban 1h).</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-title">Credenciais Seguras</div>
+    <p>NUNCA hardcodar API keys. Use 1Password CLI ou variáveis de ambiente.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-title">Portas Internas</div>
+    <p>Gateway deve escutar em 127.0.0.1 (localhost), não 0.0.0.0 (mundo inteiro). Use Cloudflare Tunnel se precisar acesso externo.</p>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 02 — Segurança</span>
+    <span class="page-footer-right">02</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 2 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 02 — Segurança</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Passo 1: Configurar Telegram Allowlist</h3>
+
+  <p>Este é o MAIS IMPORTANTE. Se o dmPolicy estiver "open", qualquer pessoa que encontrar seu bot pode comandá-lo.</p>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Ver config atual</span>
+<span class="cmd">cat</span> ~/.openclaw/openclaw.json | <span class="cmd">grep</span> dmPolicy</div>
+
+  <p>Deve estar assim:</p>
+
+  <div class="code-block" data-lang="json">{
+  "telegram": {
+    "dmPolicy": "allowlist",
+    "dmAllowlist": ["123456789"]
+  }
+}</div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Se Estiver "open"</strong>
+      <p>Pare TUDO e mude pra "allowlist" AGORA. Todo segundo que passa, alguém pode estar usando seu agente.</p>
+    </div>
+  </div>
+
+  <p><strong>Como pegar seu Telegram ID?</strong></p>
+
+  <div class="code-block" data-lang="text"><span class="comment"># Envie no chat com seu bot:</span>
+/start
+
+<span class="comment"># O agente responde com seu ID, tipo:</span>
+Seu Telegram ID: 123456789</div>
+
+  <h3>Passo 2: Configurar Firewall UFW</h3>
+
+  <p>UFW (Uncomplicated Firewall) é simples e poderoso. Vamos bloquear TUDO exceto SSH.</p>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Definir política padrão: BLOQUEAR tudo</span>
+<span class="cmd">sudo ufw default deny incoming</span>
+<span class="cmd">sudo ufw default allow outgoing</span>
+
+<span class="comment"># Permitir SSH (senão você se tranca pra fora!)</span>
+<span class="cmd">sudo ufw allow ssh</span>
+
+<span class="comment"># Ativar firewall</span>
+<span class="cmd">sudo ufw --force enable</span>
+
+<span class="comment"># Verificar status</span>
+<span class="cmd">sudo ufw status verbose</span></div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Resultado</strong>
+      <p>Agora APENAS a porta SSH (22) está acessível. Tudo mais? Bloqueado.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 02 — Segurança</span>
+    <span class="page-footer-right">03</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 3 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 02 — Segurança</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Passo 3: Instalar e Configurar Fail2ban</h3>
+
+  <p>Fail2ban monitora logs e bane IPs que tentam brute force. Configuração simples: 5 tentativas erradas de SSH → ban por 1 hora.</p>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Instalar fail2ban</span>
+<span class="cmd">sudo apt update</span>
+<span class="cmd">sudo apt install fail2ban -y</span>
+
+<span class="comment"># Criar configuração local</span>
+<span class="cmd">sudo cp</span> /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+
+<span class="comment"># Editar config (ou deixar padrão)</span>
+<span class="cmd">sudo nano</span> /etc/fail2ban/jail.local</div>
+
+  <p>Configure a seção <code>[sshd]</code>:</p>
+
+  <div class="code-block" data-lang="ini">[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 5
+bantime = 3600
+findtime = 600</div>
+
+  <p><strong>O que isso faz:</strong></p>
+  <ul>
+    <li><strong>maxretry = 5:</strong> Banir após 5 tentativas falhas</li>
+    <li><strong>bantime = 3600:</strong> Ban dura 1 hora (3600 segundos)</li>
+    <li><strong>findtime = 600:</strong> 5 tentativas em 10 minutos = ban</li>
+  </ul>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Reiniciar fail2ban</span>
+<span class="cmd">sudo systemctl restart fail2ban</span>
+
+<span class="comment"># Ver status</span>
+<span class="cmd">sudo fail2ban-client status sshd</span></div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Teste Você Mesmo</strong>
+      <p>Tente fazer login com senha errada 5x de outro IP. Você vai ver o ban acontecendo em tempo real.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 02 — Segurança</span>
+    <span class="page-footer-right">04</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 4 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 02 — Segurança</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Passo 4: Credenciais Seguras</h3>
+
+  <p>NUNCA hardcode API keys em arquivos de config. Use 1Password CLI ou variáveis de ambiente.</p>
+
+  <h4>Opção A: 1Password CLI (Recomendado)</h4>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Instalar 1Password CLI</span>
+<span class="cmd">curl</span> <span class="flag">-sS</span> https://downloads.1password.com/linux/keys/1password.asc | \
+<span class="cmd">sudo gpg</span> <span class="flag">--dearmor --output</span> /usr/share/keyrings/1password-archive-keyring.gpg
+
+<span class="cmd">echo</span> <span class="str">"deb [arch=amd64] https://downloads.1password.com/linux/debian/amd64 stable main"</span> | \
+<span class="cmd">sudo tee</span> /etc/apt/sources.list.d/1password.list
+
+<span class="cmd">sudo apt update</span> && <span class="cmd">sudo apt install 1password-cli -y</span>
+
+<span class="comment"># Fazer login</span>
+<span class="cmd">op signin</span></div>
+
+  <p>No código, em vez de:</p>
+
+  <div class="code-block" data-lang="javascript">const apiKey = "sk-ant-1234567890abcdef"; // ❌ MAL!</div>
+
+  <p>Faça:</p>
+
+  <div class="code-block" data-lang="javascript">const apiKey = process.env.ANTHROPIC_API_KEY; // ✅ BOM!</div>
+
+  <h4>Opção B: Variáveis de Ambiente</h4>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Editar .env</span>
+<span class="cmd">nano</span> ~/.openclaw/.env
+
+<span class="comment"># Adicionar:</span>
+ANTHROPIC_API_KEY=sk-ant-1234567890abcdef
+TELEGRAM_BOT_TOKEN=123456:ABC-defgh...</div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>CUIDADO: systemd Override</strong>
+      <p>Se o gateway roda como serviço systemd, o arquivo <code>.service</code> pode sobrescrever o <code>.env</code>. Atualize AMBOS ao trocar credenciais.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 02 — Segurança</span>
+    <span class="page-footer-right">05</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 5 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 02 — Segurança</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Passo 5: Portas de Aplicação</h3>
+
+  <p>O gateway OpenClaw escuta na porta 18789 por padrão. NUNCA exponha essa porta pro mundo inteiro.</p>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Ver config</span>
+<span class="cmd">cat</span> ~/.openclaw/openclaw.json | <span class="cmd">grep</span> bindAddr</div>
+
+  <p>Deve estar assim:</p>
+
+  <div class="code-block" data-lang="json">{
+  "gateway": {
+    "bindAddr": "127.0.0.1:18789"
+  }
+}</div>
+
+  <div class="callout danger">
+    <div class="callout-icon">🚨</div>
+    <div class="callout-content">
+      <strong>Se Estiver 0.0.0.0</strong>
+      <p>Isso significa que QUALQUER PESSOA na internet pode acessar o gateway. Mude pra 127.0.0.1 IMEDIATAMENTE.</p>
+    </div>
+  </div>
+
+  <h4>E Se Eu Precisar de Acesso Externo?</h4>
+
+  <p>Use <strong>Cloudflare Tunnel</strong> (grátis, seguro, zero portas expostas).</p>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Instalar cloudflared</span>
+<span class="cmd">curl</span> <span class="flag">-L</span> https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb <span class="flag">-o</span> cloudflared.deb
+<span class="cmd">sudo dpkg</span> <span class="flag">-i</span> cloudflared.deb
+
+<span class="comment"># Criar tunnel</span>
+<span class="cmd">cloudflared tunnel login</span>
+<span class="cmd">cloudflared tunnel create</span> openclaw-gateway
+<span class="cmd">cloudflared tunnel route dns</span> openclaw-gateway gateway.seudominio.com</div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Resultado</strong>
+      <p>Agora você acessa via <code>gateway.seudominio.com</code> — porta 18789 NUNCA é exposta diretamente.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 02 — Segurança</span>
+    <span class="page-footer-right">06</span>
+  </div>
+</div>
+
+<!-- CHECKLIST + PROMPT PAGE -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 02 — Segurança</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="checklist">
+    <div class="checklist-title">✅ Checkpoint do Módulo 2</div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>dmPolicy = allowlist (só você comanda o bot)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>UFW ativo (tudo bloqueado exceto SSH)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Fail2ban protegendo SSH (5 tentativas → ban 1h)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Credenciais no 1Password ou .env (zero hardcode)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Gateway em 127.0.0.1 (não 0.0.0.0)</span>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <h3>🤖 Prompt para o Agente</h3>
+    <div class="prompt-instruction">
+      Cole este prompt no chat do seu OpenClaw depois de assistir o Módulo 2:
+    </div>
+    <div class="prompt-box">Acabei de assistir o Módulo 2 do curso sobre segurança. Leia o PRD de security hardening que estou anexando e me guie passo a passo.
+
+<strong>Importante:</strong>
+- Antes de CADA ação, me explique O QUÊ vai fazer e POR QUÊ
+- Me peça confirmação antes de executar qualquer mudança no servidor
+- Se algo já estiver configurado, me avise e pule pro próximo passo
+- No final, rode um audit de segurança e me mostre o resultado
+
+<strong>O que espero que cubra:</strong>
+1. Telegram allowlist (dmPolicy) — pra ninguém comandar meu bot
+2. Firewall UFW — bloquear portas desnecessárias
+3. Fail2ban — proteger contra brute force SSH
+4. Credenciais — como guardar API keys de forma segura
+5. Portas de aplicação — não expor nada em 0.0.0.0
+
+Vamos blindar meu servidor?</div>
+  </div>
+
+  <div class="next-module">
+    <div class="next-icon">🧬</div>
+    <div class="next-text">
+      <div class="next-label">Próximo Módulo</div>
+      <div class="next-title">Módulo 3 — Identidade: Dando Personalidade ao Agente</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 02 — Segurança</span>
+    <span class="page-footer-right">07</span>
+  </div>
+</div>
+
+</body>
+</html>

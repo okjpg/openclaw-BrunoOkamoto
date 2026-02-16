@@ -1,0 +1,877 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "excalidraw-cli",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "header-bg",
+      "x": 0,
+      "y": 0,
+      "width": 1500,
+      "height": 100,
+      "backgroundColor": "#d0bfff",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "header-title",
+      "x": 30,
+      "y": 15,
+      "text": "MÓDULO 1 — Setup: Do Zero ao Primeiro \"Oi\"",
+      "fontSize": 36,
+      "strokeColor": "#1e1e1e",
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "header-time",
+      "x": 30,
+      "y": 65,
+      "text": "⏱ 25 min  |  🎥 Live Coding  |  🎯 Agente respondendo no Telegram",
+      "fontSize": 18,
+      "strokeColor": "#6b7280",
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "section1-title",
+      "x": 0,
+      "y": 140,
+      "text": "1️⃣  O QUE É O OPENCLAW",
+      "fontSize": 24,
+      "strokeColor": "#4a9eed",
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "box-gateway",
+      "x": 50,
+      "y": 190,
+      "width": 180,
+      "height": 70,
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "box-gateway_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "box-gateway_label",
+      "x": 60,
+      "y": 200,
+      "width": 160,
+      "height": 50,
+      "text": "🖥️ Gateway\n(seu servidor)",
+      "fontSize": 16,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "box-gateway"
+    },
+    {
+      "type": "rectangle",
+      "id": "box-agent",
+      "x": 300,
+      "y": 190,
+      "width": 180,
+      "height": 70,
+      "backgroundColor": "#d0bfff",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "box-agent_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "box-agent_label",
+      "x": 310,
+      "y": 200,
+      "width": 160,
+      "height": 50,
+      "text": "🤖 Agente\n(Claude)",
+      "fontSize": 16,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "box-agent"
+    },
+    {
+      "type": "rectangle",
+      "id": "box-channel",
+      "x": 550,
+      "y": 190,
+      "width": 180,
+      "height": 70,
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "box-channel_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "box-channel_label",
+      "x": 560,
+      "y": 200,
+      "width": 160,
+      "height": 50,
+      "text": "💬 Canal\n(Telegram)",
+      "fontSize": 16,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "box-channel"
+    },
+    {
+      "type": "arrow",
+      "id": "arrow-gw-agent",
+      "x": 230,
+      "y": 225,
+      "width": 70,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          70,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "box-gateway",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "box-agent",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "arrow-agent-ch",
+      "x": 480,
+      "y": 225,
+      "width": 70,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          70,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "box-agent",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "box-channel",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "bare-metal",
+      "x": 800,
+      "y": 190,
+      "text": "⚠️  Bare Metal > Docker\nDocker isola demais:\n• Skills não instalam fácil\n• Sub-agents limitados\n• Debug difícil",
+      "fontSize": 16,
+      "strokeColor": "#ef4444",
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "section2-title",
+      "x": 0,
+      "y": 310,
+      "text": "2️⃣  PASSO A PASSO (mostrar na tela)",
+      "fontSize": 24,
+      "strokeColor": "#4a9eed",
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "step1",
+      "x": 50,
+      "y": 360,
+      "width": 300,
+      "height": 90,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "step1_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "step1_label",
+      "x": 60,
+      "y": 370,
+      "width": 280,
+      "height": 70,
+      "text": "PASSO 1 — Criar VPS\nHostinger KVM 1\nUbuntu 24.04 — NÃO usar Docker",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "step1"
+    },
+    {
+      "type": "rectangle",
+      "id": "step2",
+      "x": 400,
+      "y": 360,
+      "width": 300,
+      "height": 90,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "step2_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "step2_label",
+      "x": 410,
+      "y": 370,
+      "width": 280,
+      "height": 70,
+      "text": "PASSO 2 — Conectar SSH\nssh root@SEU_IP\n(ou terminal Hostinger)",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "step2"
+    },
+    {
+      "type": "rectangle",
+      "id": "step3",
+      "x": 750,
+      "y": 360,
+      "width": 300,
+      "height": 90,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "step3_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "step3_label",
+      "x": 760,
+      "y": 370,
+      "width": 280,
+      "height": 70,
+      "text": "PASSO 3 — Instalar\ncurl -fsSL https://openclaw.ai\n/install.sh | bash",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "step3"
+    },
+    {
+      "type": "rectangle",
+      "id": "step4",
+      "x": 1100,
+      "y": 360,
+      "width": 300,
+      "height": 90,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "step4_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "step4_label",
+      "x": 1110,
+      "y": 370,
+      "width": 280,
+      "height": 70,
+      "text": "PASSO 4 — Wizard\nopenclaw onboard\n--install-daemon",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "step4"
+    },
+    {
+      "type": "arrow",
+      "id": "a-s1s2",
+      "x": 350,
+      "y": 405,
+      "width": 50,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          50,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a-s2s3",
+      "x": 700,
+      "y": 405,
+      "width": 50,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          50,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a-s3s4",
+      "x": 1050,
+      "y": 405,
+      "width": 50,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          50,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "roughness": 2
+    },
+    {
+      "type": "rectangle",
+      "id": "step5",
+      "x": 50,
+      "y": 490,
+      "width": 300,
+      "height": 90,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "step5_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "step5_label",
+      "x": 60,
+      "y": 500,
+      "width": 280,
+      "height": 70,
+      "text": "PASSO 5 — Criar Bot\nTelegram → @BotFather\n/newbot → copiar token",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "step5"
+    },
+    {
+      "type": "rectangle",
+      "id": "step6",
+      "x": 400,
+      "y": 490,
+      "width": 300,
+      "height": 90,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "step6_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "step6_label",
+      "x": 410,
+      "y": 500,
+      "width": 280,
+      "height": 70,
+      "text": "PASSO 6 — Conectar\nopenclaw provider\nadd telegram",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "step6"
+    },
+    {
+      "type": "rectangle",
+      "id": "step7",
+      "x": 750,
+      "y": 490,
+      "width": 300,
+      "height": 90,
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "step7_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "step7_label",
+      "x": 760,
+      "y": 500,
+      "width": 280,
+      "height": 70,
+      "text": "PASSO 7 — Testar! 🎉\nMandar \"Oi\" no Telegram\nAgente responde!",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "step7"
+    },
+    {
+      "type": "arrow",
+      "id": "a-s4s5",
+      "x": 1250,
+      "y": 450,
+      "width": 0,
+      "height": 40,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -1150,
+          0
+        ],
+        [
+          -1150,
+          40
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a-s5s6",
+      "x": 350,
+      "y": 535,
+      "width": 50,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          50,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a-s6s7",
+      "x": 700,
+      "y": 535,
+      "width": 50,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          50,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "section3-title",
+      "x": 0,
+      "y": 630,
+      "text": "3️⃣  WIZARD — O QUE RESPONDER",
+      "fontSize": 24,
+      "strokeColor": "#4a9eed",
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "wizard-box",
+      "x": 50,
+      "y": 680,
+      "width": 500,
+      "height": 200,
+      "backgroundColor": "#e5dbff",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "wizard-text",
+      "x": 70,
+      "y": 695,
+      "text": "Gateway mode:     → Local\nProvider:         → Anthropic\nAPI Key:          → console.anthropic.com → API Keys\nModel:            → Claude Sonnet (bom e barato)\nInstalar serviço: → Sim (roda 24/7)\n\n📌 Mostrar onde pegar a API Key!\n📌 Precisa ter billing ativo",
+      "fontSize": 16,
+      "strokeColor": "#1e1e1e",
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "section4-title",
+      "x": 0,
+      "y": 920,
+      "text": "4️⃣  QUANTO CUSTA?",
+      "fontSize": 24,
+      "strokeColor": "#4a9eed",
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "cost-vps",
+      "x": 50,
+      "y": 970,
+      "width": 250,
+      "height": 80,
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "cost-vps_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "cost-vps_label",
+      "x": 60,
+      "y": 980,
+      "width": 230,
+      "height": 60,
+      "text": "🖥️ VPS Hostinger\n~$5-10/mês",
+      "fontSize": 18,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "cost-vps"
+    },
+    {
+      "type": "rectangle",
+      "id": "cost-api",
+      "x": 350,
+      "y": 970,
+      "width": 250,
+      "height": 80,
+      "backgroundColor": "#ffd8a8",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "cost-api_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "cost-api_label",
+      "x": 360,
+      "y": 980,
+      "width": 230,
+      "height": 60,
+      "text": "🤖 API Anthropic\n~$10-30/mês",
+      "fontSize": 18,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "cost-api"
+    },
+    {
+      "type": "rectangle",
+      "id": "cost-tg",
+      "x": 650,
+      "y": 970,
+      "width": 250,
+      "height": 80,
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "cost-tg_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "cost-tg_label",
+      "x": 660,
+      "y": 980,
+      "width": 230,
+      "height": 60,
+      "text": "💬 Telegram\nGrátis!",
+      "fontSize": 18,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "cost-tg"
+    },
+    {
+      "type": "text",
+      "id": "cost-plus",
+      "x": 310,
+      "y": 995,
+      "text": "+",
+      "fontSize": 28,
+      "strokeColor": "#6b7280",
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "cost-plus2",
+      "x": 610,
+      "y": 995,
+      "text": "+",
+      "fontSize": 28,
+      "strokeColor": "#6b7280",
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "cost-equals",
+      "x": 910,
+      "y": 995,
+      "text": "=",
+      "fontSize": 28,
+      "strokeColor": "#6b7280",
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "cost-total",
+      "x": 960,
+      "y": 965,
+      "width": 300,
+      "height": 90,
+      "backgroundColor": "#d0bfff",
+      "fillStyle": "solid",
+      "strokeWidth": 3,
+      "roundness": {
+        "type": 3
+      },
+      "boundElements": [
+        {
+          "id": "cost-total_label",
+          "type": "text"
+        }
+      ],
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "cost-total_label",
+      "x": 970,
+      "y": 975,
+      "width": 280,
+      "height": 70,
+      "text": "💰 TOTAL\n~$15-40/mês\n\"Menos que 1 almoço/semana\"",
+      "fontSize": 16,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "cost-total"
+    },
+    {
+      "type": "text",
+      "id": "section5-title",
+      "x": 0,
+      "y": 1090,
+      "text": "✅  CHECKPOINT DO MÓDULO",
+      "fontSize": 24,
+      "strokeColor": "#22c55e",
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "checklist",
+      "x": 50,
+      "y": 1130,
+      "width": 600,
+      "height": 160,
+      "backgroundColor": "#d3f9d8",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "checklist-text",
+      "x": 70,
+      "y": 1145,
+      "text": "☑ VPS rodando na Hostinger (Ubuntu 24.04)\n☑ OpenClaw instalado (bare metal, NÃO Docker)\n☑ Gateway rodando como serviço (24/7)\n☑ Bot do Telegram criado e conectado\n☑ dmPolicy = allowlist (segurança básica)\n☑ Primeiro \"Oi\" respondido 🎉",
+      "fontSize": 18,
+      "strokeColor": "#1e1e1e",
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "next-box",
+      "x": 750,
+      "y": 1130,
+      "width": 350,
+      "height": 160,
+      "backgroundColor": "#ffc9c9",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "next-text",
+      "x": 770,
+      "y": 1145,
+      "text": "⚡ PRÓXIMO MÓDULO:\nSegurança\n\n\"Seu servidor recebe 1.000+\nataques por dia.\nVamos blindar.\"",
+      "fontSize": 18,
+      "strokeColor": "#ef4444",
+      "fontFamily": 1
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}

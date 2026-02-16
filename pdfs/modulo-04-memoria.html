@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 4 — Memória: O Segredo que Ninguém Ensina</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  
+  :root {
+    --primary: #6C5CE7;
+    --primary-light: #A29BFE;
+    --primary-dark: #5A4BD1;
+    --accent: #00CEC9;
+    --accent-light: #81ECEC;
+    --warning: #FDCB6E;
+    --danger: #FF7675;
+    --danger-dark: #D63031;
+    --success: #00B894;
+    --success-light: #55EFC4;
+    --dark: #2D3436;
+    --gray: #636E72;
+    --light-gray: #DFE6E9;
+    --bg: #FAFBFC;
+    --white: #FFFFFF;
+    --code-bg: #1E1E2E;
+    --code-text: #CDD6F4;
+    --memory-purple: #6C5CE7;
+    --memory-blue: #0984E3;
+    --memory-green: #00B894;
+    --memory-orange: #E17055;
+    --memory-yellow: #FDCB6E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  @page { size: A4; margin: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--dark);
+    background: var(--bg);
+    line-height: 1.6;
+    font-size: 11pt;
+  }
+
+  /* ===== COVER ===== */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0984E3 0%, #6C5CE7 40%, #A29BFE 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 60px 40px;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.06) 0%, transparent 50%);
+  }
+
+  .cover-badge {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 8px 24px;
+    font-size: 13pt;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    position: relative;
+  }
+
+  .cover-star {
+    background: rgba(253,203,110,0.3);
+    border: 1px solid rgba(253,203,110,0.5);
+    border-radius: 50px;
+    padding: 6px 18px;
+    font-size: 11pt;
+    font-weight: 600;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .cover h1 {
+    font-size: 40pt;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    position: relative;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+
+  .cover h2 {
+    font-size: 18pt;
+    font-weight: 400;
+    opacity: 0.9;
+    margin-bottom: 40px;
+    position: relative;
+    max-width: 550px;
+  }
+
+  .cover-meta {
+    position: relative;
+    display: flex;
+    gap: 30px;
+    font-size: 11pt;
+    opacity: 0.85;
+  }
+
+  .cover-footer {
+    position: absolute;
+    bottom: 40px;
+    font-size: 10pt;
+    opacity: 0.6;
+  }
+
+  /* ===== PAGES ===== */
+  .page {
+    padding: 50px 55px;
+    min-height: 100vh;
+    page-break-after: always;
+    position: relative;
+  }
+
+  .page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(to bottom, #0984E3, #6C5CE7);
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--light-gray);
+  }
+
+  .page-header-title {
+    font-size: 10pt;
+    color: var(--memory-blue);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .page-header-module {
+    font-size: 9pt;
+    color: var(--gray);
+  }
+
+  /* ===== TYPOGRAPHY ===== */
+  .section-title {
+    font-size: 22pt;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title .emoji { font-size: 28pt; }
+
+  .section-subtitle {
+    font-size: 12pt;
+    color: var(--gray);
+    margin-bottom: 25px;
+    font-weight: 400;
+  }
+
+  h3 {
+    font-size: 14pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin: 25px 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  h4 {
+    font-size: 12pt;
+    font-weight: 600;
+    color: var(--dark);
+    margin: 18px 0 8px 0;
+  }
+
+  p { margin-bottom: 12px; }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block {
+    background: var(--code-bg);
+    color: var(--code-text);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5pt;
+    line-height: 1.7;
+    overflow-x: auto;
+    position: relative;
+  }
+
+  .code-block::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 8pt;
+    color: #585B70;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .code-block .comment { color: #6C7086; }
+  .code-block .key { color: #89B4FA; }
+  .code-block .string { color: #A6E3A1; }
+  .code-block .number { color: #FAB387; }
+  .code-block .bool { color: #CBA6F7; }
+  .code-block .prompt { color: #CBA6F7; }
+  .code-block .command { color: #89B4FA; }
+  .code-block .flag { color: #F9E2AF; }
+
+  code {
+    background: #F0EEFF;
+    color: var(--primary-dark);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9pt;
+  }
+
+  /* ===== TABLES ===== */
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 16px 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--light-gray);
+  }
+
+  thead th {
+    background: var(--memory-blue);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 10pt;
+  }
+
+  tbody td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--light-gray);
+    font-size: 10pt;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) { background: #F8F9FA; }
+
+  /* ===== CALLOUTS ===== */
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .callout-icon { font-size: 18pt; flex-shrink: 0; line-height: 1; }
+  .callout-content { flex: 1; }
+  .callout-content strong { display: block; margin-bottom: 4px; }
+  .callout.tip { background: #E8F8F5; border: 1px solid #00B894; }
+  .callout.warning { background: #FFF9E6; border: 1px solid #FDCB6E; }
+  .callout.danger { background: #FFE8E8; border: 1px solid #FF7675; }
+  .callout.info { background: #E8F0FE; border: 1px solid #74B9FF; }
+
+  /* ===== MEMORY DIAGRAM ===== */
+  .memory-diagram {
+    background: var(--white);
+    border: 2px solid var(--light-gray);
+    border-radius: 16px;
+    padding: 30px;
+    margin: 20px 0;
+  }
+
+  .memory-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+  }
+
+  .memory-layer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    border-radius: 10px;
+    margin: 4px 0;
+  }
+
+  .memory-layer .layer-icon {
+    font-size: 24pt;
+    flex-shrink: 0;
+    width: 40px;
+    text-align: center;
+  }
+
+  .memory-layer .layer-info {
+    flex: 1;
+  }
+
+  .memory-layer .layer-name {
+    font-weight: 700;
+    font-size: 11pt;
+  }
+
+  .memory-layer .layer-desc {
+    font-size: 9pt;
+    opacity: 0.8;
+  }
+
+  .memory-layer .layer-duration {
+    font-size: 9pt;
+    font-weight: 600;
+    background: rgba(255,255,255,0.3);
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .layer-session { background: #FFE8E8; color: #D63031; }
+  .layer-daily { background: #FFF3E0; color: #E17055; }
+  .layer-topic { background: #E8F0FE; color: #0984E3; }
+  .layer-memory { background: #E8F8F5; color: #00B894; }
+
+  .layer-arrow {
+    text-align: center;
+    font-size: 16pt;
+    color: var(--gray);
+    margin: 2px 0;
+  }
+
+  /* ===== FILE CARDS ===== */
+  .file-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 16px 0;
+  }
+
+  .file-card {
+    background: var(--white);
+    border: 1px solid var(--light-gray);
+    border-radius: 10px;
+    padding: 14px 16px;
+    border-top: 3px solid;
+  }
+
+  .file-card.decisions { border-top-color: var(--danger); }
+  .file-card.lessons { border-top-color: var(--warning); }
+  .file-card.projects { border-top-color: var(--memory-blue); }
+  .file-card.people { border-top-color: var(--memory-green); }
+  .file-card.pending { border-top-color: var(--memory-orange); }
+
+  .file-card-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10pt;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .file-card-desc {
+    font-size: 9pt;
+    color: var(--gray);
+    margin-bottom: 6px;
+  }
+
+  .file-card-example {
+    font-size: 8.5pt;
+    background: #F8F9FA;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--dark);
+    line-height: 1.5;
+  }
+
+  /* ===== FLOW DIAGRAM ===== */
+  .flow-box {
+    background: var(--white);
+    border: 2px solid var(--light-gray);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+
+  .flow-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .flow-step {
+    text-align: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    min-width: 100px;
+  }
+
+  .flow-step .step-emoji { font-size: 20pt; }
+  .flow-step .step-label { font-size: 9pt; font-weight: 600; margin-top: 4px; }
+
+  .flow-step.feedback { background: #FFE8E8; color: #D63031; }
+  .flow-step.extract { background: #FFF3E0; color: #E17055; }
+  .flow-step.lessons { background: #FFF9E6; color: #926C00; }
+  .flow-step.decisions { background: #E8F0FE; color: #0984E3; }
+  .flow-step.memory { background: #E8F8F5; color: #00B894; }
+
+  .flow-arrow {
+    font-size: 18pt;
+    color: var(--gray);
+    margin: 0 4px;
+  }
+
+  /* ===== INVIOLABLE RULE ===== */
+  .inviolable {
+    background: linear-gradient(135deg, #D63031 0%, #E17055 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    border: 2px solid #C0392B;
+  }
+
+  .inviolable h3 {
+    color: white;
+    margin: 0 0 8px 0;
+    font-size: 14pt;
+  }
+
+  .inviolable p {
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 8px;
+  }
+
+  .inviolable ol {
+    color: rgba(255,255,255,0.9);
+    margin-left: 20px;
+  }
+
+  .inviolable li {
+    margin-bottom: 4px;
+  }
+
+  /* ===== STEP CARDS ===== */
+  .step-card {
+    background: var(--white);
+    border: 1px solid var(--light-gray);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    border-left: 4px solid var(--primary);
+  }
+
+  .step-card.warning { border-left-color: var(--warning); background: #FFFDF5; }
+  .step-card.danger { border-left-color: var(--danger); background: #FFF5F5; }
+  .step-card.success { border-left-color: var(--success); background: #F0FFF4; }
+  .step-card.info { border-left-color: var(--accent); background: #F0FFFE; }
+
+  .step-title {
+    font-size: 13pt;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 8px;
+  }
+
+  /* ===== PROMPT SECTION ===== */
+  .prompt-section {
+    background: linear-gradient(135deg, #2D3436 0%, #1E272E 100%);
+    border-radius: 16px;
+    padding: 30px;
+    margin: 25px 0;
+    color: white;
+    page-break-inside: avoid;
+  }
+
+  .prompt-section h3 {
+    color: var(--accent-light);
+    margin-top: 0;
+    font-size: 16pt;
+  }
+
+  .prompt-section p { color: #B2BEC3; }
+
+  .prompt-box {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    font-size: 10pt;
+    line-height: 1.7;
+    color: #DFE6E9;
+  }
+
+  .prompt-box strong { color: var(--accent-light); }
+
+  .prompt-instruction {
+    background: rgba(0,206,201,0.15);
+    border: 1px solid rgba(0,206,201,0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 9.5pt;
+    color: var(--accent-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ===== CHECKLIST ===== */
+  .checklist {
+    background: var(--white);
+    border: 2px solid var(--success);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+
+  .checklist-title {
+    font-size: 14pt;
+    font-weight: 700;
+    color: var(--success);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 10.5pt;
+    border-bottom: 1px solid #F0F0F0;
+  }
+
+  .checklist-item:last-child { border-bottom: none; }
+
+  .check-box {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--light-gray);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ===== COMPARISON ===== */
+  .comparison {
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  .comparison-col {
+    flex: 1;
+    border-radius: 12px;
+    padding: 16px;
+    border: 2px solid;
+  }
+
+  .comparison-col.good { border-color: var(--success); background: #F0FFF4; }
+  .comparison-col.bad { border-color: var(--danger); background: #FFF5F5; }
+
+  .comparison-col h4 { font-size: 11pt; margin: 0 0 8px 0; }
+  .comparison-col ul { list-style: none; padding: 0; }
+  .comparison-col li { padding: 3px 0; font-size: 9.5pt; }
+
+  /* ===== CASE STUDY ===== */
+  .case-study {
+    background: linear-gradient(135deg, #FFEAA7 0%, #FFF3E0 100%);
+    border: 2px solid #F0C040;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+
+  .case-study h4 {
+    color: #6D4C00;
+    margin-top: 0;
+  }
+
+  .case-study p {
+    color: #5D4500;
+    font-size: 10pt;
+  }
+
+  /* ===== JSON BLOCK ===== */
+  .json-block {
+    background: var(--code-bg);
+    color: var(--code-text);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9pt;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+
+  /* ===== LISTS ===== */
+  ul, ol { margin: 8px 0 12px 20px; }
+  li { margin-bottom: 4px; font-size: 10.5pt; }
+
+  /* ===== FOOTER ===== */
+  .page-footer {
+    position: absolute;
+    bottom: 25px;
+    left: 55px;
+    right: 55px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 8pt;
+    color: var(--gray);
+    border-top: 1px solid var(--light-gray);
+    padding-top: 8px;
+  }
+
+  .text-small { font-size: 9pt; }
+  .text-muted { color: var(--gray); }
+</style>
+</head>
+<body>
+
+<!-- ==================== COVER PAGE ==================== -->
+<div class="cover">
+  <div class="cover-badge">Módulo 04</div>
+  <div class="cover-star">⭐ Módulo Diferenciador — Ninguém Ensina Isso</div>
+  <h1>Memória:<br>O Segredo que<br>Ninguém Ensina</h1>
+  <h2>Como fazer seu agente lembrar de tudo — decisões, lições, contexto — entre sessões</h2>
+  <div class="cover-meta">
+    <span>⏱️ 25 minutos</span>
+    <span>🎬 Demo + Diagramas</span>
+    <span>📁 8+ arquivos de template</span>
+  </div>
+  <div class="cover-footer">Construa Seu AI COO — De Zero a Agente Pessoal com OpenClaw</div>
+</div>
+
+<!-- ==================== PAGE 2: O PROBLEMA ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">Módulo 04 — O Problema</span>
+    <span class="page-header-module">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title"><span class="emoji">🧩</span> O Problema: Alzheimer Digital</div>
+  <p class="section-subtitle">Todo agente AI nasce com amnésia. A cada nova sessão, ele esquece TUDO. Isso é um problema fundamental.</p>
+
+  <div class="comparison">
+    <div class="comparison-col bad">
+      <h4>❌ Sem memória estruturada</h4>
+      <ul>
+        <li>❌ Repete as mesmas perguntas todo dia</li>
+        <li>❌ Esquece decisões importantes</li>
+        <li>❌ Não aprende com erros</li>
+        <li>❌ Perde contexto de projetos</li>
+        <li>❌ Você vira o backup humano do agente</li>
+      </ul>
+    </div>
+    <div class="comparison-col good">
+      <h4>✅ Com memória estruturada</h4>
+      <ul>
+        <li>✅ Lembra de decisões da semana passada</li>
+        <li>✅ Evolui a cada interação</li>
+        <li>✅ Consulta lições antes de sugerir</li>
+        <li>✅ Mantém estado de projetos</li>
+        <li>✅ Funciona como um verdadeiro COO</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="case-study">
+    <h4>📖 Caso Real</h4>
+    <p><strong>Dia 2 do uso:</strong> Token overflow de 173k+ tokens — o agente tentou carregar TUDO na memória a cada mensagem. Resultado: travou, custou caro, e perdeu contexto.</p>
+    <p><strong>Dia 13 do uso:</strong> Com memória estruturada, a Amora lembrou de uma decisão do Dia 4 sem ninguém pedir. "Você decidiu no dia 4 que posts de LinkedIn devem ter tom conversacional, não corporativo." → Isso é memória funcionando.</p>
+  </div>
+
+  <h3>🏗️ Arquitetura de Memória em Camadas</h3>
+  <p>A solução é um sistema em camadas, do volátil ao permanente:</p>
+
+  <div class="memory-diagram">
+    <div class="memory-layers">
+      <div class="memory-layer layer-session">
+        <div class="layer-icon">💭</div>
+        <div class="layer-info">
+          <div class="layer-name">Sessão (Context Window)</div>
+          <div class="layer-desc">Conversa atual — tudo que foi dito nesta sessão. Volátil.</div>
+        </div>
+        <div class="layer-duration">~minutos/horas</div>
+      </div>
+      
+      <div class="layer-arrow">↓ compactação ↓</div>
+      
+      <div class="memory-layer layer-daily">
+        <div class="layer-icon">📝</div>
+        <div class="layer-info">
+          <div class="layer-name">Notas Diárias (memory/YYYY-MM-DD.md)</div>
+          <div class="layer-desc">Registro raw do que aconteceu. Um arquivo por dia.</div>
+        </div>
+        <div class="layer-duration">~dias/semanas</div>
+      </div>
+      
+      <div class="layer-arrow">↓ consolidação ↓</div>
+      
+      <div class="memory-layer layer-topic">
+        <div class="layer-icon">📂</div>
+        <div class="layer-info">
+          <div class="layer-name">Topic Files (memory/decisions.md, lessons.md, etc.)</div>
+          <div class="layer-desc">Informação curada e organizada por tema.</div>
+        </div>
+        <div class="layer-duration">~meses</div>
+      </div>
+      
+      <div class="layer-arrow">↓ destilação ↓</div>
+      
+      <div class="memory-layer layer-memory">
+        <div class="layer-icon">🧠</div>
+        <div class="layer-info">
+          <div class="layer-name">MEMORY.md (Índice Central)</div>
+          <div class="layer-desc">Sabedoria destilada. O que realmente importa a longo prazo.</div>
+        </div>
+        <div class="layer-duration">permanente</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">🔍</div>
+    <div class="callout-content">
+      <strong>Por que camadas?</strong>
+      Agentes têm um limite de contexto (tokens). Se você carrega TUDO a cada mensagem, estoura o limite e paga caro. Com camadas, o agente carrega só o essencial e busca o resto sob demanda via <code>memory_search()</code>.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Módulo 04 — Memória: O Segredo que Ninguém Ensina</span>
+    <span>Página 2</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 3: OS TOPIC FILES ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">Módulo 04 — Topic Files</span>
+    <span class="page-header-module">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title"><span class="emoji">📂</span> Os 5 Topic Files</div>
+  <p class="section-subtitle">Cada arquivo tem um propósito claro. Juntos, formam a memória de longo prazo do seu agente.</p>
+
+  <div class="file-grid">
+    <div class="file-card decisions">
+      <div class="file-card-name">🔴 decisions.md</div>
+      <div class="file-card-desc"><strong>Decisões permanentes</strong> — nunca perder. Coisas que você decidiu e não quer rediscutir.</div>
+      <div class="file-card-example">
+## 2026-02-04<br>
+- LinkedIn: tom conversacional, NÃO corporativo<br>
+- Crons: SEMPRE isolated + agentTurn<br>
+- Sub-agents: NUNCA autonomia total
+      </div>
+    </div>
+
+    <div class="file-card lessons">
+      <div class="file-card-name">🟡 lessons.md</div>
+      <div class="file-card-desc"><strong>Lições aprendidas</strong> — erros, padrões, insights. Categorizadas por duração.</div>
+      <div class="file-card-example">
+### 🔒 Estratégicas (permanentes)<br>
+- Extrair lições ANTES de compactar<br><br>
+### ⏳ Táticas (30 dias)<br>
+- Rate limit YouTube: 2 req/min
+      </div>
+    </div>
+
+    <div class="file-card projects">
+      <div class="file-card-name">🔵 projects.md</div>
+      <div class="file-card-desc"><strong>Projetos ativos</strong> — estado atual, próximos passos, blockers.</div>
+      <div class="file-card-example">
+## Curso OpenClaw<br>
+Status: gravando módulo 4<br>
+Próximo: finalizar PDFs<br>
+Blocker: nenhum
+      </div>
+    </div>
+
+    <div class="file-card people">
+      <div class="file-card-name">🟢 people.md</div>
+      <div class="file-card-desc"><strong>Pessoas</strong> — equipe, parceiros, contatos. Contexto relacional.</div>
+      <div class="file-card-example">
+## Bruno<br>
+- Founder, foco em AI/SaaS<br>
+- Prefere comunicação direta<br>
+- Timezone: America/Sao_Paulo
+      </div>
+    </div>
+
+    <div class="file-card pending" style="grid-column: span 2;">
+      <div class="file-card-name">🟠 pending.md</div>
+      <div class="file-card-desc"><strong>Pendências</strong> — coisas aguardando input do usuário. Limpa quando resolvidas.</div>
+      <div class="file-card-example">
+- [ ] Aprovar design do dashboard (esperando desde 02/14)<br>
+- [ ] Decidir stack do Mission Control: Supabase vs NocoDB?<br>
+- [x] ~~Escolher modelo padrão~~ → Sonnet (resolvido 02/10)
+      </div>
+    </div>
+  </div>
+
+  <h3>📁 Estrutura de Pastas Completa</h3>
+  <div class="code-block" data-lang="tree">
+workspace/
+├── MEMORY.md              <span class="comment"># Índice central — sabedoria destilada</span>
+├── SOUL.md                <span class="comment"># Personalidade do agente</span>
+├── USER.md                <span class="comment"># Sobre o usuário</span>
+├── HEARTBEAT.md           <span class="comment"># Checklist periódico</span>
+└── memory/
+    ├── decisions.md       <span class="comment"># 🔴 Decisões permanentes</span>
+    ├── lessons.md         <span class="comment"># 🟡 Lições (estratégicas + táticas)</span>
+    ├── projects.md        <span class="comment"># 🔵 Projetos ativos</span>
+    ├── people.md          <span class="comment"># 🟢 Contatos e equipe</span>
+    ├── pending.md         <span class="comment"># 🟠 Aguardando input</span>
+    ├── feedback/          <span class="comment"># Feedback loops (approve/reject)</span>
+    │   ├── content.json
+    │   └── tasks.json
+    ├── 2026-02-14.md      <span class="comment"># Nota diária (raw)</span>
+    ├── 2026-02-15.md
+    └── 2026-02-16.md
+  </div>
+
+  <div class="page-footer">
+    <span>Módulo 04 — Memória: O Segredo que Ninguém Ensina</span>
+    <span>Página 3</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 4: REGRA INVIOLÁVEL + COMPACTAÇÃO ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">Módulo 04 — Compactação & Regras</span>
+    <span class="page-header-module">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title"><span class="emoji">⚡</span> Compactação: O Momento Crítico</div>
+  <p class="section-subtitle">Quando o contexto enche, o OpenClaw compacta (resume) a conversa. Se não extrair informação antes, ela se perde.</p>
+
+  <div class="inviolable">
+    <h3>🚨 REGRA INVIOLÁVEL</h3>
+    <p><strong>ANTES de cada compactação, o agente DEVE extrair:</strong></p>
+    <ol>
+      <li><strong>Decisões</strong> → salvar em <code>memory/decisions.md</code></li>
+      <li><strong>Lições aprendidas</strong> → salvar em <code>memory/lessons.md</code></li>
+      <li><strong>Updates de projetos</strong> → atualizar <code>memory/projects.md</code></li>
+      <li><strong>Pessoas mencionadas</strong> → atualizar <code>memory/people.md</code></li>
+      <li><strong>Pendências</strong> → atualizar <code>memory/pending.md</code></li>
+    </ol>
+    <p style="margin-top: 12px; font-weight: 700;">Se não extrair antes de compactar, perde 80% do valor da conversa.</p>
+  </div>
+
+  <h3>⚙️ Configuração de Compactação</h3>
+
+  <div class="code-block" data-lang="json">
+{
+  <span class="key">"compaction"</span>: {
+    <span class="key">"mode"</span>: <span class="string">"default"</span>
+  },
+  <span class="key">"contextTokens"</span>: <span class="number">160000</span>,        <span class="comment">// Limite de contexto</span>
+  <span class="key">"reserveTokensFloor"</span>: <span class="number">30000</span>     <span class="comment">// Reserva pra raciocínio</span>
+}
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Por que 30k de reserva?</strong>
+      Se o agente usar todo o contexto pra ler dados, sobra pouco espaço pra "pensar". A reserva garante que ele sempre tem espaço pra raciocinar. Sem isso, respostas ficam cortadas ou superficiais.
+    </div>
+  </div>
+
+  <h3>🔍 Memory Search: Busca Sob Demanda</h3>
+  <p>Em vez de carregar tudo na memória, o agente busca quando precisa:</p>
+
+  <div class="step-card info">
+    <div class="step-title">Como funciona na prática</div>
+    <ol>
+      <li>Você pergunta: <em>"Qual foi a decisão sobre o tom do LinkedIn?"</em></li>
+      <li>Agente roda: <code>memory_search("decisão tom LinkedIn")</code></li>
+      <li>Retorna chunks relevantes (~400 tokens cada)</li>
+      <li>Agente usa <code>memory_get(path, from, lines)</code> pra puxar o trecho exato</li>
+      <li>Responde com contexto: <em>"No dia 4, você decidiu tom conversacional, não corporativo."</em></li>
+    </ol>
+  </div>
+
+  <div class="code-block" data-lang="terminal">
+<span class="comment"># Indexar todos os arquivos de memória</span>
+<span class="prompt">$</span> <span class="command">openclaw</span> memory index <span class="flag">--all</span>
+
+<span class="comment"># Testar busca</span>
+<span class="prompt">$</span> <span class="command">openclaw</span> memory search <span class="string">"decisão LinkedIn"</span>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Economia de tokens:</strong> Carregar MEMORY.md inteiro a cada mensagem = ~50KB = 💸. Usar memory_search sob demanda = ~400 tokens por busca = 💰. A diferença entre gastar $2-3/dia e $0.10/dia.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Módulo 04 — Memória: O Segredo que Ninguém Ensina</span>
+    <span>Página 4</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 5: FEEDBACK LOOPS + CONSOLIDAÇÃO ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">Módulo 04 — Feedback Loops</span>
+    <span class="page-header-module">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title"><span class="emoji">🔄</span> Feedback Loops: Evolução Real</div>
+  <p class="section-subtitle">O segredo para o agente melhorar com o tempo: capturar approve/reject em cada interação.</p>
+
+  <h3>Como Funciona</h3>
+
+  <div class="flow-box">
+    <div class="flow-steps">
+      <div class="flow-step feedback">
+        <div class="step-emoji">📝</div>
+        <div class="step-label">Feedback<br>(approve/reject)</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step extract">
+        <div class="step-emoji">⚡</div>
+        <div class="step-label">Extração<br>(JSON)</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step lessons">
+        <div class="step-emoji">📚</div>
+        <div class="step-label">Lessons<br>(curado)</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step decisions">
+        <div class="step-emoji">⚖️</div>
+        <div class="step-label">Decisions<br>(permanente)</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step memory">
+        <div class="step-emoji">🧠</div>
+        <div class="step-label">Consulta ANTES<br>de sugerir</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>📋 Exemplo Prático: Feedback em Ação</h3>
+
+  <h4>1. Agente sugere algo:</h4>
+  <div class="step-card">
+    <p>🤖 <em>"Para o post de LinkedIn, sugiro formato carrossel com 8 slides e tom executivo formal."</em></p>
+  </div>
+
+  <h4>2. Você rejeita:</h4>
+  <div class="step-card warning">
+    <p>👤 <em>"Não, muito formal. Posts de LinkedIn devem ser conversacionais, como se tivesse falando com um amigo."</em></p>
+  </div>
+
+  <h4>3. Agente registra feedback:</h4>
+  <div class="code-block" data-lang="feedback/content.json">
+{
+  <span class="key">"entries"</span>: [
+    {
+      <span class="key">"date"</span>: <span class="string">"2026-02-04"</span>,
+      <span class="key">"context"</span>: <span class="string">"Sugeri formato carrossel com tom executivo formal"</span>,
+      <span class="key">"decision"</span>: <span class="string">"reject"</span>,
+      <span class="key">"reason"</span>: <span class="string">"Tom muito formal. LinkedIn deve ser conversacional."</span>,
+      <span class="key">"tags"</span>: [<span class="string">"linkedin"</span>, <span class="string">"tom"</span>, <span class="string">"conteúdo"</span>]
+    }
+  ]
+}
+  </div>
+
+  <h4>4. Na próxima vez, o agente CONSULTA antes de sugerir:</h4>
+  <div class="step-card success">
+    <p>🤖 <em>"Para o post de LinkedIn, vou usar tom conversacional (decisão de 02/04). Formato: texto direto com storytelling, sem carrossel formal."</em></p>
+    <p><strong>→ Evolução real. O agente não repete o mesmo erro.</strong></p>
+  </div>
+
+  <h3>🔁 Consolidação Periódica</h3>
+  <p>A cada poucos dias (ou via heartbeat), o agente deve:</p>
+
+  <table>
+    <thead>
+      <tr><th>Ação</th><th>Frequência</th><th>O Que Faz</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>📝 Notas diárias → Topic files</td><td>A cada 2-3 dias</td><td>Extrai insights das notas brutas</td></tr>
+      <tr><td>🔒 Classificar lições</td><td>Semanal</td><td>Estratégica (permanente) vs Tática (30 dias)</td></tr>
+      <tr><td>🧹 Limpar pending</td><td>Semanal</td><td>Remove itens resolvidos</td></tr>
+      <tr><td>🧠 Atualizar MEMORY.md</td><td>Quinzenal</td><td>Destila sabedoria dos topic files</td></tr>
+      <tr><td>⏳ Expirar lições táticas</td><td>Mensal</td><td>Remove lições com >30 dias</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Automatize via heartbeat!</strong> Configure no HEARTBEAT.md para o agente fazer consolidação automaticamente a cada poucos dias. Sem intervenção manual — o agente cuida da própria memória.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Módulo 04 — Memória: O Segredo que Ninguém Ensina</span>
+    <span>Página 5</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 6: OTIMIZAÇÃO + SESSION INIT ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">Módulo 04 — Otimização</span>
+    <span class="page-header-module">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title"><span class="emoji">💰</span> Otimização: De $3/dia Para $0.10/dia</div>
+  <p class="section-subtitle">A configuração de inicialização de sessão é o maior fator de custo. Acerte isso e economize 95%.</p>
+
+  <h3>🚫 O Que NÃO Carregar Automaticamente</h3>
+  
+  <div class="comparison">
+    <div class="comparison-col bad">
+      <h4>❌ Configuração ingênua</h4>
+      <ul>
+        <li>❌ Carrega MEMORY.md inteiro (~50KB)</li>
+        <li>❌ Carrega histórico de todas as sessões</li>
+        <li>❌ Carrega todos os topic files</li>
+        <li>❌ Carrega outputs anteriores</li>
+        <li>❌ ~$2-3/dia em tokens</li>
+      </ul>
+    </div>
+    <div class="comparison-col good">
+      <h4>✅ Configuração otimizada</h4>
+      <ul>
+        <li>✅ SOUL.md (personalidade)</li>
+        <li>✅ USER.md (contexto do usuário)</li>
+        <li>✅ IDENTITY.md (dados concretos)</li>
+        <li>✅ memory/YYYY-MM-DD.md (só hoje+ontem)</li>
+        <li>✅ Resto via memory_search() sob demanda</li>
+        <li>✅ ~$0.10/dia em tokens</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>⚙️ Configuração do AGENTS.md</h3>
+  <p>Adicione estas regras no AGENTS.md do seu agente:</p>
+
+  <div class="code-block" data-lang="markdown">
+<span class="comment">## Every Session</span>
+
+Before doing anything else:
+
+1. Read `SOUL.md` — this is who you are
+2. Read `USER.md` — this is who you're helping
+3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
+4. <span class="key">**If in MAIN SESSION**</span> (direct chat): Also read `MEMORY.md`
+
+<span class="comment">## Memory Rules</span>
+
+- Use `memory_search()` for anything NOT in active context
+- Use `memory_get()` to pull ONLY the needed lines
+- NEVER load all topic files at session start
+- BEFORE each compaction: extract lessons, decisions, pending
+- This rule is <span class="key">**INVIOLABLE**</span>
+  </div>
+
+  <h3>🔎 Memory Search: Provider Chain</h3>
+  <p>O OpenClaw tenta embeddings nesta ordem:</p>
+
+  <table>
+    <thead>
+      <tr><th>Provider</th><th>Tipo</th><th>Custo</th><th>Qualidade</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Local GGUF</td><td>Roda na VPS</td><td>Grátis</td><td>⭐⭐⭐</td></tr>
+      <tr><td>OpenAI</td><td>API</td><td>$0.0001/1k tokens</td><td>⭐⭐⭐⭐</td></tr>
+      <tr><td>Gemini</td><td>API</td><td>Grátis (free tier)</td><td>⭐⭐⭐⭐</td></tr>
+      <tr><td>Voyage</td><td>API</td><td>$0.0001/1k tokens</td><td>⭐⭐⭐⭐⭐</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Recomendação:</strong> Deixe no <code>auto</code>. O OpenClaw escolhe o melhor provider disponível. Se tiver API key da OpenAI configurada, usa ela pra embeddings — é baratíssimo.
+    </div>
+  </div>
+
+  <h3>🧠 O HEARTBEAT.md Ideal</h3>
+  <p>Configure o heartbeat pra incluir manutenção de memória:</p>
+
+  <div class="code-block" data-lang="heartbeat.md">
+<span class="comment"># HEARTBEAT.md - Checklist Periódico</span>
+
+## Checks (a cada heartbeat)
+- [ ] Emails urgentes?
+- [ ] Eventos nas próximas 24-48h?
+- [ ] Projetos parados há >5 dias?
+
+## Memória (a cada 2-3 dias)
+- [ ] Consolidar notas diárias → topic files
+- [ ] Classificar novas lições (estratégica vs tática)
+- [ ] Limpar pending.md (itens resolvidos)
+
+## Memória profunda (quinzenal)
+- [ ] Atualizar MEMORY.md com insights destilados
+- [ ] Expirar lições táticas com >30 dias
+- [ ] Revisar decisions.md — ainda fazem sentido?
+  </div>
+
+  <div class="page-footer">
+    <span>Módulo 04 — Memória: O Segredo que Ninguém Ensina</span>
+    <span>Página 6</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 7: CHECKLIST + PROMPT ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-title">Módulo 04 — Checklist & Prompt</span>
+    <span class="page-header-module">Construa Seu AI COO</span>
+  </div>
+
+  <div class="checklist">
+    <div class="checklist-title">✅ Checkpoint — Módulo 4 Completo</div>
+    <div class="checklist-item"><div class="check-box">☐</div> Pasta <code>memory/</code> criada com os 5 topic files</div>
+    <div class="checklist-item"><div class="check-box">☐</div> MEMORY.md criado como índice central</div>
+    <div class="checklist-item"><div class="check-box">☐</div> Regra de extração antes de compactação configurada no AGENTS.md</div>
+    <div class="checklist-item"><div class="check-box">☐</div> contextTokens e reserveTokensFloor configurados</div>
+    <div class="checklist-item"><div class="check-box">☐</div> Memory search indexado (<code>openclaw memory index --all</code>)</div>
+    <div class="checklist-item"><div class="check-box">☐</div> HEARTBEAT.md configurado com checks de memória</div>
+    <div class="checklist-item"><div class="check-box">☐</div> Feedback loops configurados (pelo menos 1 domínio)</div>
+    <div class="checklist-item"><div class="check-box">☐</div> Teste: agente "lembrou" de algo de uma sessão anterior 🧠</div>
+  </div>
+
+  <!-- PROMPT SECTION -->
+  <div class="prompt-section">
+    <h3>🤖 Prompt Para Seu Agente — Cole no Chat</h3>
+    <p>Cole este prompt junto com os arquivos de template. O agente implementa tudo automaticamente.</p>
+    
+    <div class="prompt-instruction">📋 Copie tudo dentro da caixa abaixo e cole no Telegram pro seu agente</div>
+    <div class="prompt-instruction">📎 Anexe junto: os templates de memory/ que vieram no kit do módulo</div>
+
+    <div class="prompt-box">
+Acabei de assistir o Módulo 4 do curso sobre memória. Preciso que implemente o sistema de memória completo.<br><br>
+
+<strong>O que preciso que faça:</strong><br><br>
+
+1. <strong>Me explique como funciona sua memória</strong> — o problema (Alzheimer entre sessões) e a solução (memória em camadas)<br><br>
+
+2. <strong>Crie a estrutura de memória:</strong><br>
+- memory/ com: decisions.md, lessons.md, pending.md, people.md, projects.md<br>
+- MEMORY.md como índice<br>
+- Configurar notas diárias automáticas<br><br>
+
+3. <strong>Configure a regra de extração antes de compactação</strong> — NUNCA compactar sem extrair lições, decisões e pendências primeiro. Isso é INVIOLÁVEL.<br><br>
+
+4. <strong>Configure o HEARTBEAT.md</strong> — inclua checks de memória (consolidação, limpeza, expiração)<br><br>
+
+5. <strong>Configure compactação:</strong> contextTokens: 160.000, reserveTokensFloor: 30.000<br><br>
+
+6. <strong>Configure memory search</strong> — indexe tudo com <code>openclaw memory index --all</code><br><br>
+
+7. <strong>Configure feedback loops</strong> — crie memory/feedback/ com pelo menos content.json e tasks.json<br><br>
+
+<strong>Regras:</strong><br>
+- Me explique cada arquivo e PRA QUE SERVE antes de criar<br>
+- Me mostre um exemplo prático de como uma decisão vira memória permanente<br>
+- Regra INVIOLÁVEL: antes de CADA compactação, rodar checklist de extração<br>
+- No final, simule uma compactação pra eu ver o processo funcionando
+    </div>
+  </div>
+
+  <div class="callout info" style="margin-top: 20px;">
+    <div class="callout-icon">🔮</div>
+    <div class="callout-content">
+      <strong>Próximo Módulo:</strong> Integrações & Crons — Conectar seu agente ao Google Calendar, 1Password, e automatizar tarefas recorrentes. A memória que você acabou de configurar é o que faz tudo isso funcionar entre sessões.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Módulo 04 — Memória: O Segredo que Ninguém Ensina</span>
+    <span>Página 7</span>
+  </div>
+</div>
+
+</body>
+</html>

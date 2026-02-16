@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 5 — Integrações & Crons: Conectando ao Mundo Real</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: #12121a;
+  --bg-card: #1a1a25;
+  --bg-card-hover: #222230;
+  --grape: #8b5cf6;
+  --grape-light: #a78bfa;
+  --grape-dim: rgba(139, 92, 246, 0.12);
+  --grape-border: rgba(139, 92, 246, 0.25);
+  --grape-glow: rgba(139, 92, 246, 0.08);
+  --emerald: #10b981;
+  --emerald-dim: rgba(16, 185, 129, 0.12);
+  --emerald-border: rgba(16, 185, 129, 0.25);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.25);
+  --rose: #f43f5e;
+  --rose-dim: rgba(244, 63, 94, 0.12);
+  --rose-border: rgba(244, 63, 94, 0.25);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.12);
+  --text: #f1f1f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --code-bg: #0d0d15;
+  --code-border: rgba(255,255,255,0.08);
+}
+
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 10.5pt;
+  line-height: 1.6;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 22mm 24mm 28mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--bg);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -25%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse, var(--grape-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 297mm;
+  padding: 36mm 28mm;
+  position: relative;
+}
+
+.cover-grid {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 50%; height: 40%;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+}
+
+.cover-decoration {
+  position: absolute;
+  top: 28mm; right: 28mm;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg, var(--grape), var(--cyan), var(--grape));
+  opacity: 0.1;
+  filter: blur(35px);
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: var(--cyan-dim);
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  border-radius: 100px;
+  font-size: 10pt;
+  font-weight: 500;
+  color: var(--cyan);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cover-title {
+  font-size: 40pt;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 18px;
+  position: relative;
+  max-width: 500px;
+}
+
+.cover-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--cyan), #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-subtitle {
+  font-size: 14pt;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 44px;
+  position: relative;
+}
+
+.cover-meta {
+  position: relative;
+  display: flex;
+  gap: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.cover-meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+.cover-meta-label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cover-meta-value {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header-left {
+  font-size: 9pt;
+  color: var(--cyan);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.page-header-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 12mm;
+  left: 24mm; right: 24mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.page-footer-left {
+  font-size: 8pt;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.page-footer-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.section-title {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--grape-light);
+  margin: 22px 0 10px;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+
+p {
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  font-size: 10.5pt;
+}
+
+strong { color: var(--text); }
+
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  position: relative;
+  white-space: pre;
+}
+
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 7.5pt;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.code-block .comment { color: #4a4a5a; }
+.code-block .cmd { color: var(--grape-light); }
+.code-block .str { color: var(--emerald); }
+.code-block .flag { color: var(--amber); }
+.code-block .prompt { color: var(--text-muted); }
+
+code {
+  background: var(--grape-dim);
+  color: var(--grape-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+}
+
+.step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 16px 56px;
+  margin: 12px 0;
+  position: relative;
+}
+
+.step-num {
+  position: absolute;
+  left: 16px; top: 16px;
+  width: 28px; height: 28px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--grape-light);
+}
+
+.step-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.callout {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16pt; flex-shrink: 0; line-height: 1; }
+.callout-content { flex: 1; }
+.callout-content strong { display: block; margin-bottom: 3px; color: var(--text); }
+.callout-content p { margin-bottom: 4px; }
+
+.callout.tip { background: var(--emerald-dim); border: 1px solid var(--emerald-border); }
+.callout.warning { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+.callout.danger { background: var(--rose-dim); border: 1px solid var(--rose-border); }
+.callout.info { background: var(--grape-dim); border: 1px solid var(--grape-border); }
+
+.checklist {
+  background: var(--bg-card);
+  border: 1px solid var(--emerald-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 18px 0;
+}
+
+.checklist-title {
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--emerald);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 10pt;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.check-box {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border-hover);
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10pt;
+}
+
+.prompt-section {
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+  border: 1px solid var(--grape-border);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 20px 0;
+  page-break-inside: avoid;
+}
+
+.prompt-section h3 {
+  color: var(--grape-light);
+  margin-top: 0;
+  font-size: 14pt;
+}
+
+.prompt-instruction {
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 9pt;
+  color: var(--grape-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prompt-box {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 18px;
+  margin: 12px 0;
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.prompt-box strong { color: var(--grape-light); }
+
+ul, ol { margin: 8px 0 12px 18px; }
+li { margin-bottom: 3px; font-size: 10pt; color: var(--text-secondary); }
+
+.next-module {
+  background: var(--bg-card);
+  border: 1px solid var(--grape-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.next-module .next-icon { font-size: 20pt; }
+.next-module .next-text { flex: 1; }
+.next-module .next-label { font-size: 8.5pt; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.next-module .next-title { font-size: 12pt; font-weight: 600; color: var(--text); }
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 14px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+thead th {
+  background: var(--bg-card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+  padding: 9px 14px;
+  font-size: 10pt;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody td:first-child { font-weight: 500; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+  <div class="cover-decoration"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-badge">Módulo 05</div>
+  <div class="cover-title">Integrações & Crons<br><em>Conectando ao Mundo Real</em></div>
+  <div class="cover-subtitle">1Password, Google Calendar, YouTube, RapidAPI e crons automatizados</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Duração</span>
+      <span class="cover-meta-value">25 min</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Formato</span>
+      <span class="cover-meta-value">Live coding + demo</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Kit</span>
+      <span class="cover-meta-value">3 arquivos</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 1 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title">1Password: Credenciais Seguras</div>
+
+  <p>Antes de QUALQUER integração, configure o 1Password CLI. NUNCA hardcode credenciais.</p>
+
+  <h3>Instalando 1Password CLI</h3>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Instalar via script oficial</span>
+<span class="cmd">curl</span> <span class="flag">-sS</span> https://downloads.1password.com/linux/keys/1password.asc | \
+<span class="cmd">sudo gpg</span> <span class="flag">--dearmor --output</span> /usr/share/keyrings/1password-archive-keyring.gpg
+
+<span class="cmd">echo</span> <span class="str">"deb [arch=amd64] https://downloads.1password.com/linux/debian/amd64 stable main"</span> | \
+<span class="cmd">sudo tee</span> /etc/apt/sources.list.d/1password.list
+
+<span class="cmd">sudo apt update</span> && <span class="cmd">sudo apt install 1password-cli -y</span>
+
+<span class="comment"># Fazer login</span>
+<span class="cmd">op signin</span></div>
+
+  <h3>Como Usar no Código</h3>
+
+  <p>Em vez de hardcodar API keys:</p>
+
+  <div class="code-block" data-lang="javascript"><span class="comment">// ❌ MAL!</span>
+const apiKey = "sk-ant-1234567890abcdef";
+
+<span class="comment">// ✅ BOM!</span>
+const apiKey = process.env.ANTHROPIC_API_KEY;</div>
+
+  <div class="callout danger">
+    <div class="callout-icon">🚨</div>
+    <div class="callout-content">
+      <strong>CUIDADO: systemd Override</strong>
+      <p>Se o gateway roda via systemd, o arquivo <code>.service</code> pode sobrescrever o <code>.env</code>. Atualize AMBOS ao trocar credenciais.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-footer-right">02</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 2 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Google Calendar & Drive (GOG CLI)</h3>
+
+  <p>GOG CLI permite acesso direto às APIs do Google. Ideal pra Calendar, Drive, Gmail.</p>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Instalar GOG CLI (via skill ou manual)</span>
+<span class="cmd">openclaw skills install</span> gog
+
+<span class="comment"># Autenticar</span>
+<span class="cmd">gog auth login</span>
+
+<span class="comment"># Testar</span>
+<span class="cmd">gog calendar list</span></div>
+
+  <h3>YouTube: Data API + OAuth</h3>
+
+  <p>Pra acessar YouTube (upload, analytics, comments), você precisa de OAuth2.</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">Criar Projeto no Google Cloud</div>
+    <p>Acesse <strong>console.cloud.google.com</strong> → Criar projeto</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">Ativar YouTube Data API v3</div>
+    <p>APIs & Services → Enable APIs → YouTube Data API v3</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">Criar OAuth Credentials</div>
+    <p>Credentials → Create → OAuth client ID → Desktop app</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-title">Baixar JSON e Autenticar</div>
+    <p>Salvar <code>client_secret.json</code> no servidor → rodar flow OAuth</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Quota Diária</strong>
+      <p>YouTube Data API tem quota de 10.000 unidades/dia. 1 upload = ~1.600 unidades. Planeje o uso.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-footer-right">03</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 3 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>RapidAPI: Proxy Universal</h3>
+
+  <p>Cloud IPs (VPS) são bloqueados por YouTube, Instagram, X. RapidAPI resolve isso fazendo proxy das requests.</p>
+
+  <h4>APIs Úteis na RapidAPI</h4>
+
+  <table>
+    <thead>
+      <tr>
+        <th>API</th>
+        <th>O Que Faz</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Instagram Statistics</strong></td>
+        <td>Pegar métricas de posts/perfis sem API oficial</td>
+      </tr>
+      <tr>
+        <td><strong>X/Twitter API45</strong></td>
+        <td>Acessar tweets, perfis, trends</td>
+      </tr>
+      <tr>
+        <td><strong>YouTube Transcripts</strong></td>
+        <td>Extrair legendas de vídeos</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Exemplo: buscar transcrição de vídeo</span>
+<span class="cmd">curl</span> <span class="flag">-X GET</span> \
+  <span class="str">"https://youtube-transcripts.p.rapidapi.com/transcript?video_id=dQw4w9WgXcQ"</span> \
+  <span class="flag">-H</span> <span class="str">"X-RapidAPI-Key: YOUR_KEY"</span></div>
+
+  <h3>Telegram Como Hub Operacional</h3>
+
+  <p>Use Telegram com <strong>grupo + tópicos</strong> como seu "Mission Control".</p>
+
+  <h4>Por Que Telegram > WhatsApp?</h4>
+
+  <ul>
+    <li><strong>Telegram:</strong> Múltiplas sessões simultâneas (tópicos = war rooms)</li>
+    <li><strong>WhatsApp:</strong> Sessão única (tudo misturado)</li>
+    <li><strong>Telegram:</strong> Bots nativos, sem limitações de API</li>
+    <li><strong>WhatsApp:</strong> Precisa de workarounds (Baileys, etc)</li>
+  </ul>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Estrutura de Tópicos</strong>
+      <p>Crie tópicos separados: "Daily Briefing", "Urgent", "Projects", "Metrics". Cada cron entrega no tópico certo.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-footer-right">04</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 4 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Crons: Automatizar Tarefas Recorrentes</h3>
+
+  <p>Crons são tarefas que rodam em horários específicos. OpenClaw tem sistema de cron integrado.</p>
+
+  <h4>O Bug que TODO MUNDO Encontra</h4>
+
+  <div class="callout danger">
+    <div class="callout-icon">🚨</div>
+    <div class="callout-content">
+      <strong>systemEvent + main = NÃO Funciona Como Esperado</strong>
+      <p>Se você configurar cron com <code>systemEvent</code> na main session, ele dispara mas NÃO executa (durationMs ~0ms).</p>
+    </div>
+  </div>
+
+  <p><strong>Solução CORRETA:</strong></p>
+
+  <div class="code-block" data-lang="json">{
+  "schedule": "0 9 * * *",
+  "sessionTarget": "isolated",
+  "agentTurn": {
+    "announce": true,
+    "message": "Execute o daily briefing e entregue no tópico Daily Briefing."
+  }
+}</div>
+
+  <p><strong>Por quê?</strong></p>
+  <ul>
+    <li><code>sessionTarget: isolated</code> → Cria sessão própria pro cron</li>
+    <li><code>agentTurn</code> → Dispara turno do agente (ele EXECUTA)</li>
+    <li><code>announce</code> → Envia resultado pro canal configurado</li>
+  </ul>
+
+  <h4>Outros Problemas Comuns</h4>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">Colisão de Horários</div>
+    <p>Crons no mesmo horário causam problemas. Espaçar 15-30min entre cada.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">config.patch Reinicia Gateway</div>
+    <p>Ao alterar config via <code>config.patch</code>, o gateway reinicia e mata crons em execução. Fazer em horários sem crons ativos.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">Lembretes Não Notificam</div>
+    <p>systemEvent NÃO envia notificação. Use <code>agentTurn</code> + <code>message send</code> se precisar avisar.</p>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-footer-right">05</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 5 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Exemplo de Cron: Daily Briefing</h3>
+
+  <div class="code-block" data-lang="json">{
+  "name": "daily-briefing",
+  "schedule": "0 9 * * *",
+  "sessionTarget": "isolated",
+  "agentTurn": {
+    "announce": true,
+    "targetChannel": "telegram",
+    "targetId": "SEU_GRUPO_ID",
+    "targetTopic": "Daily Briefing",
+    "message": "Execute o daily briefing. Inclua: eventos do dia, tarefas pendentes, métricas principais. Entregue de forma concisa."
+  },
+  "model": "claude-sonnet-4"
+}</div>
+
+  <h3>Modelo Split: Economia Real</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tipo de Cron</th>
+        <th>Modelo Recomendado</th>
+        <th>Por Quê</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Execução</strong></td>
+        <td>Sonnet</td>
+        <td>Sync, watchdog, lembretes — tasks simples</td>
+      </tr>
+      <tr>
+        <td><strong>Análise</strong></td>
+        <td>Opus</td>
+        <td>Reports estratégicos, decisões complexas</td>
+      </tr>
+      <tr>
+        <td><strong>Heartbeats</strong></td>
+        <td>Haiku</td>
+        <td>Checagens periódicas — 90% economia</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Resultado</strong>
+      <p>Com essa estratégia, você reduz custos de ~$2-3/dia pra ~$0.10/dia.</p>
+    </div>
+  </div>
+
+  <h3>Comandos Úteis</h3>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Listar crons ativos</span>
+<span class="cmd">openclaw crons list</span>
+
+<span class="comment"># Ver próximas execuções</span>
+<span class="cmd">openclaw crons upcoming</span>
+
+<span class="comment"># Testar cron manualmente</span>
+<span class="cmd">openclaw crons run</span> daily-briefing
+
+<span class="comment"># Pausar cron</span>
+<span class="cmd">openclaw crons pause</span> daily-briefing</div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-footer-right">06</span>
+  </div>
+</div>
+
+<!-- CHECKLIST + PROMPT PAGE -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="checklist">
+    <div class="checklist-title">✅ Checkpoint do Módulo 5</div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>1Password CLI configurado (zero hardcode)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Pelo menos 1 integração funcionando (Calendar/Drive/YouTube)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>2 crons configurados (isolated + agentTurn)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Telegram com tópicos como hub operacional</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Modelo split configurado (Haiku/Sonnet/Opus)</span>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <h3>🤖 Prompt para o Agente</h3>
+    <div class="prompt-instruction">
+      Cole este prompt no chat do seu OpenClaw depois de assistir o Módulo 5:
+    </div>
+    <div class="prompt-box">Acabei de assistir o Módulo 5 do curso sobre integrações e crons. Leia o PRD de integrações e me guie.
+
+<strong>O que preciso que você faça:</strong>
+
+1. <strong>Analise meu perfil</strong> — baseado no que você já sabe sobre mim (USER.md), me recomende as 3-5 integrações mais úteis pra começar
+
+2. <strong>Me guie na instalação</strong> de cada integração, uma por vez:
+   - Me explique o que ela faz e por que é útil
+   - Me ajude a configurar a API key de forma segura
+   - Teste se funcionou
+
+3. <strong>Configure pelo menos 2 crons:</strong>
+   - Um lembrete/agenda (pra eu ver funcionando)
+   - Um report automático (daily briefing ou métricas)
+   - Use SEMPRE: sessionTarget: isolated + agentTurn + announce (isso é crítico pra funcionar!)
+
+4. <strong>Me explique os erros comuns:</strong>
+   - Por que systemEvent na main session não funciona como esperado
+   - Por que crons no mesmo horário causam problemas
+   - Como config.patch afeta crons rodando
+
+<strong>Regras:</strong>
+- Comece com integrações simples (calendário, clima) antes das complexas
+- Se der erro de cloud IP bloqueado, me explique a solução (RapidAPI como proxy)
+- TODAS as credenciais vão no 1Password — zero hardcode nos arquivos
+- No final, me mostre os crons ativos e quando vão rodar
+
+Vamos conectar ao mundo real?</div>
+  </div>
+
+  <div class="next-module">
+    <div class="next-icon">⚡</div>
+    <div class="next-text">
+      <div class="next-label">Próximo Módulo</div>
+      <div class="next-title">Módulo 6 — Skills: Superpoderes Instantâneos</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 05 — Integrações & Crons</span>
+    <span class="page-footer-right">07</span>
+  </div>
+</div>
+
+</body>
+</html>

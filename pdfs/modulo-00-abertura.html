@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 0 — Abertura & Contexto</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: #12121a;
+  --bg-card: #1a1a25;
+  --bg-card-hover: #222230;
+  --grape: #8b5cf6;
+  --grape-light: #a78bfa;
+  --grape-dim: rgba(139, 92, 246, 0.12);
+  --grape-border: rgba(139, 92, 246, 0.25);
+  --grape-glow: rgba(139, 92, 246, 0.08);
+  --emerald: #10b981;
+  --emerald-dim: rgba(16, 185, 129, 0.12);
+  --emerald-border: rgba(16, 185, 129, 0.25);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.25);
+  --rose: #f43f5e;
+  --rose-dim: rgba(244, 63, 94, 0.12);
+  --rose-border: rgba(244, 63, 94, 0.25);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.12);
+  --text: #f1f1f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --code-bg: #0d0d15;
+  --code-border: rgba(255,255,255,0.08);
+}
+
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 10.5pt;
+  line-height: 1.6;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 22mm 24mm 28mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--bg);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -25%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse, var(--grape-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 297mm;
+  padding: 36mm 28mm;
+  position: relative;
+}
+
+.cover-grid {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 50%; height: 40%;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+}
+
+.cover-decoration {
+  position: absolute;
+  top: 28mm; right: 28mm;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg, var(--grape), var(--emerald), var(--grape));
+  opacity: 0.1;
+  filter: blur(35px);
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 100px;
+  font-size: 10pt;
+  font-weight: 500;
+  color: var(--grape-light);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cover-title {
+  font-size: 44pt;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 18px;
+  position: relative;
+  max-width: 500px;
+}
+
+.cover-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--grape), var(--grape-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-subtitle {
+  font-size: 14pt;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 44px;
+  position: relative;
+}
+
+.cover-meta {
+  position: relative;
+  display: flex;
+  gap: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.cover-meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+.cover-meta-label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cover-meta-value {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header-left {
+  font-size: 9pt;
+  color: var(--grape-light);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.page-header-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 12mm;
+  left: 24mm; right: 24mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.page-footer-left {
+  font-size: 8pt;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.page-footer-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.section-title {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--grape-light);
+  margin: 22px 0 10px;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+
+p {
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  font-size: 10.5pt;
+}
+
+strong { color: var(--text); }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 12px 0;
+}
+
+.card.grape { border-color: var(--grape-border); background: linear-gradient(135deg, rgba(139,92,246,0.06), var(--bg-card)); }
+.card.emerald { border-color: var(--emerald-border); background: linear-gradient(135deg, rgba(16,185,129,0.06), var(--bg-card)); }
+.card.amber { border-color: var(--amber-border); background: linear-gradient(135deg, rgba(245,158,11,0.06), var(--bg-card)); }
+
+.card-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.card-desc {
+  font-size: 10pt;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.callout {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16pt; flex-shrink: 0; line-height: 1; }
+.callout-content { flex: 1; }
+.callout-content strong { display: block; margin-bottom: 3px; color: var(--text); }
+.callout-content p { margin-bottom: 4px; }
+
+.callout.tip { background: var(--emerald-dim); border: 1px solid var(--emerald-border); }
+.callout.warning { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+.callout.info { background: var(--grape-dim); border: 1px solid var(--grape-border); }
+
+.diagram {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.flow-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.flow-box {
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 110px;
+  border: 1px solid;
+}
+
+.flow-box.grape { background: var(--grape-dim); border-color: var(--grape-border); }
+.flow-box.emerald { background: var(--emerald-dim); border-color: var(--emerald-border); }
+.flow-box.amber { background: var(--amber-dim); border-color: var(--amber-border); }
+
+.flow-box .box-label { font-size: 9pt; font-weight: 600; color: var(--text); margin-top: 2px; }
+.flow-box .box-desc { font-size: 8pt; color: var(--text-muted); margin-top: 2px; }
+
+.flow-arrow {
+  font-size: 16pt;
+  color: var(--text-muted);
+  margin: 0 6px;
+}
+
+.quote {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--grape-dim), var(--emerald-dim));
+  border-left: 3px solid var(--grape);
+  border-radius: 0 10px 10px 0;
+  margin: 16px 0;
+}
+
+.quote-text {
+  font-size: 13pt;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+.quote-author {
+  font-size: 8.5pt;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+ul, ol { margin: 8px 0 12px 18px; }
+li { margin-bottom: 3px; font-size: 10pt; color: var(--text-secondary); }
+
+.next-module {
+  background: var(--bg-card);
+  border: 1px solid var(--grape-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.next-module .next-icon { font-size: 20pt; }
+.next-module .next-text { flex: 1; }
+.next-module .next-label { font-size: 8.5pt; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.next-module .next-title { font-size: 12pt; font-weight: 600; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+  <div class="cover-decoration"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-badge">Módulo 00</div>
+  <div class="cover-title">Abertura<br><em>& Contexto</em></div>
+  <div class="cover-subtitle">Por que agentes AI pessoais são o "next big thing" e o que vamos construir juntos</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Duração</span>
+      <span class="cover-meta-value">10 min</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Formato</span>
+      <span class="cover-meta-value">Slides + face</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Kit</span>
+      <span class="cover-meta-value">Slides</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 1 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 00 — Abertura</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title">Por Que Agentes AI Agora?</div>
+
+  <p>Estamos num momento de inflexão. AI deixou de ser um laboratório de pesquisa pra se tornar uma ferramenta prática — mas a maioria das pessoas ainda usa de forma superficial: chatbots pra escrever emails, resumir textos, gerar ideias.</p>
+
+  <p><strong>O verdadeiro poder não está em perguntar pro ChatGPT.</strong> Está em ter um agente que trabalha 24/7, conhece você profundamente, aprende com você, e executa tarefas sem você pedir.</p>
+
+  <div class="card grape">
+    <div class="card-title">🎯 A Mudança de Paradigma</div>
+    <div class="card-desc">De "eu pergunto, você responde" para "você antecipa, sugere, executa". De ferramenta reativa para parceiro proativo.</div>
+  </div>
+
+  <h3>A Analogia do Matrix</h3>
+
+  <p>Lembra da Trinity ligando pro Tank no Matrix? <em>"Tank, I need a pilot program for a B-212 helicopter."</em> 10 segundos depois, ela sabe pilotar.</p>
+
+  <p><strong>Agentes AI + Skills = isso.</strong> Você não precisa aprender YouTube API, configurar Google Calendar, entender OAuth. Seu agente faz. Você ganha o superpoder, sem a curva de aprendizado.</p>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Skills como superpoderes</strong>
+      <p>Instalar uma skill é como baixar conhecimento direto pro cérebro. Seu agente ganha a capacidade instantaneamente.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 00 — Abertura</span>
+    <span class="page-footer-right">02</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 2 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 00 — Abertura</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>O Que Vamos Construir</h3>
+
+  <p>Ao final deste curso, você terá um agente AI pessoal rodando 24/7 que:</p>
+
+  <div class="card emerald">
+    <div class="card-title">✅ Conhece você profundamente</div>
+    <div class="card-desc">SOUL.md, USER.md, memória estruturada — o agente sabe quem você é, o que importa pra você, como você pensa.</div>
+  </div>
+
+  <div class="card emerald">
+    <div class="card-title">✅ Executa tarefas sem você pedir</div>
+    <div class="card-desc">Crons automáticos, heartbeats proativos, integrações com suas ferramentas — Google Calendar, Telegram, YouTube, 1Password.</div>
+  </div>
+
+  <div class="card emerald">
+    <div class="card-title">✅ Aprende com você</div>
+    <div class="card-desc">Feedback loops, memória de longo prazo, consolidação de lições — o agente evolui com cada interação.</div>
+  </div>
+
+  <div class="card emerald">
+    <div class="card-title">✅ Está blindado</div>
+    <div class="card-desc">Segurança hardened, credenciais protegidas, sistema imunológico que detecta e corrige problemas sozinho.</div>
+  </div>
+
+  <h3>Mapa do Curso</h3>
+
+  <div class="diagram">
+    <div class="flow-row">
+      <div class="flow-box grape">
+        <div class="box-label">Módulo 1</div>
+        <div class="box-desc">Setup</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box emerald">
+        <div class="box-label">Módulo 2</div>
+        <div class="box-desc">Segurança</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box amber">
+        <div class="box-label">Módulo 3</div>
+        <div class="box-desc">Identidade</div>
+      </div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-box grape">
+        <div class="box-label">Módulo 4⭐</div>
+        <div class="box-desc">Memória</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box emerald">
+        <div class="box-label">Módulo 5</div>
+        <div class="box-desc">Integrações</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box amber">
+        <div class="box-label">Módulo 6</div>
+        <div class="box-desc">Skills</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 00 — Abertura</span>
+    <span class="page-footer-right">03</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 3 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 00 — Abertura</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Para Quem É Este Curso</h3>
+
+  <div class="card grape">
+    <div class="card-title">👨‍💼 Empreendedores e Founders</div>
+    <div class="card-desc">Você tem 1000 coisas pra fazer, zero tempo pra fazer. Precisa de um COO que cuida de execução, monitora métricas, lembra compromissos.</div>
+  </div>
+
+  <div class="card grape">
+    <div class="card-title">🎨 Criadores de Conteúdo</div>
+    <div class="card-desc">Produção, análise, distribuição — seu agente vira um assistente editorial que pesquisa, drafta, agenda e monitora performance.</div>
+  </div>
+
+  <div class="card grape">
+    <div class="card-title">👨‍💻 Devs e Técnicos</div>
+    <div class="card-desc">Você quer automação pesada, integrações customizadas, multi-agentes coordenados. Este curso vai até lá.</div>
+  </div>
+
+  <div class="card grape">
+    <div class="card-title">📊 Profissionais de Produtividade</div>
+    <div class="card-desc">GTD, second brain, Notion power user — seu agente vira a cola entre suas ferramentas, o executor silencioso dos seus sistemas.</div>
+  </div>
+
+  <h3>O Que Você Precisa Saber Antes</h3>
+
+  <p><strong>Pouco.</strong> Este curso foi feito pra quem não é desenvolvedor. Se você sabe usar um terminal (copiar/colar comandos), já é suficiente.</p>
+
+  <p>Vamos cobrir tudo passo a passo — desde criar uma VPS até configurar crons e feedback loops.</p>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Custo do Setup</strong>
+      <p>VPS + API da Anthropic = ~$15-40/mês. Menos que um almoço por semana pra ter um assistente AI 24/7.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 00 — Abertura</span>
+    <span class="page-footer-right">04</span>
+  </div>
+</div>
+
+<!-- FINAL PAGE -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 00 — Abertura</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>O Kit de Cada Módulo</h3>
+
+  <p>Cada módulo vem com arquivos prontos pra você jogar no seu agente:</p>
+
+  <ul>
+    <li><strong>PDFs</strong> — material de estudo pra você (humano)</li>
+    <li><strong>PRDs</strong> — documentos técnicos que o agente executa</li>
+    <li><strong>Prompts</strong> — você cola no chat, o agente implementa</li>
+    <li><strong>Templates</strong> — SOUL.md, USER.md, configs prontos pra personalizar</li>
+  </ul>
+
+  <div class="callout info">
+    <div class="callout-icon">🎯</div>
+    <div class="callout-content">
+      <strong>Dual Purpose</strong>
+      <p>Cada PDF serve pra DUAS coisas: ensinar você e instruir o agente. No final de cada módulo tem um prompt — você cola no chat e o agente implementa tudo sozinho.</p>
+    </div>
+  </div>
+
+  <h3>Como Aproveitar ao Máximo</h3>
+
+  <ol>
+    <li><strong>Assista o vídeo</strong> — veja eu fazendo ao vivo</li>
+    <li><strong>Leia o PDF</strong> — revise os conceitos e comandos</li>
+    <li><strong>Cole o prompt</strong> — deixe seu agente implementar</li>
+    <li><strong>Teste e ajuste</strong> — personalize pro seu caso</li>
+  </ol>
+
+  <div class="quote">
+    <div class="quote-text">"Agents are 30% of the work. The other 70% is the immune system."</div>
+    <div class="quote-author">— Eric Siu</div>
+  </div>
+
+  <p>Não estamos construindo só um chatbot. Estamos construindo um sistema resiliente, que aprende, se auto-monitora e evolui com você.</p>
+
+  <div class="next-module">
+    <div class="next-icon">🚀</div>
+    <div class="next-text">
+      <div class="next-label">Próximo Módulo</div>
+      <div class="next-title">Módulo 1 — Setup: Do Zero ao Primeiro "Oi"</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 00 — Abertura</span>
+    <span class="page-footer-right">05</span>
+  </div>
+</div>
+
+</body>
+</html>

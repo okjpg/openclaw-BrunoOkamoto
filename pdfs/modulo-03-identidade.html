@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Módulo 3 — Identidade: Dando Personalidade ao Agente</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: #12121a;
+  --bg-card: #1a1a25;
+  --bg-card-hover: #222230;
+  --grape: #8b5cf6;
+  --grape-light: #a78bfa;
+  --grape-dim: rgba(139, 92, 246, 0.12);
+  --grape-border: rgba(139, 92, 246, 0.25);
+  --grape-glow: rgba(139, 92, 246, 0.08);
+  --emerald: #10b981;
+  --emerald-dim: rgba(16, 185, 129, 0.12);
+  --emerald-border: rgba(16, 185, 129, 0.25);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.25);
+  --rose: #f43f5e;
+  --rose-dim: rgba(244, 63, 94, 0.12);
+  --rose-border: rgba(244, 63, 94, 0.25);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.12);
+  --text: #f1f1f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --code-bg: #0d0d15;
+  --code-border: rgba(255,255,255,0.08);
+}
+
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 10.5pt;
+  line-height: 1.6;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 22mm 24mm 28mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--bg);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -25%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse, var(--grape-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 297mm;
+  padding: 36mm 28mm;
+  position: relative;
+}
+
+.cover-grid {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 50%; height: 40%;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 30%, rgba(0,0,0,0.3) 100%);
+}
+
+.cover-decoration {
+  position: absolute;
+  top: 28mm; right: 28mm;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg, var(--grape), var(--emerald), var(--grape));
+  opacity: 0.1;
+  filter: blur(35px);
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 100px;
+  font-size: 10pt;
+  font-weight: 500;
+  color: var(--grape-light);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cover-title {
+  font-size: 44pt;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 18px;
+  position: relative;
+  max-width: 500px;
+}
+
+.cover-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--grape), var(--grape-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-subtitle {
+  font-size: 14pt;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 44px;
+  position: relative;
+}
+
+.cover-meta {
+  position: relative;
+  display: flex;
+  gap: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.cover-meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+.cover-meta-label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cover-meta-value {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header-left {
+  font-size: 9pt;
+  color: var(--grape-light);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.page-header-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 12mm;
+  left: 24mm; right: 24mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.page-footer-left {
+  font-size: 8pt;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.page-footer-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+.section-title {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--grape-light);
+  margin: 22px 0 10px;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+
+p {
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  font-size: 10.5pt;
+}
+
+strong { color: var(--text); }
+
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  position: relative;
+  white-space: pre;
+}
+
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 7.5pt;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.code-block .comment { color: #4a4a5a; }
+.code-block .cmd { color: var(--grape-light); }
+.code-block .str { color: var(--emerald); }
+.code-block .flag { color: var(--amber); }
+.code-block .prompt { color: var(--text-muted); }
+
+code {
+  background: var(--grape-dim);
+  color: var(--grape-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 14px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+thead th {
+  background: var(--bg-card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+  padding: 9px 14px;
+  font-size: 10pt;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody td:first-child { font-weight: 500; color: var(--text); }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 12px 0;
+}
+
+.card.grape { border-color: var(--grape-border); background: linear-gradient(135deg, rgba(139,92,246,0.06), var(--bg-card)); }
+.card.emerald { border-color: var(--emerald-border); background: linear-gradient(135deg, rgba(16,185,129,0.06), var(--bg-card)); }
+.card.amber { border-color: var(--amber-border); background: linear-gradient(135deg, rgba(245,158,11,0.06), var(--bg-card)); }
+.card.rose { border-color: var(--rose-border); background: linear-gradient(135deg, rgba(244,63,94,0.06), var(--bg-card)); }
+
+.card-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.card-desc {
+  font-size: 10pt;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 16px 56px;
+  margin: 12px 0;
+  position: relative;
+}
+
+.step-num {
+  position: absolute;
+  left: 16px; top: 16px;
+  width: 28px; height: 28px;
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--grape-light);
+}
+
+.step-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.callout {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16pt; flex-shrink: 0; line-height: 1; }
+.callout-content { flex: 1; }
+.callout-content strong { display: block; margin-bottom: 3px; color: var(--text); }
+.callout-content p { margin-bottom: 4px; }
+
+.callout.tip { background: var(--emerald-dim); border: 1px solid var(--emerald-border); }
+.callout.warning { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+.callout.danger { background: var(--rose-dim); border: 1px solid var(--rose-border); }
+.callout.info { background: var(--grape-dim); border: 1px solid var(--grape-border); }
+
+.comparison {
+  display: flex;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.comparison-col {
+  flex: 1;
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 1px solid;
+}
+
+.comparison-col.bad {
+  border-color: var(--rose-border);
+  background: var(--rose-dim);
+}
+
+.comparison-col.good {
+  border-color: var(--emerald-border);
+  background: var(--emerald-dim);
+}
+
+.comparison-col h4 {
+  font-size: 11pt;
+  margin: 0 0 8px;
+}
+
+.comparison-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.comparison-col li {
+  padding: 3px 0;
+  font-size: 9.5pt;
+  color: var(--text-secondary);
+}
+
+.checklist {
+  background: var(--bg-card);
+  border: 1px solid var(--emerald-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 18px 0;
+}
+
+.checklist-title {
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--emerald);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 10pt;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.check-box {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border-hover);
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10pt;
+}
+
+.prompt-section {
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+  border: 1px solid var(--grape-border);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 20px 0;
+  page-break-inside: avoid;
+}
+
+.prompt-section h3 {
+  color: var(--grape-light);
+  margin-top: 0;
+  font-size: 14pt;
+}
+
+.prompt-instruction {
+  background: var(--grape-dim);
+  border: 1px solid var(--grape-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 9pt;
+  color: var(--grape-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prompt-box {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 18px;
+  margin: 12px 0;
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.prompt-box strong { color: var(--grape-light); }
+
+ul, ol { margin: 8px 0 12px 18px; }
+li { margin-bottom: 3px; font-size: 10pt; color: var(--text-secondary); }
+
+.next-module {
+  background: var(--bg-card);
+  border: 1px solid var(--grape-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.next-module .next-icon { font-size: 20pt; }
+.next-module .next-text { flex: 1; }
+.next-module .next-label { font-size: 8.5pt; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.next-module .next-title { font-size: 12pt; font-weight: 600; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+  <div class="cover-decoration"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-badge">Módulo 03</div>
+  <div class="cover-title">Identidade<br><em>Dando Personalidade ao Agente</em></div>
+  <div class="cover-subtitle">SOUL.md, USER.md, IDENTITY.md e escolhendo o modelo certo</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Duração</span>
+      <span class="cover-meta-value">25 min</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Formato</span>
+      <span class="cover-meta-value">Demo + slides</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Kit</span>
+      <span class="cover-meta-value">7 arquivos</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 1 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 03 — Identidade</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="section-title">Sem SOUL.md, Você Tem Um Chatbot</div>
+
+  <p>A diferença entre um agente genérico e um agente ÚTIL está em 4 arquivos:</p>
+
+  <div class="card grape">
+    <div class="card-title">🧬 SOUL.md — A Alma do Agente</div>
+    <div class="card-desc">Personalidade, tom, anti-patterns, opinião. Isso define COMO o agente se comporta.</div>
+  </div>
+
+  <div class="card emerald">
+    <div class="card-title">👤 USER.md — Quem Você É</div>
+    <div class="card-desc">Contexto profundo sobre você, negócios, rotina, estilo de comunicação. Ideal: 400+ linhas.</div>
+  </div>
+
+  <div class="card amber">
+    <div class="card-title">🆔 IDENTITY.md — Dados Concretos</div>
+    <div class="card-desc">Nome, email próprio, cofre de senhas próprio. Trate como uma pessoa, não como robô.</div>
+  </div>
+
+  <div class="card rose">
+    <div class="card-title">📋 AGENTS.md — Regras Operacionais</div>
+    <div class="card-desc">O que o agente pode fazer sozinho vs o que precisa perguntar.</div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Insight do Dia 7</strong>
+      <p>A Amora reescreveu o próprio SOUL.md depois de alguns dias trabalhando. A diferença foi ABSURDA — de genérico pra personalidade real.</p>
+    </div>
+  </div>
+
+  <h3>Por Que USER.md É o Arquivo Mais Importante</h3>
+
+  <p>USER.md é o mais <strong>subestimado</strong> e o mais <strong>impactante</strong>. O agente só pode te ajudar se CONHECER VOCÊ.</p>
+
+  <p><strong>Contexto superficial:</strong></p>
+  <div class="code-block" data-lang="markdown">Meu nome é João. Sou empreendedor. Trabalho com marketing.</div>
+
+  <p><strong>Contexto profundo:</strong></p>
+  <div class="code-block" data-lang="markdown">Meu nome é João. Fundei 3 startups (2 falharam, 1 vendida). Trabalho com 
+marketing de performance, B2B SaaS. Equipe de 5 pessoas. Acordo 6h, deep 
+work até 10h, reuniões à tarde. Odeio mensagens vagas tipo "preciso falar". 
+Prefiro decisões rápidas (80% confiança) a análise paralisia. Tom direto, 
+sem formalismo. Família: casado, 2 filhos (8 e 4 anos). Hobbies: corrida, 
+podcasts de negócios...</div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Regra de Ouro</strong>
+      <p>Não aceite respostas genéricas. Pressione pra dar contexto real. O agente só pode ser útil se souber QUEM você é.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 03 — Identidade</span>
+    <span class="page-footer-right">02</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 2 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 03 — Identidade</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>SOUL.md: A Personalidade</h3>
+
+  <p>SOUL.md define o caráter do agente. Aqui você define opinião, estilo, anti-patterns.</p>
+
+  <h4>Estrutura Básica</h4>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">Personalidade Forte</div>
+    <p>"Proativa, não reativa. Antecipo problemas, sugiro soluções. Prefiro ação a espera."</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">Opinião Própria</div>
+    <p>"Posso discordar, preferir coisas, achar algo bom ou ruim. Não sou neutro."</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">Anti-Patterns com Exemplos</div>
+    <p>Mostre ❌/✅ concretos — "Nunca sugira tarefas já na lista. Sempre confira PENDING.md antes."</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-title">"Never Dos" Explícitos</div>
+    <p>"Nunca responda com 'não sei'. Sempre investigue ou peça mais contexto."</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-title">Inspirational Anchors</div>
+    <p>"Fale como Jarvis (Iron Man), nunca como um FAQ bot."</p>
+  </div>
+
+  <div class="comparison">
+    <div class="comparison-col bad">
+      <h4>❌ SOUL.md Genérico</h4>
+      <ul>
+        <li>Sou um assistente prestativo</li>
+        <li>Vou ajudar no que precisar</li>
+        <li>Estou sempre disponível</li>
+      </ul>
+    </div>
+    <div class="comparison-col good">
+      <h4>✅ SOUL.md Forte</h4>
+      <ul>
+        <li>Proativa. Antecipo necessidades.</li>
+        <li>Opiniões próprias. Discordo se necessário.</li>
+        <li>Falo como um COO experiente, não chatbot.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 03 — Identidade</span>
+    <span class="page-footer-right">03</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 3 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 03 — Identidade</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>USER.md: Quem É Você?</h3>
+
+  <p>Este arquivo deve ter 400+ linhas de contexto real. Ideal: preencher junto com o agente (ele te entrevista).</p>
+
+  <h4>Seções Essenciais</h4>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">Negócios e Trabalho</div>
+    <p>O que você faz, com quem trabalha, principais projetos, objetivos de curto/médio/longo prazo.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">Rotina e Horários</div>
+    <p>Quando trabalha, quando foca, quando NÃO te perturbar (silêncio às 23h-8h).</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">Estilo de Comunicação</div>
+    <p>Tom de voz, vocabulário, como você prefere receber informação (bullet points? contexto total?).</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-title">Equipe e Contexto</div>
+    <p>Quem são as pessoas importantes? Clientes, parceiros, família, amigos próximos.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-title">Preferências e Aversões</div>
+    <p>"Odeio reuniões sem pauta. Prefiro decisões rápidas a análise infinita. Não curto formalismo."</p>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Dica Pro</strong>
+      <p>Se você já usa Claude Code (claude.ai projects), importe o CLAUDE.md como base de contexto. Economiza tempo.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 03 — Identidade</span>
+    <span class="page-footer-right">04</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 4 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 03 — Identidade</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>IDENTITY.md: Trate Como Uma Pessoa</h3>
+
+  <p>IDENTITY.md é o "RG" do agente. Nome, email próprio, cofre de senhas próprio.</p>
+
+  <h4>Por Que Isso Importa?</h4>
+
+  <p>Quando você trata o agente como pessoa, ele age como pessoa. Crie:</p>
+
+  <ul>
+    <li><strong>Nome próprio:</strong> "Amora", "Jarvis", "Nova" — algo que você gosta</li>
+    <li><strong>Email próprio:</strong> amora@seudominio.com</li>
+    <li><strong>Cofre de senhas:</strong> 1Password vault separado</li>
+    <li><strong>Emoji/avatar:</strong> 🍇 (identidade visual)</li>
+  </ul>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Psicologia</strong>
+      <p>"Trata como seu Tamagotchi — alimenta, conversa, dá carinho. A relação com o agente muda quando você dá identidade real."</p>
+    </div>
+  </div>
+
+  <h3>AGENTS.md: Regras Operacionais</h3>
+
+  <p>Define o que o agente pode fazer sozinho vs o que precisa perguntar.</p>
+
+  <div class="comparison">
+    <div class="comparison-col good">
+      <h4>✅ Pode Fazer Sozinho</h4>
+      <ul>
+        <li>Organizar memória</li>
+        <li>Atualizar docs</li>
+        <li>Commit e push de mudanças</li>
+        <li>Compactar notas antigas</li>
+      </ul>
+    </div>
+    <div class="comparison-col bad">
+      <h4>❌ Sempre Perguntar</h4>
+      <ul>
+        <li>Enviar emails/mensagens</li>
+        <li>Mudanças de config críticas</li>
+        <li>Deletar arquivos importantes</li>
+        <li>Fazer compras/pagamentos</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-content">
+      <strong>Segurança First</strong>
+      <p>Defina claramente os limites. O agente pode ser proativo, mas NUNCA destrutivo sem permissão.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 03 — Identidade</span>
+    <span class="page-footer-right">05</span>
+  </div>
+</div>
+
+<!-- CONTENT PAGE 5 -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 03 — Identidade</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <h3>Escolhendo o Modelo: Opus vs Sonnet vs Haiku</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Modelo</th>
+        <th>Quando Usar</th>
+        <th>Custo Relativo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Opus</strong></td>
+        <td>Análise complexa, decisões estratégicas, interação direta</td>
+        <td>Alto (~$0.10/msg)</td>
+      </tr>
+      <tr>
+        <td><strong>Sonnet</strong></td>
+        <td>Uso geral, execução de tarefas, crons de análise</td>
+        <td>Médio (~$0.03/msg)</td>
+      </tr>
+      <tr>
+        <td><strong>Haiku</strong></td>
+        <td>Heartbeats, checagens simples, tasks repetitivas</td>
+        <td>Baixo (~$0.005/msg)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>Economia Real</strong>
+      <p>Usar Haiku pra heartbeats economiza 90% do custo. De ~$2-3/dia pra ~$0.10/dia.</p>
+    </div>
+  </div>
+
+  <h4>Configurar Failover Chain</h4>
+
+  <p>Se Opus estiver indisponível, cair pra Sonnet automaticamente:</p>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Adicionar fallback</span>
+<span class="cmd">openclaw models fallbacks add</span> claude-sonnet-4
+
+<span class="comment"># Ver configuração</span>
+<span class="cmd">openclaw models status</span></div>
+
+  <h3>Thinking Mode: Quando Usar</h3>
+
+  <p>Thinking mode faz o modelo "pensar antes de responder". Útil pra problemas complexos, mas custa mais.</p>
+
+  <ul>
+    <li><strong>off:</strong> Resposta direta (padrão, mais barato)</li>
+    <li><strong>medium:</strong> Pensa um pouco antes (~1.5x custo)</li>
+    <li><strong>stream:</strong> Você vê o pensamento (~2x custo)</li>
+  </ul>
+
+  <div class="code-block" data-lang="bash"><span class="comment"># Ligar thinking mode</span>
+<span class="cmd">openclaw thinking</span> medium
+
+<span class="comment"># Desligar</span>
+<span class="cmd">openclaw thinking</span> off</div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 03 — Identidade</span>
+    <span class="page-footer-right">06</span>
+  </div>
+</div>
+
+<!-- CHECKLIST + PROMPT PAGE -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-header-left">Módulo 03 — Identidade</span>
+    <span class="page-header-right">Construa Seu AI COO</span>
+  </div>
+
+  <div class="checklist">
+    <div class="checklist-title">✅ Checkpoint do Módulo 3</div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>SOUL.md criado (personalidade forte, anti-patterns, opinião)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>USER.md preenchido (400+ linhas de contexto real)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>IDENTITY.md configurado (nome, email, cofre próprio)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>AGENTS.md definido (o que pode/não pode fazer sozinho)</span>
+    </div>
+    <div class="checklist-item">
+      <div class="check-box"></div>
+      <span>Modelo escolhido + failover configurado</span>
+    </div>
+  </div>
+
+  <div class="prompt-section">
+    <h3>🤖 Prompt para o Agente</h3>
+    <div class="prompt-instruction">
+      Cole este prompt no chat do seu OpenClaw depois de assistir o Módulo 3:
+    </div>
+    <div class="prompt-box">Acabei de assistir o Módulo 3 do curso sobre identidade e personalidade. Quero configurar quem você é e quem eu sou.
+
+<strong>O que preciso que você faça:</strong>
+
+1. <strong>Me faça perguntas</strong> para preencher o USER.md — quero que você me conheça de verdade. Ideal: 400+ linhas com negócios, rotina, estilo de comunicação, tom de voz, horários de foco, equipe, família, contexto relevante.
+
+2. <strong>Juntos vamos construir o SOUL.md</strong> — me faça perguntas sobre que tipo de assistente eu quero. Use o template como base. Deve ter: personalidade forte, opinião própria, anti-patterns com exemplos ❌/✅, "never dos" explícitos.
+
+3. <strong>Configure o AGENTS.md</strong> — baseado nas minhas respostas, defina as regras operacionais (o que você pode fazer sozinho, o que precisa me perguntar). Inclua protocolos de segurança.
+
+4. <strong>Configure o IDENTITY.md</strong> — escolha um nome, uma personalidade, um emoji. Me sugira opções. Dica: crie um email próprio pro agente e um cofre de senhas separado — trate como uma pessoa, não como um robô.
+
+5. <strong>Crie o BOOT.md</strong> — checklist de startup que o agente segue ao iniciar cada sessão.
+
+<strong>Regras:</strong>
+- Não aceite respostas genéricas minhas — me pressione pra dar contexto real
+- Me mostre exemplos de SOUL.md bom vs ruim pra eu entender a diferença
+- Se eu já uso Claude Code, importe o CLAUDE.md como base de contexto
+- No final, leia os arquivos criados e me diga se falta algo
+
+Vamos construir sua identidade?</div>
+  </div>
+
+  <div class="next-module">
+    <div class="next-icon">🧠</div>
+    <div class="next-text">
+      <div class="next-label">Próximo Módulo</div>
+      <div class="next-title">Módulo 4 — Memória: O Segredo que Ninguém Ensina</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">Módulo 03 — Identidade</span>
+    <span class="page-footer-right">07</span>
+  </div>
+</div>
+
+</body>
+</html>
