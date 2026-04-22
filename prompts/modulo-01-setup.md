@@ -10,11 +10,11 @@ Acabei de assistir o Módulo 1 do curso "Construa Seu AI COO". Preciso que você
 
 1. **Verificar meu ambiente** — Confira se Node.js, npm e as dependências estão instalados corretamente. Se algo faltar, me explique o que é e me ajude a instalar.
 
-2. **Configurar o provider** — Me ajude a configurar o OpenClaw com ChatGPT. O caminho recomendado é via OAuth (login com conta ChatGPT Plus/Pro, sem precisar de API key). Se eu preferir usar API key da OpenAI, me ajude a configurar também e explique as diferenças.
+2. **Configurar o provider** — Me ajude a configurar o OpenClaw com ChatGPT/OpenAI. O caminho recomendado é via OAuth (login com conta ChatGPT Plus/Pro, sem precisar de API key). Se eu preferir usar API key da OpenAI, me ajude a configurar também e explique as diferenças. Depois, me explique como usar OpenRouter só como camada opcional de experimentação para testar outros LLMs.
 
 3. **Ativar o perfil de ferramentas** — Execute `openclaw config set tools.profile full` e me explique por quê isso é obrigatório. Sem isso, você não executa comandos — só responde mensagens. Depois rode `openclaw config validate` pra confirmar que a configuração está válida.
 
-4. **Escolher o modelo** — Me explique a diferença entre GPT-5.4, GPT-4o e GPT-4o-mini. Me recomende qual usar pra começar (considerando custo x qualidade). Configure a failover chain (GPT-5.4 → GPT-4o → Cooldown).
+4. **Escolher o modelo** — Me explique a diferença entre GPT-5.4, GPT-4o e GPT-4o-mini. Me recomende qual usar pra começar (considerando custo x qualidade). Configure a stack padrão do curso (GPT-5.4 → GPT-4o → GPT-4o-mini), e deixe OpenRouter só para testes opcionais.
 
 5. **Conectar ao Telegram** — Me guie passo a passo pra criar um bot no BotFather e conectar ao OpenClaw. Me explique por que Telegram com tópicos é melhor que WhatsApp (sessão única vs múltiplas). Use `openclaw channels login` e `openclaw channels status --probe` pra validar.
 

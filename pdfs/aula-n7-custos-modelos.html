@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N-7 — Quanto Custa e Qual Modelo Usar · Curso OpenClaw</title>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --surface2: #1a1a26;
+  --border: #2a2a3a;
+  --accent: #7c3aed;
+  --accent2: #a78bfa;
+  --text: #e2e2f0;
+  --muted: #6b7280;
+  --green: #22c55e;
+  --yellow: #eab308;
+  --orange: #f97316;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --teal: #14b8a6;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+.wrap { max-width: 860px; margin: 0 auto; padding: 40px 24px; }
+
+/* HERO */
+.hero { background: linear-gradient(135deg, #0f0a1f 0%, #13131a 60%, #0a0a0f 100%); border: 1px solid var(--border); border-radius: 20px; padding: 52px 44px; margin-bottom: 48px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(124,58,237,0.13) 0%, transparent 70%); pointer-events: none; }
+.hero::after { content: ''; position: absolute; bottom: -40px; left: 60px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(234,179,8,0.07) 0%, transparent 70%); pointer-events: none; }
+.hero-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+.pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 20px; padding: 5px 14px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; }
+.pill-purple { background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3); color: var(--accent2); }
+.pill-yellow { background: rgba(234,179,8,0.12); border: 1px solid rgba(234,179,8,0.25); color: #fbbf24; }
+.pill-red { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; }
+.hero h1 { font-size: 34px; font-weight: 900; line-height: 1.15; margin-bottom: 16px; }
+.hero h1 .grad { background: linear-gradient(90deg, #a78bfa, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-sub { font-size: 16px; color: #9ca3af; margin-bottom: 30px; max-width: 560px; }
+.hero-kpis { display: flex; flex-wrap: wrap; gap: 20px; }
+.hero-kpi { text-align: center; }
+.hero-kpi .n { font-size: 26px; font-weight: 900; line-height: 1; }
+.hero-kpi .l { font-size: 11px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* SECTION HEADER */
+.sh { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.sh-num { width: 34px; height: 34px; min-width: 34px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), #818cf8); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #fff; }
+.sh-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent2); }
+.sh::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.section { margin-bottom: 52px; }
+
+/* CARDS */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 16px; }
+.card-sm { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+
+/* GRID */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media(max-width:640px) { .grid2,.grid3 { grid-template-columns:1fr; } .hero { padding: 28px 20px; } .hero h1 { font-size:26px; } .flow-3 { flex-direction:column; } }
+
+/* COMPARISON TABLE */
+.cmp-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+.cmp-table th { background: var(--surface2); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border-bottom: 1px solid var(--border); }
+.cmp-table td { padding: 12px 14px; border-bottom: 1px solid rgba(42,42,58,0.5); vertical-align: middle; }
+.cmp-table tr:last-child td { border-bottom: none; }
+.cmp-table tr:hover td { background: rgba(124,58,237,0.04); }
+.cmp-table .yes { color: var(--green); font-weight: 700; }
+.cmp-table .no { color: var(--red); font-weight: 700; }
+.cmp-table .winner { background: rgba(124,58,237,0.06); }
+.cmp-table .winner td:first-child { border-left: 3px solid var(--accent); }
+
+/* MODEL CARDS */
+.model-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; position: relative; overflow: hidden; }
+.model-card.highlight { border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.04); }
+.model-card.budget { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.03); }
+.model-badge { position: absolute; top: 12px; right: 12px; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+.badge-best { background: rgba(124,58,237,0.2); color: var(--accent2); border: 1px solid rgba(124,58,237,0.3); }
+.badge-eco { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.25); }
+.badge-top { background: rgba(234,179,8,0.15); color: #fbbf24; border: 1px solid rgba(234,179,8,0.25); }
+.model-name { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.model-price { font-size: 20px; font-weight: 900; color: var(--accent2); margin: 8px 0 4px; }
+.model-price span { font-size: 12px; color: var(--muted); font-weight: 400; }
+.model-stars { color: #fbbf24; margin-bottom: 8px; font-size: 13px; }
+.model-use { font-size: 12px; color: var(--muted); }
+.model-use strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+/* USE CARDS */
+.use-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-left: 4px solid; }
+.use-card-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.use-card-model { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+.use-card-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.use-card-saving { margin-top: 10px; font-size: 12px; padding: 8px 12px; border-radius: 8px; }
+
+/* CODE */
+pre { background: #060810; border: 1px solid #1e2a40; border-radius: 10px; padding: 20px; overflow-x: auto; font-family: "JetBrains Mono", "Fira Code", monospace; font-size: 13px; line-height: 1.65; margin: 12px 0; }
+code { font-family: "JetBrains Mono", monospace; font-size: 12px; background: rgba(124,58,237,0.1); padding: 2px 6px; border-radius: 4px; color: var(--accent2); }
+.kw-purple { color: #c084fc; } .kw-green { color: #4ade80; } .kw-yellow { color: #fbbf24; }
+.kw-blue { color: #60a5fa; } .kw-gray { color: #374151; } .kw-orange { color: #fb923c; }
+
+/* COST TABLE */
+.cost-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+.cost-table th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); background: var(--surface2); border-bottom: 2px solid var(--border); }
+.cost-table td { padding: 12px 14px; border-bottom: 1px solid rgba(42,42,58,0.4); }
+.cost-table tr.total td { background: rgba(124,58,237,0.06); font-weight: 700; border-top: 2px solid var(--accent); color: var(--accent2); }
+.cost-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* INSIGHT */
+.ins { border-radius: 11px; padding: 16px 18px; margin: 14px 0; display: flex; gap: 12px; }
+.ins-icon { font-size: 20px; min-width: 26px; }
+.ins-body strong { display: block; font-size: 14px; margin-bottom: 4px; }
+.ins-body p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.ins-green { background: rgba(34,197,94,0.07); border: 1px solid rgba(34,197,94,0.2); }
+.ins-yellow { background: rgba(234,179,8,0.07); border: 1px solid rgba(234,179,8,0.2); }
+.ins-purple { background: rgba(124,58,237,0.07); border: 1px solid rgba(124,58,237,0.2); }
+.ins-red { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.2); }
+.ins-blue { background: rgba(59,130,246,0.07); border: 1px solid rgba(59,130,246,0.2); }
+
+/* CHECKLIST */
+.checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.checklist li { display: flex; gap: 10px; font-size: 14px; padding: 12px 14px; background: var(--surface2); border-radius: 8px; }
+.checklist .cb { width: 18px; height: 18px; min-width: 18px; border: 2px solid var(--border); border-radius: 4px; margin-top: 2px; }
+
+/* FAQ */
+.faq { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-item:last-child { border-bottom: none; }
+.faq-q { padding: 16px 20px; font-size: 14px; font-weight: 700; color: var(--accent2); }
+.faq-a { padding: 0 20px 16px; font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+.div { height: 1px; background: var(--border); margin: 28px 0; }
+
+/* BAR VISUAL */
+.price-bar-wrap { margin: 12px 0; }
+.price-bar-row { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
+.price-bar-label { font-size: 12px; font-weight: 600; min-width: 140px; color: var(--text); }
+.price-bar-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.price-bar-fill { height: 100%; border-radius: 4px; }
+.price-bar-val { font-size: 12px; color: var(--muted); min-width: 60px; text-align: right; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <div class="pill pill-purple">📚 Curso OpenClaw</div>
+    <div class="pill pill-yellow">💰 Troubleshooting N-7</div>
+    <div class="pill pill-red">🔥 Top 3 dúvida dos alunos</div>
+  </div>
+  <h1>Quanto custa e<br><span class="grad">qual modelo usar?</span></h1>
+  <p class="hero-sub">A aula que vai te salvar de um susto na fatura — e te mostrar como rodar um agente 24/7 por menos de $20/mês.</p>
+  <div class="hero-kpis">
+    <div class="hero-kpi"><div class="n" style="color:#22c55e;">$14</div><div class="l">custo médio/mês</div></div>
+    <div class="hero-kpi"><div class="n" style="color:#fbbf24;">18x</div><div class="l">economia com modelo certo</div></div>
+    <div class="hero-kpi"><div class="n" style="color:#a78bfa;">~15min</div><div class="l">duração</div></div>
+    <div class="hero-kpi"><div class="n" style="color:#f97316;">6</div><div class="l">modelos comparados</div></div>
+  </div>
+</div>
+
+<!-- 1. ASSINATURA VS API -->
+<div class="section">
+  <div class="sh">
+    <div class="sh-num">1</div>
+    <div class="sh-label">Assinatura vs API Key — Qual usar?</div>
+  </div>
+
+  <div class="card">
+    <p style="font-size:15px;font-weight:700;margin-bottom:6px;">A primeira decisão — e a mais importante.</p>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Antes de escolher modelo, você precisa escolher como vai pagar. São dois mundos completamente diferentes.</p>
+
+    <div style="overflow-x:auto;">
+      <table class="cmp-table">
+        <tr>
+          <th></th>
+          <th>Assinatura ChatGPT Plus/Pro</th>
+          <th>API Key (pay-per-use)</th>
+        </tr>
+        <tr>
+          <td><strong>Custo</strong></td>
+          <td>$20/mês fixo sempre</td>
+          <td>$0 se não usar</td>
+        </tr>
+        <tr>
+          <td><strong>Controle de gasto</strong></td>
+          <td class="no">❌ Nenhum</td>
+          <td class="yes">✅ Total</td>
+        </tr>
+        <tr class="winner">
+          <td><strong>Funciona no OpenClaw</strong></td>
+          <td class="yes">✅ Sim, via OAuth OpenAI</td>
+          <td class="yes">✅ Sim</td>
+        </tr>
+        <tr>
+          <td><strong>Ideal para</strong></td>
+          <td>Uso humano, chat manual</td>
+          <td>Agentes, automação, crons</td>
+        </tr>
+        <tr>
+          <td><strong>Risco de surpresa</strong></td>
+          <td>Baixo (é fixo)</td>
+          <td>Médio — sem limites configurados</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="ins ins-purple" style="margin-top:16px;">
+      <div class="ins-icon">🎯</div>
+      <div class="ins-body">
+        <strong>O fluxo padrão do curso: OpenAI primeiro</strong>
+        <p>OAuth é o caminho mais rápido para começar. API Key é o caminho mais flexível quando você quer controlar custo, trocar modelo e automatizar com mais previsibilidade. OpenRouter entra depois, como camada de experimentação. Anthropic fica como comparação opcional.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. TABELA DE MODELOS -->
+<div class="section">
+  <div class="sh">
+    <div class="sh-num">2</div>
+    <div class="sh-label">Os Modelos — Preço e Capacidade</div>
+  </div>
+
+  <div class="card">
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Modelos são cobrados por <strong style="color:var(--text);">tokens</strong> — pedaços de texto de ~4 caracteres. Preço por 1 milhão de tokens.</p>
+
+    <div class="price-bar-wrap">
+      <div class="price-bar-row">
+        <div class="price-bar-label">GPT-5.4</div>
+        <div class="price-bar-track"><div class="price-bar-fill" style="width:100%;background:linear-gradient(90deg,#7c3aed,#a78bfa);"></div></div>
+        <div class="price-bar-val">$2.50 / $15</div>
+      </div>
+      <div class="price-bar-row">
+        <div class="price-bar-label">GPT-4o</div>
+        <div class="price-bar-track"><div class="price-bar-fill" style="width:17%;background:#3b82f6;"></div></div>
+        <div class="price-bar-val">$2.50 / $10</div>
+      </div>
+      <div class="price-bar-row">
+        <div class="price-bar-label">GPT-4o-mini</div>
+        <div class="price-bar-track"><div class="price-bar-fill" style="width:20%;background:linear-gradient(90deg,#7c3aed,#818cf8);"></div></div>
+        <div class="price-bar-val">$0.15 / $0.60</div>
+      </div>
+      <div class="price-bar-row">
+        <div class="price-bar-label">Gemini 3.1 Pro</div>
+        <div class="price-bar-track"><div class="price-bar-fill" style="width:8%;background:#14b8a6;"></div></div>
+        <div class="price-bar-val">$1.25 / $5</div>
+      </div>
+      <div class="price-bar-row">
+        <div class="price-bar-label">Gemini 3.1 Pro</div>
+        <div class="price-bar-track"><div class="price-bar-fill" style="width:5%;background:#22c55e;"></div></div>
+        <div class="price-bar-val">$1.25 / $5</div>
+      </div>
+      <div class="price-bar-row">
+        <div class="price-bar-label">Mistral Small</div>
+        <div class="price-bar-track"><div class="price-bar-fill" style="width:1%;background:#6b7280;"></div></div>
+        <div class="price-bar-val">$0.10 / $0.30</div>
+      </div>
+    </div>
+
+    <p style="font-size:11px;color:var(--muted);margin-bottom:20px;">↑ Input / Output em $/M tokens. Barras proporcionais ao custo de input.</p>
+
+    <div class="div"></div>
+
+    <p style="font-size:14px;font-weight:700;margin-bottom:12px;">O custo por mensagem típica (~500 tokens in + 200 tokens out):</p>
+    <div class="grid2">
+      <div class="ins ins-red" style="margin:0;">
+        <div class="ins-icon">💸</div>
+        <div class="ins-body">
+          <strong>GPT-5.4 — $0,00425 por mensagem</strong>
+          <p>$2.50/M × 0,0005 + $15/M × 0,0002</p>
+        </div>
+      </div>
+      <div class="ins ins-green" style="margin:0;">
+        <div class="ins-icon">✅</div>
+        <div class="ins-body">
+          <strong>GPT-4o-mini — $0,000195 por mensagem</strong>
+          <p>$0.15/M × 0,0005 + $0.60/M × 0,0002</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ins ins-yellow" style="margin-top:16px;">
+      <div class="ins-icon">⚡</div>
+      <div class="ins-body">
+        <strong>Mais de 20x mais barato — mesma tarefa simples</strong>
+        <p>Para tarefas estruturadas, o GPT-4o-mini entrega o melhor custo-benefício da stack padrão. A diferença real aparece quando você sobe para GPT-5.4 em análises pesadas e contextos longos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. QUAL MODELO PRA CADA SITUAÇÃO -->
+<div class="section">
+  <div class="sh">
+    <div class="sh-num">3</div>
+    <div class="sh-label">Qual Modelo Para Cada Situação</div>
+  </div>
+
+  <div class="card">
+    <p style="font-size:15px;font-weight:700;margin-bottom:4px;">A estratégia: use o modelo mínimo que resolve o problema.</p>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Não use GPT-5.4 pra checar o clima. Não use GPT-4o-mini para uma decisão crítica de negócio.</p>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+
+      <div class="use-card" style="border-color:#22c55e;">
+        <div class="use-card-title">⏰ Heartbeats e Crons</div>
+        <div class="use-card-model" style="background:rgba(34,197,94,0.12);color:#22c55e;border:1px solid rgba(34,197,94,0.25);">→ GPT-4o-mini</div>
+        <div class="use-card-body">Heartbeat é quando o agente acorda sozinho pra checar emails, calendário, notificações. Tarefas simples: verificar, categorizar, decidir se precisa te avisar. GPT-4o-mini faz isso com excelência e custo mínimo.</div>
+        <div class="use-card-saving" style="background:rgba(34,197,94,0.07);color:#22c55e;">💰 Heartbeats e crons são o lugar ideal para GPT-4o-mini. Reserve a verba pesada para quando você realmente precisar de contexto longo ou análise profunda.</div>
+      </div>
+
+      <div class="use-card" style="border-color:#a78bfa;">
+        <div class="use-card-title">💬 Interação Diária (suas mensagens no Telegram)</div>
+        <div class="use-card-model" style="background:rgba(124,58,237,0.12);color:#a78bfa;border:1px solid rgba(124,58,237,0.25);">→ GPT-4o</div>
+        <div class="use-card-body">Quando você manda uma mensagem pro agente e quer uma resposta útil — pesquisa, organização, análise leve, escrita. GPT-4o é rápido, confiável e é o melhor ponto da stack padrão para interação diária.</div>
+        <div class="use-card-saving" style="background:rgba(124,58,237,0.07);color:#a78bfa;">🎯 O ponto ideal da curva preço × qualidade</div>
+      </div>
+
+      <div class="use-card" style="border-color:#fbbf24;">
+        <div class="use-card-title">🧠 Análise Complexa e Decisões Críticas</div>
+        <div class="use-card-model" style="background:rgba(234,179,8,0.12);color:#fbbf24;border:1px solid rgba(234,179,8,0.25);">→ GPT-5.4</div>
+        <div class="use-card-body">Documento longo, decisão arquitetural, proposta comercial, análise sensível. GPT-5.4 quando você precisa do melhor raciocínio da stack padrão — mas só nesses momentos.</div>
+        <div class="use-card-saving" style="background:rgba(234,179,8,0.07);color:#fbbf24;">⚠️ Reserve para quando realmente importa</div>
+      </div>
+
+      <div class="use-card" style="border-color:#14b8a6;">
+        <div class="use-card-title">💡 Alternativas Econômicas</div>
+        <div class="use-card-model" style="background:rgba(20,184,166,0.12);color:#14b8a6;border:1px solid rgba(20,184,166,0.25);">→ Gemini 3.1 Pro ou Mistral Small</div>
+        <div class="use-card-body"><strong style="color:var(--text);">Gemini 3.1 Pro ($1.25/M)</strong> — excelente alternativa ao Sonnet pra quem quer economizar. Funciona muito bem desde a v2026.3.2.<br><br><strong style="color:var(--text);">Mistral Small ($0.10/M)</strong> — absurdamente barato, ideal para classificação simples e routing. Não use para raciocínio complexo.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 4. COMO CONFIGURAR -->
+<div class="section">
+  <div class="sh">
+    <div class="sh-num">4</div>
+    <div class="sh-label">Como Configurar Modelo por Função</div>
+  </div>
+
+  <div class="card">
+    <p style="font-size:15px;font-weight:700;margin-bottom:6px;">O OpenClaw permite modelos diferentes por função.</p>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Você pode ter GPT-4o-mini para heartbeats, GPT-4o para conversas e GPT-5.4 reservado para análises pesadas. Esse é o stack padrão do curso.</p>
+
+    <pre><span class="kw-gray"># Modelo padrão para interações do dia a dia</span>
+<span class="kw-blue">openclaw</span> config set <span class="kw-yellow">model</span> <span class="kw-green">openai/gpt-5.4</span>
+
+<span class="kw-gray"># Modelo econômico para heartbeats (automático)</span>
+<span class="kw-blue">openclaw</span> config set <span class="kw-yellow">heartbeat.model</span> <span class="kw-green">openai/gpt-4o-mini</span>
+
+<span class="kw-gray"># Verificar o que está configurado agora</span>
+<span class="kw-blue">openclaw</span> config get model
+<span class="kw-blue">openclaw</span> config get heartbeat.model</pre>
+
+    <div class="ins ins-purple">
+      <div class="ins-icon">🔀</div>
+      <div class="ins-body">
+        <strong>Funciona automaticamente</strong>
+        <p>Depois de configurar, o agente usa Haiku nos heartbeats e Sonnet quando você manda mensagem — sem você precisar especificar nada. Quer mudar de modelo a qualquer hora? <code>openclaw config set model NOVO-MODELO</code> e pronto, vale a partir da próxima mensagem.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. GASTO REAL -->
+<div class="section">
+  <div class="sh">
+    <div class="sh-num">5</div>
+    <div class="sh-label">Exemplo Real de Gasto Mensal</div>
+  </div>
+
+  <div class="card">
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Setup moderado, agente rodando 24/7 com heartbeats ativos:</p>
+
+    <table class="cost-table">
+      <tr>
+        <th>Uso</th>
+        <th>Quantidade/mês</th>
+        <th>Modelo</th>
+        <th>Custo estimado</th>
+      </tr>
+      <tr>
+        <td>Heartbeats (2x/hora, 16h/dia)</td>
+        <td>~960 execuções</td>
+        <td><span style="color:#22c55e;font-weight:700;">Haiku</span></td>
+        <td>~$5</td>
+      </tr>
+      <tr>
+        <td>Mensagens diárias (~10/dia)</td>
+        <td>~300 mensagens</td>
+        <td><span style="color:#a78bfa;font-weight:700;">Sonnet</span></td>
+        <td>~$4</td>
+      </tr>
+      <tr>
+        <td>Análises semanais longas</td>
+        <td>~4 análises</td>
+        <td><span style="color:#fbbf24;font-weight:700;">Opus</span></td>
+        <td>~$6</td>
+      </tr>
+      <tr>
+        <td>Crons e automações</td>
+        <td>~200 execuções</td>
+        <td><span style="color:#22c55e;font-weight:700;">Haiku</span></td>
+        <td>~$2</td>
+      </tr>
+      <tr class="total">
+        <td colspan="3">💰 Total estimado — setup moderado</td>
+        <td>~$14/mês</td>
+      </tr>
+    </table>
+
+    <div class="grid3" style="margin-top:20px;">
+      <div class="ins ins-green" style="margin:0;">
+        <div class="ins-icon">✅</div>
+        <div class="ins-body">
+          <strong>Uso moderado</strong>
+          <p style="color:#22c55e;font-weight:700;">$14–25/mês</p>
+        </div>
+      </div>
+      <div class="ins ins-yellow" style="margin:0;">
+        <div class="ins-icon">⚡</div>
+        <div class="ins-body">
+          <strong>Uso intenso</strong>
+          <p style="color:#eab308;font-weight:700;">$25–40/mês</p>
+        </div>
+      </div>
+      <div class="ins ins-purple" style="margin:0;">
+        <div class="ins-icon">🧠</div>
+        <div class="ins-body">
+          <strong>Assistente humano</strong>
+          <p style="color:#a78bfa;font-weight:700;">$500+/mês</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. PROTEÇÃO -->
+<div class="section">
+  <div class="sh">
+    <div class="sh-num">6</div>
+    <div class="sh-label">Proteção — "Minha Conta Zerou"</div>
+  </div>
+
+  <div class="card">
+    <p style="font-size:15px;font-weight:700;margin-bottom:6px;">Configure os limites antes de usar intensamente.</p>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Um loop mal configurado pode fazer milhares de chamadas por engano. Esses são seus cintos de segurança.</p>
+
+    <div class="ins ins-red">
+      <div class="ins-icon">⚠️</div>
+      <div class="ins-body">
+        <strong>Faça isso agora, antes de continuar</strong>
+        <p>platform.openai.com → Settings → Billing → Usage Limits → defina um "Monthly spend limit" (ex: $50) e um "Notification threshold" (ex: $25). Dois minutos que podem economizar centenas de dólares.</p>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <p style="font-size:13px;font-weight:700;margin-bottom:8px;color:var(--muted);">No platform.openai.com:</p>
+        <div class="card-sm" style="font-size:13px;">
+          <div style="margin:4px 0;">Settings → Billing → Usage Limits</div>
+          <div style="margin:4px 0;color:var(--accent2);">Monthly spend limit: $50</div>
+          <div style="margin:4px 0;color:var(--accent2);">Notification threshold: $25</div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:13px;font-weight:700;margin-bottom:8px;color:var(--muted);">No OpenClaw:</p>
+        <pre style="margin:0;font-size:12px;"><span class="kw-gray"># Limite de requests/hora</span>
+openclaw config set \
+  rateLimit.requestsPerHour 100
+
+<span class="kw-gray"># Ver gasto do mês</span>
+openclaw usage report</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKLIST -->
+<div class="section">
+  <div class="sh">
+    <div class="sh-num" style="background:linear-gradient(135deg,#22c55e,#16a34a);">✓</div>
+    <div class="sh-label">Checklist Final</div>
+  </div>
+
+  <div class="card">
+    <ul class="checklist">
+      <li><div class="cb"></div>Entendo a diferença entre assinatura e API Key — uso API Key com o OpenClaw</li>
+      <li><div class="cb"></div>Modelo padrão configurado: <code>openclaw config set model openai/gpt-5.4</code></li>
+      <li><div class="cb"></div>Modelo heartbeat configurado: <code>openclaw config set heartbeat.model openai/gpt-4o-mini</code></li>
+      <li><div class="cb"></div>Limite de gasto mensal definido no platform.openai.com</li>
+      <li><div class="cb"></div>Notificação de gasto configurada (threshold antes do limite)</li>
+      <li><div class="cb"></div><code>openclaw usage report</code> testado — vejo o gasto acumulado</li>
+    </ul>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section">
+  <div class="sh">
+    <div class="sh-num">?</div>
+    <div class="sh-label">Dúvidas Frequentes</div>
+  </div>
+
+  <div class="faq">
+    <div class="faq-item">
+      <div class="faq-q">Posso trocar de modelo a qualquer hora?</div>
+      <div class="faq-a">Sim. <code>openclaw config set model NOVO-MODELO</code> e pronto. Válido a partir da próxima mensagem. Não precisa reiniciar nada.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">O Mistral é muito mais barato — por que não usar sempre?</div>
+      <div class="faq-a">Qualidade inferior para raciocínio complexo. Para heartbeats simples funciona; para conversas e análises, a perda de qualidade é perceptível. Use Haiku como mínimo para interações com o agente.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Gemini é confiável para uso com OpenClaw?</div>
+      <div class="faq-a">Sim, desde a v2026.3.2. Boa alternativa econômica ao Sonnet. Para casos muito complexos com ferramentas encadeadas, Claude ainda leva vantagem — mas para uso geral é excelente.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Haiku é "burro"?</div>
+      <div class="faq-a">Não! Para tarefas estruturadas — checar emails, classificar mensagens, responder perguntas diretas — Haiku é excelente. Fica atrás em raciocínio multi-step e criatividade. Para 80% das tarefas de automação, é mais que suficiente.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Como saber exatamente quanto gastei?</div>
+      <div class="faq-a"><code>openclaw usage report</code> mostra o breakdown por modelo. O platform.openai.com mostra em tempo real com gráficos e histórico por dia.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:40px 0 20px;border-top:1px solid var(--border);">
+  <div style="font-size:22px;margin-bottom:10px;">💰</div>
+  <div style="font-size:15px;font-weight:700;margin-bottom:6px;">N-7 — Custos & Modelos · Curso OpenClaw 2026</div>
+  <div style="font-size:13px;color:var(--muted);">Amora · Sonnet 4-6 · 16/03/2026</div>
+</div>
+
+</div>
+</body>
+</html>

@@ -39,17 +39,17 @@ Ao final desta aula, o aluno será capaz de:
 
 **[Mostrar na tela:]**
 
-| | Assinatura (Claude Pro) | API Key (Pay-per-use) |
+| | Assinatura (ChatGPT Plus/Pro) | API Key (pay-per-use) |
 |---|---|---|
-| **Custo fixo** | $20/mês sempre | $0 se não usar |
-| **Controle de gasto** | ❌ Nenhum | ✅ Total |
-| **Funciona com OpenClaw** | ❌ Não mais (OAuth bloqueado) | ✅ Sim |
-| **Ideal para** | Uso pessoal no chat | Agentes, automação |
-| **Risco de surpresa** | Baixo (fixo) | Médio sem limites |
+| **Custo fixo** | Valor mensal do seu plano | $0 se não usar |
+| **Controle de gasto** | Limitado ao plano | ✅ Total |
+| **Funciona com OpenClaw** | ✅ Sim, via OAuth OpenAI | ✅ Sim |
+| **Ideal para** | Setup rápido, uso no mesmo ecossistema | Agentes, automação, controle fino |
+| **Risco de surpresa** | Baixo | Médio sem limites |
 
-> "A resposta é quase sempre: **API Key**. A assinatura Pro foi pensada para uso humano — você abrindo o chat e conversando. O OpenClaw faz chamadas programáticas, que precisam de API Key."
+> "O fluxo padrão do curso é: **OpenAI primeiro**. OAuth é o caminho mais rápido pra começar. API Key é o caminho mais flexível quando você quer medir custo, trocar modelo e automatizar com mais controle."
 
-> "Com API Key, você paga exatamente pelo que usa. Num mês que você viaja e quase não usa o agente, paga menos. Num mês de projeto intenso, paga mais — mas você tem controle."
+> "Se quiser testar outros modelos além da stack padrão, use OpenRouter como camada de experimentação. Anthropic fica como comparação opcional, não como fallback principal do curso."
 
 ---
 
@@ -61,19 +61,20 @@ Ao final desta aula, o aluno será capaz de:
 
 | Modelo | Preço Input (M tokens) | Preço Output (M tokens) | Velocidade | Qualidade |
 |--------|----------------------|------------------------|------------|-----------|
-| **Claude Opus 4** | $15 | $75 | Lento | ⭐⭐⭐⭐⭐ |
-| **Claude Sonnet 4.5** | $3 | $15 | Médio | ⭐⭐⭐⭐ |
-| **Claude Haiku 4.5** | $0.80 | $4 | Rápido | ⭐⭐⭐ |
+| **GPT-5.4** | $2.50 | $15 | Médio | ⭐⭐⭐⭐⭐ |
 | **GPT-4o** | $2.50 | $10 | Médio | ⭐⭐⭐⭐ |
+| **GPT-4o-mini** | $0.15 | $0.60 | Rápido | ⭐⭐⭐ |
 | **Gemini 3.1 Pro** | $1.25 | $5 | Médio | ⭐⭐⭐⭐ |
 | **Mistral Small** | $0.10 | $0.30 | Muito rápido | ⭐⭐ |
 
-> "Uma mensagem típica usa ~500 tokens de input + ~200 tokens de output. Vamos fazer a conta:"
+> "Uma mensagem típica usa ~500 tokens de input + ~200 tokens de output. Vamos fazer a conta com a stack padrão do curso:"
 
-> "Com Opus 4: $15/M × 0.0005M + $75/M × 0.0002M = $0.0075 + $0.015 = **$0.022 por mensagem**"
-> "Com Haiku 4.5: $0.80/M × 0.0005M + $4/M × 0.0002M = $0.0004 + $0.0008 = **$0.0012 por mensagem**"
+> "Com GPT-5.4: $2.50/M × 0.0005M + $15/M × 0.0002M = $0.00125 + $0.003 = **$0.00425 por mensagem**"
+> "Com GPT-4o-mini: $0.15/M × 0.0005M + $0.60/M × 0.0002M = $0.000075 + $0.00012 = **$0.000195 por mensagem**"
 
-> "Diferença: **18x mais barato** com Haiku para a mesma tarefa simples."
+> "Diferença: **mais de 20x mais barato** com GPT-4o-mini para tarefas simples."
+
+> "Anthropic continua útil como comparação opcional, e OpenRouter é o melhor jeito de experimentar esses modelos sem trocar a narrativa principal do curso."
 
 ---
 
@@ -86,21 +87,21 @@ Ao final desta aula, o aluno será capaz de:
 **Heartbeats e Crons:**
 
 > "Heartbeat é quando o agente acorda sozinho pra checar emails, calendário, notificações. Essas tarefas são simples — verificar, categorizar, decidir se precisa te avisar."
-> "**Use Haiku** — $0.005 por execução vs $0.10 com Opus. Com 20 heartbeats por dia, são $0.10/dia com Haiku vs $2/dia com Opus. Em um mês: $3 vs $60. A mesma tarefa."
+> "**Use GPT-4o-mini** — é o modelo econômico da stack padrão do curso. Para tarefas repetitivas, ele entrega o melhor custo-benefício sem sacrificar velocidade."
 
 **Interação Diária (mensagens no Telegram):**
 
 > "Quando você manda uma mensagem pro agente e quer uma resposta útil — pesquisa, organização, análise leve."
-> "**Use Sonnet** — o melhor custo-benefício. Rápido o suficiente, inteligente o suficiente, preço razoável."
+> "**Use GPT-4o** — ele é o ponto ideal da stack padrão para conversa diária: mais barato que o flagship e muito forte para uso geral."
 
 **Análise Complexa:**
 
 > "Quando você precisa analisar um documento longo, tomar uma decisão difícil, ou escrever algo importante."
-> "**Use Opus** — mas só quando precisa. Não use Opus pra checar o clima."
+> "**Use GPT-5.4** — mas só quando precisa. Ele é o topo da stack padrão do curso para contexto longo, decisões e escrita importante."
 
-**Alternativas econômicas:**
+**Experimentação e comparação:**
 
-> "Gemini 3.1 Pro a $1.25/M é uma excelente alternativa ao Sonnet pra quem quer economizar. Mistral Small é absurdamente barato e bom pra tarefas muito simples de classificação."
+> "Gemini 3.1 Pro é uma excelente alternativa econômica. Claude pode entrar como comparação opcional. Se quiser testar esses caminhos sem mexer no setup principal, use OpenRouter como camada de experimentação."
 
 ---
 
@@ -121,7 +122,7 @@ openclaw config set heartbeat.model openai/gpt-4o-mini
 openclaw config set analysis.model openai/gpt-5.4
 ```
 
-> "Dessa forma, o agente usa Haiku automaticamente nas 20 execuções de heartbeat do dia, Sonnet quando você manda mensagem, e Opus só quando você pedir uma análise profunda."
+> "Dessa forma, o agente usa GPT-4o-mini automaticamente nos heartbeats, GPT-4o para conversa diária e GPT-5.4 quando você realmente pedir análise pesada."
 
 > "Para verificar a configuração atual:"
 
@@ -140,15 +141,15 @@ openclaw config get heartbeat.model
 
 | Uso | Quantidade/mês | Modelo | Custo estimado |
 |-----|---------------|--------|----------------|
-| Heartbeats (2x/hora, 16h/dia) | ~960 execuções | Haiku | ~$5 |
-| Mensagens diárias (10/dia) | ~300 mensagens | Sonnet | ~$4 |
-| Análises semanais | ~4 análises longas | Opus | ~$3 |
-| Crons e automações | ~200 execuções | Haiku | ~$2 |
-| **Total estimado** | | | **~$14/mês** |
+| Heartbeats (2x/hora, 16h/dia) | ~960 execuções | GPT-4o-mini | ~$1 |
+| Mensagens diárias (10/dia) | ~300 mensagens | GPT-4o | ~$4 |
+| Análises semanais | ~4 análises longas | GPT-5.4 | ~$6 |
+| Crons e automações | ~200 execuções | GPT-4o-mini | ~$1 |
+| **Total estimado** | | | **~$12/mês** |
 
-> "Setup moderado, agente funcionando 24/7 com heartbeats ativos: **$14 a $25/mês**. Se você usar intensamente, pode chegar a $40. Mas com controle de modelos, é muito difícil passar disso sem querer."
+> "Setup moderado, agente funcionando 24/7 com heartbeats ativos: **~$12 a $25/mês**. Se você usar intensamente, pode passar disso, mas a stack padrão já nasce com controle de custo muito melhor."
 
-> "Compare com: Claude Pro ($20/mês) sem funcionar no OpenClaw. Ou um assistente humano part-time ($500+/mês). Por $15-40/mês você tem um agente AI funcionando 24h."
+> "Compare com: manter uma assinatura isolada sem automação, ou depender de execução manual. Com OpenAI como base, OpenRouter para experimentos e Anthropic opcional, você monta um stack profissional por uma fração do custo de operação humana."
 
 ---
 
@@ -200,12 +201,12 @@ E no platform.openai.com:
 
 | Modelo | Input/Output ($/M) | Uso Ideal | Evitar Para |
 |--------|-------------------|-----------|-------------|
-| Claude Opus 4 | $15/$75 | Análise profunda, decisões críticas | Heartbeats, respostas simples |
-| Claude Sonnet 4.5 | $3/$15 | Interação diária, escrita, research | Tarefas repetitivas em volume |
-| Claude Haiku 4.5 | $0.80/$4 | Heartbeats, crons, classificação | Análises complexas |
-| GPT-4o | $2.50/$10 | Alternativa ao Sonnet, código | — |
-| Gemini 3.1 Pro | $1.25/$5 | Alternativa econômica ao Sonnet | — |
-| Mistral Small | $0.10/$0.30 | Classificação simples, routing | Qualquer tarefa que exige raciocínio |
+| GPT-5.4 | $2.50/$15 | Análise profunda, decisões importantes | Heartbeats e tarefas repetitivas |
+| GPT-4o | $2.50/$10 | Conversa diária, pesquisa, código | Volume muito alto e tarefas triviais |
+| GPT-4o-mini | $0.15/$0.60 | Heartbeats, crons, classificação | Análises complexas e escrita crítica |
+| Gemini 3.1 Pro | $1.25/$5 | Alternativa econômica para comparar resultados | — |
+| Mistral Small | $0.10/$0.30 | Routing e classificação simples | Qualquer tarefa que exige raciocínio |
+| Claude (opcional) | Varia | Comparação qualitativa ou casos específicos | Virar fallback principal do curso |
 
 ---
 
@@ -228,15 +229,15 @@ E no platform.openai.com:
 
 **2. O Mistral é muito mais barato — por que não usar sempre?**
 
-> Qualidade inferior para raciocínio complexo. Para heartbeats simples funciona; para conversas e análise, perda de qualidade é perceptível. Use Haiku como mínimo para interações.
+> Qualidade inferior para raciocínio complexo. Para classificação simples funciona; para conversa diária, o mínimo recomendado da stack padrão é GPT-4o-mini, e para interação principal vale mais usar GPT-4o.
 
 **3. Gemini é confiável para uso com OpenClaw?**
 
-> Sim, desde a v2026.3.2. Boa alternativa econômica. Não tem as mesmas capacidades de ferramentas do Claude para casos complexos, mas para uso geral é excelente.
+> Sim, desde a v2026.3.2. Boa alternativa econômica. É um ótimo candidato para comparação via OpenRouter, sem virar o caminho principal do curso.
 
 **4. Como saber exatamente quanto gastei?**
 
-> `openclaw usage report` mostra breakdown por modelo. Platform.openai.com mostra em tempo real com gráficos (para API key).
+> `openclaw usage report` mostra breakdown por modelo. Platform.openai.com mostra em tempo real com gráficos para a API da OpenAI. Se estiver testando outros modelos, OpenRouter oferece um dashboard separado para experimentação.
 
 **5. Haiku é "burro"?**
 

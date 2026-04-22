@@ -163,7 +163,7 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
     <div class="pill pill-green">✨ Guia Completo</div>
   </div>
   <h1>Custos & Modelos:<br><span class="grad">O Arsenal Completo</span></h1>
-  <p class="hero-sub">Da API Key ao OpenRouter, Perplexity e Apify — tudo que você precisa saber para montar um stack de IA sem surpresas na fatura.</p>
+  <p class="hero-sub">Tudo que você precisa para montar a stack padrão do curso com OpenAI, e usar OpenRouter só como camada opcional de experimentação.</p>
   <div class="kpis">
     <div class="kpi"><div class="n" style="color:#22c55e;">$14</div><div class="l">custo médio/mês</div></div>
     <div class="kpi"><div class="n" style="color:#fbbf24;">14x</div><div class="l">economia c/ modelo certo</div></div>
@@ -183,7 +183,7 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
       <table class="tbl">
         <tr>
           <th></th>
-          <th>Assinatura Claude Pro</th>
+          <th>Assinatura ChatGPT Plus/Pro</th>
           <th>API Key (pay-per-use)</th>
         </tr>
         <tr>
@@ -198,7 +198,7 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
         </tr>
         <tr class="winner">
           <td><strong>Funciona no OpenClaw</strong></td>
-          <td class="yes">✅ Sim</td>
+          <td class="yes">✅ Sim, via OAuth OpenAI</td>
           <td class="yes">✅ Sim</td>
         </tr>
         <tr>
@@ -216,8 +216,8 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
     <div class="ins ins-purple" style="margin-top:16px;">
       <div class="ins-icon">🎯</div>
       <div class="ins-body">
-        <strong>A resposta quase sempre: API Key direta ou via OpenRouter</strong>
-        <p>Assinatura funciona, mas API Key é o formato ideal para agentes. Com API Key, você paga exatamente pelo que usa — mês parado = quase zero, mês intenso = você controla. Sem franquia mensal desperdiçada.</p>
+        <strong>Fluxo recomendado: OpenAI primeiro, OpenRouter depois</strong>
+        <p>Assinatura ou OAuth aceleram o começo. OpenAI API Key dá controle fino. OpenRouter entra como camada opcional para testes e comparação de modelos, sem virar o fallback principal do curso.</p>
       </div>
     </div>
   </div>
@@ -225,45 +225,36 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
 
 <!-- 2. MODELOS ANTHROPIC + OPENAI -->
 <div class="section">
-  <div class="sh"><div class="sh-num">2</div><div class="sh-label">Os Modelos — Claude & OpenAI</div></div>
+  <div class="sh"><div class="sh-num">2</div><div class="sh-label">Os Modelos — Stack Padrão + Comparações Opcionais</div></div>
 
   <div class="card">
     <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Preço em <strong style="color:var(--text);">$ por 1 milhão de tokens</strong> (input / output). Uma mensagem típica usa ~500 tokens in + 200 tokens out.</p>
 
-    <p style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--accent2);">🟣 Anthropic — Claude <span style="font-size:11px;font-weight:400;color:var(--muted);">· preços reais de claude.com/platform/api · Mar/2026</span></p>
+    <p style="font-size:13px;font-weight:700;margin-bottom:12px;color:#60a5fa;">🔵 OpenAI — Stack padrão do curso <span style="font-size:11px;font-weight:400;color:var(--muted);">· OpenAI primeiro · Mar/2026</span></p>
     <div style="margin-bottom:20px;">
-      <div class="pbar-row"><div class="pbar-label">Claude Opus 4.6</div><div class="pbar-track"><div class="pbar-fill" style="width:100%;background:linear-gradient(90deg,#7c3aed,#a78bfa);"></div></div><div class="pbar-val">$5 / $25</div></div>
-      <div class="pbar-row"><div class="pbar-label">Claude Sonnet 4.6</div><div class="pbar-track"><div class="pbar-fill" style="width:60%;background:#818cf8;"></div></div><div class="pbar-val">$3 / $15</div></div>
-      <div class="pbar-row"><div class="pbar-label">Claude Haiku 4.5</div><div class="pbar-track"><div class="pbar-fill" style="width:20%;background:#22c55e;"></div></div><div class="pbar-val">$1 / $5</div></div>
+      <div class="pbar-row"><div class="pbar-label">GPT-5.4 <span style="font-size:11px;color:var(--muted);">análises pesadas</span></div><div class="pbar-track"><div class="pbar-fill" style="width:25%;background:linear-gradient(90deg,#1d4ed8,#60a5fa);"></div></div><div class="pbar-val">$2.50 / $15</div></div>
+      <div class="pbar-row"><div class="pbar-label">GPT-4o <span style="font-size:11px;color:var(--muted);">interação diária</span></div><div class="pbar-track"><div class="pbar-fill" style="width:18%;background:#60a5fa;"></div></div><div class="pbar-val">$2.50 / $10</div></div>
+      <div class="pbar-row"><div class="pbar-label">GPT-4o-mini <span style="font-size:11px;color:var(--muted);">heartbeats</span></div><div class="pbar-track"><div class="pbar-fill" style="width:2%;background:#93c5fd;"></div></div><div class="pbar-val">$0.15 / $0.60</div></div>
+      <div class="pbar-row"><div class="pbar-label">Gemini 3.1 Pro <span style="font-size:11px;color:var(--muted);">comparação</span></div><div class="pbar-track"><div class="pbar-fill" style="width:10%;background:#14b8a6;"></div></div><div class="pbar-val">$1.25 / $5</div></div>
+      <div class="pbar-row"><div class="pbar-label">Claude <span style="font-size:11px;color:var(--muted);">opcional</span></div><div class="pbar-track"><div class="pbar-fill" style="width:12%;background:#a78bfa;"></div></div><div class="pbar-val">comparar</div></div>
     </div>
 
-    <p style="font-size:13px;font-weight:700;margin-bottom:12px;color:#60a5fa;">🔵 OpenAI — Linha atual <span style="font-size:11px;font-weight:400;color:var(--muted);">· preços reais de openai.com/api/pricing · Mar/2026</span></p>
-    <div style="margin-bottom:8px;">
-      <div class="pbar-row"><div class="pbar-label">GPT-5.4 <span style="font-size:11px;color:var(--muted);">flagship</span></div><div class="pbar-track"><div class="pbar-fill" style="width:25%;background:linear-gradient(90deg,#1d4ed8,#60a5fa);"></div></div><div class="pbar-val">$2.50 / $15</div></div>
-      <div class="pbar-row"><div class="pbar-label">GPT-4o</div><div class="pbar-track"><div class="pbar-fill" style="width:12%;background:#60a5fa;"></div></div><div class="pbar-val">$2.50 / $10</div></div>
-      <div class="pbar-row"><div class="pbar-label">GPT-4.1</div><div class="pbar-track"><div class="pbar-fill" style="width:10%;background:#60a5fa;"></div></div><div class="pbar-val">$2 / $8</div></div>
-      <div class="pbar-row"><div class="pbar-label">GPT o3-mini</div><div class="pbar-track"><div class="pbar-fill" style="width:5%;background:#93c5fd;"></div></div><div class="pbar-val">$1.10 / $4.40</div></div>
-      <div class="pbar-row"><div class="pbar-label">GPT-5 mini</div><div class="pbar-track"><div class="pbar-fill" style="width:3%;background:#bfdbfe;"></div></div><div class="pbar-val">$0.25 / $2</div></div>
-      <div class="pbar-row"><div class="pbar-label">GPT-4.1 mini</div><div class="pbar-track"><div class="pbar-fill" style="width:2%;background:#bfdbfe;"></div></div><div class="pbar-val">$0.40 / $1.60</div></div>
-      <div class="pbar-row"><div class="pbar-label">GPT-4.1 nano</div><div class="pbar-track"><div class="pbar-fill" style="width:1%;background:#dbeafe;"></div></div><div class="pbar-val">$0.10 / $0.40</div></div>
-    </div>
-
-    <p style="font-size:11px;color:var(--muted);margin-bottom:20px;">↑ Barras proporcionais ao custo de input. GPT-4.5 foi descontinuado — substituído pelo GPT-5.4 ($2.50/M vs $75/M). Fonte: openai.com/api/pricing</p>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:20px;">↑ A stack padrão do curso é GPT-5.4 + GPT-4o + GPT-4o-mini. Anthropic entra só como comparação opcional. OpenRouter fica para experimentação.</p>
     <div class="div"></div>
 
     <div class="grid2">
       <div class="ins ins-red" style="margin:0;">
         <div class="ins-icon">💸</div>
         <div class="ins-body">
-          <strong>Opus 4.6 ≈ $0.0075/msg · GPT-5.4 ≈ $0.0043/msg</strong>
-          <p>Excelente qualidade. Caro para uso diário em alto volume — Opus especialmente pelo output ($25/M).</p>
+          <strong>GPT-5.4 ≈ $0.00425/msg</strong>
+          <p>Excelente qualidade. Ainda é caro para uso diário em alto volume, então vale reservar para análise profunda e contexto longo.</p>
         </div>
       </div>
       <div class="ins ins-green" style="margin:0;">
         <div class="ins-icon">✅</div>
         <div class="ins-body">
-          <strong>Haiku 4.5 ≈ $0.0015/msg</strong>
-          <p><strong>5x mais barato</strong> que Opus 4.6 para tarefas simples — ideal para heartbeats e crons.</p>
+          <strong>GPT-4o-mini ≈ $0.000195/msg</strong>
+          <p><strong>Mais de 20x mais barato</strong> que GPT-5.4 para tarefas simples — ideal para heartbeats e crons.</p>
         </div>
       </div>
     </div>
@@ -272,15 +263,15 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
       <div class="ins-icon">⚠️</div>
       <div class="ins-body">
         <strong>GPT-5.4 — quando usar?</strong>
-        <p>O flagship atual da OpenAI. A $2.50/M de input é acessível para um flagship — mas o output ($15/M) ainda pesa em uso intensivo. Reserve para análises complexas e contextos longos. Para uso geral com o OpenClaw, Sonnet ou GPT-4o entregam 95% do resultado por menos.</p>
+        <p>O flagship atual da OpenAI. Reserve para análises complexas e contextos longos. Para uso geral com o OpenClaw, GPT-4o cobre a maior parte dos cenários por menos, e GPT-4o-mini resolve automações simples com custo mínimo.</p>
       </div>
     </div>
 
     <div class="ins ins-blue" style="margin-top:0;">
       <div class="ins-icon">💡</div>
       <div class="ins-body">
-        <strong>GPT o3-mini e Codex mini — as apostas econômicas da OpenAI</strong>
-        <p><strong>o3-mini ($1.10/M input)</strong>: modelo de raciocínio compacto da linha o-series — usado no OpenClawzinho e em tarefas que precisam de lógica estruturada sem custo elevado. <strong>GPT-4.1 mini (ex-Codex mini, $0.40/M)</strong>: alternativa mais barata ainda, excelente para crons e classificação automatizada.</p>
+        <strong>Comparações opcionais</strong>
+        <p>Gemini pode ser uma ótima comparação econômica. Claude pode ser útil em casos específicos. Mas o curso assume OpenAI como base, OpenRouter como sandbox de testes e Anthropic apenas como opção consciente, não fallback automático.</p>
       </div>
     </div>
   </div>
@@ -288,14 +279,14 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
 
 <!-- 3. OPENROUTER -->
 <div class="section">
-  <div class="sh"><div class="sh-num">3</div><div class="sh-label">OpenRouter — Um Hub Para Todos os Modelos</div></div>
+  <div class="sh"><div class="sh-num">3</div><div class="sh-label">OpenRouter — Camada de Experimentação</div></div>
 
   <div class="card">
     <div class="ins ins-purple" style="margin-top:0;margin-bottom:20px;">
       <div class="ins-icon">🔀</div>
       <div class="ins-body">
         <strong>O que é o OpenRouter?</strong>
-        <p>Uma API única que dá acesso a 300+ modelos de diferentes provedores (Anthropic, OpenAI, Google, Meta, Mistral e mais). Você usa <strong>uma só chave</strong>, um só endpoint, e escolhe qual modelo quer em cada chamada. Funciona perfeitamente com OpenClaw via <code>openrouter/...</code> como prefixo do modelo. <strong>Importante:</strong> o OpenRouter cobra <strong>~5% de markup</strong> em cima do preço original do provider — a conveniência tem um custo pequeno, mas existe.</p>
+        <p>Uma API única que dá acesso a 300+ modelos de diferentes provedores. No curso, ele entra como <strong>camada de experimentação</strong>: você mantém OpenAI como base e usa OpenRouter quando quiser comparar Gemini, Claude, Llama e outros modelos sem trocar o fluxo principal. <strong>Importante:</strong> existe markup sobre parte dos preços, então use pela conveniência e pela flexibilidade, não como default obrigatório.</p>
       </div>
     </div>
 
@@ -304,7 +295,7 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
         <p style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--muted);">Por que usar OpenRouter?</p>
         <div style="display:flex;flex-direction:column;gap:6px;">
           <div class="card-sm" style="font-size:13px;">✅ Uma API key pra tudo</div>
-          <div class="card-sm" style="font-size:13px;">✅ Fallback automático entre provedores</div>
+          <div class="card-sm" style="font-size:13px;">✅ Comparar modelos sem mexer no setup principal</div>
           <div class="card-sm" style="font-size:13px;">✅ Acesso a modelos open-source gratuitos</div>
           <div class="card-sm" style="font-size:13px;">✅ Dashboard de uso unificado</div>
           <div class="card-sm" style="font-size:13px;">⚠️ ~5% de markup sobre o preço do provider</div>
@@ -312,7 +303,7 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
       </div>
       <div>
         <p style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--muted);">Como configurar no OpenClaw:</p>
-        <pre style="margin:0;font-size:12px;"><span class="kw-gray"># Configurar OpenRouter como provider</span>
+        <pre style="margin:0;font-size:12px;"><span class="kw-gray"># Configurar OpenRouter para testes opcionais</span>
 <span class="kw-blue">openclaw</span> config set \
   openrouter.apiKey <span class="kw-green">sk-or-v1-...</span>
 
@@ -335,7 +326,7 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
       </div>
       <div class="mc">
         <div class="mc-badge badge-rec">⭐ Recomendado</div>
-        <div class="mc-name">Claude Haiku 4.5</div>
+        <div class="mc-name">Claude Haiku (opcional)</div>
         <div class="mc-org">Anthropic · via OpenRouter</div>
         <div class="mc-price">$1.00 <span>/ $5 por M</span></div>
         <div class="mc-use">Melhor Claude econômico. Top para sub-agentes, crons e qualquer tarefa estruturada que precisa de raciocínio sólido.</div>
@@ -422,7 +413,7 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
       <div class="ins-icon">🧠</div>
       <div class="ins-body">
         <strong>Estratégia OpenRouter para o OpenClaw</strong>
-        <p>Use Gemini 3.1 Flash para heartbeats e crons de alto volume (mais barato que Haiku), Claude Sonnet via OpenRouter para interações diárias (mesmo preço, sem conta separada), e Llama 4 para experimentos sem gastar. Tudo numa única chave e dashboard.</p>
+        <p>Use OpenRouter quando quiser comparar Gemini, Claude, Llama e outros modelos sem mexer no setup padrão. O curso continua recomendando GPT-4o-mini para heartbeats, GPT-4o para conversa e GPT-5.4 para análises. OpenRouter é sandbox, não fallback principal.ar. Tudo numa única chave e dashboard.</p>
       </div>
     </div>
   </div>
@@ -451,7 +442,7 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
           <div class="ins-icon">🎯</div>
           <div class="ins-body">
             <strong>Como usamos no OpenClaw</strong>
-            <p>Skill <code>deep-research-protocol</code>: pesquisa profunda estruturada sobre qualquer tema. Uma query Sonar Pro custa ~$0.02 e entrega resultado com 10+ fontes citadas. Para um agente que faz 5 pesquisas por dia = <strong>~$3/mês</strong>. Muito mais barato e confiável que pedir pro LLM "inventar" informações.</p>
+            <p>Skill <code>deep-research-protocol</code>: pesquisa profunda estruturada sobre qualquer tema. Útil como experimento complementar, não como base do stack do curso. Uma query Sonar Pro custa ~$0.02 e entrega resultado com 10+ fontes citadas. Para um agente que faz 5 pesquisas por dia = <strong>~$3/mês</strong>. Muito mais barato e confiável que pedir pro LLM "inventar" informações.</p>
           </div>
         </div>
       </div>
@@ -522,21 +513,21 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
           <th>Por ano</th>
         </tr>
         <tr>
-          <td><strong>Claude Opus 4.6</strong></td>
+          <td><strong>Claude (opcional)</strong></td>
           <td>$0.0075</td>
           <td style="color:var(--red);">$0.36</td>
           <td style="color:var(--red);">$10.80</td>
           <td style="color:var(--red);">$130</td>
         </tr>
         <tr>
-          <td><strong>Claude Sonnet 4.6</strong></td>
+          <td><strong>Claude Sonnet (opcional)</strong></td>
           <td>$0.0045</td>
           <td style="color:var(--yellow);">$0.22</td>
           <td style="color:var(--yellow);">$6.48</td>
           <td style="color:var(--yellow);">$78</td>
         </tr>
         <tr class="winner">
-          <td><strong>Claude Haiku 4.5 ✓</strong></td>
+          <td><strong>Claude Haiku (opcional) ✓</strong></td>
           <td>$0.0015</td>
           <td style="color:var(--green);">$0.07</td>
           <td style="color:var(--green);">$2.16</td>
@@ -638,10 +629,10 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
   <div class="card">
     <p style="font-size:15px;font-weight:700;margin-bottom:16px;">Setup recomendado em 5 comandos:</p>
     <pre><span class="kw-gray"># 1. Modelo padrão para conversas</span>
-<span class="kw-blue">openclaw</span> config set <span class="kw-yellow">model</span> <span class="kw-green">anthropic/claude-sonnet-4-5</span>
+<span class="kw-blue">openclaw</span> config set <span class="kw-yellow">model</span> <span class="kw-green">openai/gpt-5.4</span>
 
 <span class="kw-gray"># 2. Modelo econômico para heartbeats (automático)</span>
-<span class="kw-blue">openclaw</span> config set <span class="kw-yellow">heartbeat.model</span> <span class="kw-green">anthropic/claude-haiku-4-5</span>
+<span class="kw-blue">openclaw</span> config set <span class="kw-yellow">heartbeat.model</span> <span class="kw-green">openai/gpt-4o-mini</span>
 
 <span class="kw-gray"># 3. OpenRouter como opção alternativa</span>
 <span class="kw-blue">openclaw</span> config set <span class="kw-yellow">openrouter.apiKey</span> <span class="kw-green">sk-or-v1-...</span>
@@ -655,7 +646,7 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
     <div class="ins ins-red" style="margin-top:16px;">
       <div class="ins-icon">🛡️</div>
       <div class="ins-body">
-        <strong>Faça isso agora no console.anthropic.com</strong>
+        <strong>Faça isso agora no platform.openai.com</strong>
         <p>Settings → Billing → Usage Limits → <strong>Monthly spend limit: $50</strong> + <strong>Notification threshold: $25</strong>. Dois minutos que podem economizar centenas de dólares se um loop maluco acontecer.</p>
       </div>
     </div>
@@ -668,9 +659,9 @@ code { font-family: monospace; font-size: 12px; background: rgba(124,58,237,0.1)
   <div class="card">
     <ul class="checklist">
       <li><div class="cb"></div>Usando API Key (não assinatura) com o OpenClaw</li>
-      <li><div class="cb"></div>Modelo de conversa configurado: <code>openclaw config set model anthropic/claude-sonnet-4-5</code></li>
-      <li><div class="cb"></div>Modelo de heartbeat configurado: <code>openclaw config set heartbeat.model anthropic/claude-haiku-4-5</code></li>
-      <li><div class="cb"></div>Limite mensal configurado no console.anthropic.com ($50 sugerido)</li>
+      <li><div class="cb"></div>Modelo de conversa configurado: <code>openclaw config set model openai/gpt-5.4</code></li>
+      <li><div class="cb"></div>Modelo de heartbeat configurado: <code>openclaw config set heartbeat.model openai/gpt-4o-mini</code></li>
+      <li><div class="cb"></div>Limite mensal configurado no platform.openai.com ($50 sugerido)</li>
       <li><div class="cb"></div>Notificação de gasto configurada (threshold antes do limite)</li>
       <li><div class="cb"></div><code>openclaw usage report</code> testado — sei quanto estou gastando</li>
       <li><div class="cb"></div>OpenRouter explorado como alternativa (opcional: <code>openrouter.ai</code>)</li>

@@ -30,9 +30,9 @@ Por favor, verifique minha configuração atual de modelos:
 4. Calcule o custo estimado por mensagem com o modelo atual
 
 Baseado na tabela de preços:
-- Haiku 4.5: $0.80/$4 por M tokens
-- Sonnet 4.5: $3/$15 por M tokens  
-- Opus 4: $15/$75 por M tokens
+- GPT-4o-mini: ~$0.15/$0.60 por M tokens
+- GPT-4o: $2.50/$10 por M tokens  
+- GPT-5.4: $2.50/$15 por M tokens
 - Gemini 3.1 Pro: $1.25/$5 por M tokens
 ```
 
@@ -65,10 +65,11 @@ Ao final, some tudo e me dê um total mensal estimado.
 Quero configurar modelos diferentes para diferentes situações no meu OpenClaw.
 
 Por favor, me guie pelos comandos para:
-1. Configurar Claude Sonnet 4.5 como modelo padrão para interações
-2. Configurar Claude Haiku 4.5 para heartbeats (econômico)
-3. Verificar que as configurações ficaram corretas
-4. Me dizer o impacto estimado no custo mensal dessa mudança
+1. Configurar `openai/gpt-4o` como modelo padrão para interações
+2. Configurar `openai/gpt-4o-mini` para heartbeats (econômico)
+3. Separar `openai/gpt-5.4` para análises mais pesadas, quando fizer sentido
+4. Verificar que as configurações ficaram corretas
+5. Me dizer o impacto estimado no custo mensal dessa mudança
 
 Execute os comandos e confirme cada passo.
 ```
@@ -98,10 +99,10 @@ Quero ver na prática a diferença de custo entre os modelos.
 
 Por favor, me faça uma demonstração:
 1. Crie uma tarefa de heartbeat simples (ex: "verifique se há emails urgentes e responda em 1 linha")
-2. Estime o custo dessa tarefa em cada modelo: Haiku, Sonnet e Opus
+2. Estime o custo dessa tarefa em cada modelo: GPT-4o-mini, GPT-4o e GPT-5.4
 3. Calcule quanto isso significa em 30 dias com 2 heartbeats por hora
 
-Mostre o cálculo detalhado para eu entender por que Haiku é tão importante para tarefas repetitivas.
+Mostre o cálculo detalhado para eu entender por que o GPT-4o-mini é tão importante para tarefas repetitivas.
 ```
 
 ---
@@ -117,7 +118,7 @@ Por favor:
 3. Calcule se estaria gastando menos com uma configuração mais otimizada
 4. Sugira ajustes na minha configuração baseado no uso real
 
-Se `openclaw usage report` não estiver disponível, me explique como ver o uso no console da OpenAI/Anthropic.
+Se `openclaw usage report` não estiver disponível, me explique como ver o uso no console da OpenAI. Se eu estiver testando outros modelos, inclua também como ver isso no OpenRouter.
 ```
 
 ---
@@ -126,7 +127,7 @@ Se `openclaw usage report` não estiver disponível, me explique como ver o uso 
 
 ```
 Para encerrar os exercícios da aula N-7, me faça um quiz rápido com 5 perguntas sobre:
-- Quando usar Haiku vs Sonnet vs Opus
+- Quando usar GPT-4o-mini vs GPT-4o vs GPT-5.4
 - Como o preço por token funciona na prática
 - Como configurar modelos diferentes por função
 - Como se proteger de gastos inesperados

@@ -11,12 +11,13 @@
 
 Ao final desta aula, o aluno será capaz de:
 
-1. Configurar o OpenClaw com **ChatGPT via OAuth** (recomendado — 1 clique, sem API key)
-2. Configurar **OpenAI API Key** como fallback (para quem prefere ou precisa de controle fino)
-3. Configurar **Anthropic API Key** opcionalmente (para quem quer usar Claude também)
-4. Configurar as credenciais no OpenClaw via `openclaw auth login`
-5. Verificar se a configuração está funcionando com `openclaw status`
-6. Diagnosticar e resolver os **erros mais comuns** de autenticação
+1. Configurar o OpenClaw com **ChatGPT/OpenAI via OAuth** (recomendado — 1 clique, sem API key)
+2. Configurar **OpenAI API Key** como fallback de controle fino
+3. Entender quando usar **OpenRouter** para testar outros LLMs sem sair da stack principal
+4. Configurar **Anthropic API Key** opcionalmente, apenas se quiser Claude de forma direta
+5. Configurar as credenciais no OpenClaw via `openclaw auth login`
+6. Verificar se a configuração está funcionando com `openclaw status`
+7. Diagnosticar e resolver os **erros mais comuns** de autenticação
 
 ---
 
@@ -30,7 +31,7 @@ Ao final desta aula, o aluno será capaz de:
 
 > "Vou te mostrar o caminho mais simples: usar sua conta do ChatGPT que você já tem. Sim — se você já paga R$99/mês de ChatGPT Plus, o OpenClaw pode usar essa mesma conta via OAuth. Um clique, sem API key, sem configurar billing separado."
 
-> "Também vou mostrar como configurar via API key direta, que é útil pra quem quer mais controle ou usa múltiplos modelos."
+> "Também vou mostrar como configurar via API key direta, que é útil pra quem quer mais controle. E, se você quiser experimentar outros LLMs depois, o caminho recomendado é adicionar OpenRouter como camada de testes, sem mexer no fluxo principal do curso."
 
 ---
 
@@ -102,13 +103,15 @@ openclaw config set provider openai
 
 > "**Dica:** API Key dá acesso a todos os modelos da OpenAI, incluindo os mais novos. Mas precisa gerenciar créditos."
 
+> "Se a sua meta é testar Gemini, Claude, Llama e outras opções sem reescrever seu setup principal, o caminho recomendado é ligar OpenRouter depois. Assim você mantém OpenAI como base do curso e usa OpenRouter só para experimentação."
+
 ---
 
 ### 🔑 SEÇÃO 3: Anthropic API Key — O caminho opcional (14:00 – 17:00)
 
 **[Tela: browser em console.anthropic.com]**
 
-> "Se você também quer usar Claude, vamos configurar a Anthropic. A Anthropic **não tem OAuth funcional** para a maioria dos planos — então é API Key direto."
+> "Se você quer comparar com Claude especificamente, a Anthropic continua opcional. A Anthropic **não tem OAuth funcional** para a maioria dos planos — então é API Key direto. Para testar vários LLMs sem trocar a narrativa principal do curso, prefira OpenRouter; Anthropic direta faz sentido quando Claude for uma escolha consciente."
 
 > "Acesse **console.anthropic.com** (não claude.ai — é outro sistema)."
 
@@ -187,9 +190,9 @@ All providers configured ✓
 
 ### 🎯 ENCERRAMENTO (22:00 – 23:00)
 
-> "Resumo da aula: o caminho mais simples é ChatGPT OAuth — 1 clique, usa sua assinatura existente. API Key é pra quem quer mais controle. Configuramos com `openclaw auth login`, verificamos com `openclaw status`."
+> "Resumo da aula: o caminho mais simples é ChatGPT/OpenAI via OAuth — 1 clique, usa sua assinatura existente. OpenAI API Key entra quando você quer mais controle. Configuramos com `openclaw auth login`, verificamos com `openclaw status`."
 
-> "A antropic não tem OAuth funcional pra maioria, então é API Key direto. Mas o mais importante: escolha o provider que faz sentido pra você."
+> "Pra testar outros LLMs, o caminho recomendado do curso é OpenRouter como camada de experimentação. Anthropic direta continua opcional, não o fallback principal."
 
 > "Próxima aula: a gente começa a usar de verdade!"
 
@@ -223,7 +226,14 @@ openclaw config set provider openai
 # Cole a chave quando solicitado
 ```
 
-### 3. Anthropic API Key (Opcional)
+### 3. OpenRouter para testar outros LLMs (Recomendado para experimentação)
+
+1. Acesse [openrouter.ai](https://openrouter.ai)
+2. Crie sua conta e gere uma API key
+3. Use essa chave quando quiser testar outros modelos mantendo OpenAI como base do curso
+4. Trate OpenRouter como camada de experimentação, não como substituição obrigatória do setup inicial
+
+### 4. Anthropic API Key (Opcional)
 
 1. Acesse [console.anthropic.com](https://console.anthropic.com)
 2. Verifique billing em **Settings → Billing**
@@ -283,7 +293,7 @@ openclaw status
 
 **1. Qual provider eu preciso configurar?**
 
-> Só um é suficiente. **ChatGPT OAuth é o mais simples** — usa sua assinatura existente. Se você só tem ChatGPT Plus e não precisa de Claude, configura só o OpenAI.
+> Só um é suficiente. **ChatGPT/OpenAI via OAuth é o mais simples** — usa sua assinatura existente. Se depois quiser testar outros modelos, adicione OpenRouter como etapa extra. Anthropic direta fica opcional.
 
 **2. OAuth e API Key — qual a diferença de custo?**
 
@@ -295,11 +305,11 @@ openclaw status
 
 **4. Minha assinatura Pro da Anthropic funciona pro OAuth do OpenClaw?**
 
-> Não. A Anthropic bloqueou OAuth para planos Pro. O que funciona é API Key direta. Por isso o ChatGPT OAuth é o caminho mais simples.
+> Não. A Anthropic bloqueou OAuth para planos Pro. O que funciona é API Key direta. Por isso o ChatGPT/OpenAI OAuth continua sendo o caminho mais simples, e OpenRouter vira a opção mais prática para experimentação multi-modelo.
 
 **5. Como trocar o provider padrão depois?**
 
-> `openclaw config set model openai/gpt-5.4 (padrão) ou anthropic/claude-sonnet-4-6 (se configurado)`
+> `openclaw config set model openai/gpt-5.4` (padrão do curso), ou troque temporariamente por outro modelo só quando estiver testando via OpenRouter ou Anthropic opcional.
 
 **6. O OpenClaw almacena minhas chaves na nuvem?**
 

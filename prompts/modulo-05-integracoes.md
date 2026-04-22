@@ -37,7 +37,8 @@ Acabei de assistir o Módulo 5 do curso sobre integrações e crons. Leia o PRD 
 - Use Telegram com grupo + tópicos como hub central
 - Cada cron entrega no tópico certo — zero ruído
 - Crons usam o mesmo modelo primário do agente — não trocar modelo no cron isolado (causa `LiveSessionModelSwitchError`)
-- OpenRouter MiniMax como baseline econômico para crons de execução
+- Para produção do curso, mantenha a stack padrão em OpenAI (`openai/gpt-5.4`, `openai/gpt-4o`, `openai/gpt-4o-mini`)
+- Use OpenRouter como camada de experimentação para testar outros LLMs ou opções econômicas sem trocar a narrativa principal do setup
 
 **Comandos úteis:**
 ```
@@ -46,6 +47,6 @@ openclaw models fallbacks add <model>
 openclaw models aliases add <alias> <model>
 ```
 
-> **📡 Posicionamento de modelos (2026.4+):** OpenRouter é o hub principal — `openrouter/minimax/minimax-m2.7` como primário, com fallbacks para `openai-codex/gpt-5.4`, `anthropic/claude-sonnet-4-6` e `anthropic/claude-haiku-4-5`. Crons devem usar o mesmo modelo primário do agente que os dispatcha.
+> **📡 Posicionamento de modelos (2026.4+):** No curso, OpenAI continua sendo a stack padrão. OpenRouter entra como caminho recomendado para experimentar outros modelos, por exemplo `openrouter/minimax/minimax-m2.7`, sem substituir o setup principal. Crons devem usar o mesmo modelo primário do agente que os dispatcha.
 
 Vamos conectar ao mundo real?

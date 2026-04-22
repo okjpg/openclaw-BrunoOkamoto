@@ -42,12 +42,11 @@ Após o diagnóstico, me explique o que cada parte do output significa.
 Quero configurar minha API Key no OpenClaw usando o fluxo correto.
 
 Por favor, me guie pelo processo:
-1. Me explique a diferença entre API Key e setup-token — quando uso cada um?
+1. Me explique a diferença entre ChatGPT/OpenAI via OAuth, OpenAI API Key e OpenRouter — quando uso cada um?
 2. Me guie para obter minha API Key da OpenAI (platform.openai.com)
-3. Configure a key no OpenClaw:
-   - Primeiro tente: `openclaw config set providers.openai.apiKey <minha-key>`
-   - Ou via arquivo: edite `~/.openclaw/config.json` e adicione a key no campo correto
-4. Confirme que está funcionando com `openclaw status`
+3. Configure a key no OpenClaw usando o fluxo atual mais seguro
+4. Se fizer sentido, me explique como adicionar OpenRouter depois para testar outros LLMs
+5. Confirme que está funcionando com `openclaw status`
 
 Importante: Não hardcode a key em nenhum arquivo de código ou .env — use o config do OpenClaw ou `openclaw secrets`.
 ```
@@ -140,7 +139,7 @@ Não precisa executar de verdade — só me explique o processo passo a passo.
 
 ```
 Para encerrar os exercícios da aula N-1, me faça um quiz rápido com 5 perguntas sobre:
-- Diferença entre API Key e setup-token
+- Diferença entre OAuth, OpenAI API Key e OpenRouter
 - Onde as credenciais devem ser armazenadas (spoiler: openclaw secrets ou config)
 - Como interpretar o openclaw status
 - Como distinguir rate limit de credencial inválida
